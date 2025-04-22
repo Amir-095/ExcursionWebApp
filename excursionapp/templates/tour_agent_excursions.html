@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Все Экскурсии</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'css/tour_agent_excursions.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    
+    <!-- Контейнер для всплывающих уведомлений -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <h2 class="excursions-title">Все Экскурсии</h2>
+    <section class="excursions">
+        <div class="excursion-cards-container">
+            {% for location, excursions in grouped_excursions.items %}
+                <h3>
+                    <img src="{% static 'images/vector.png' %}" alt="Vector" class="vector-icon">
+                    {{ location }}
+                </h3>
+                <div class="excursion-cards">
+                    {% for excursion in excursions %}
+                    <div class="excursion-card">
+                        <img src="{{ excursion.image_url }}" alt="{{ excursion.title }}">
+                        <div class="card-content">
+                            <h3>{{ excursion.title }}</h3>
+                            <p class="tour-type">{{ excursion.duration }}</p>
+                            <div class="price-book">
+                                <span class="price">{{ excursion.price }} ₸</span>
+                                <button class="book-button" onclick="window.location.href='{% url 'update_excursion' excursion.id %}'">Изменить</button>
+                                <button class="delete-button" type="button" onclick="deleteExcursion({{ excursion.id }})">Удалить</button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    
+    <!-- Модальное окно для подтверждения удаления -->
+    <div class="modal-overlay" id="deleteConfirmModal">
+        <div class="confirm-modal">
+            <div class="confirm-modal-title">Подтверждение удаления</div>
+            <div class="confirm-modal-message">Вы уверены, что хотите удалить эту экскурсию? Это действие нельзя будет отменить.</div>
+            <div class="confirm-modal-buttons">
+                <button class="modal-btn modal-btn-cancel" id="cancelDelete">Отмена</button>
+                <button class="modal-btn modal-btn-confirm" id="confirmDelete">Удалить</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{% static 'js/tour_agent_excursion.js' %}"></script>
+    <script src="{% static 'js/modal.js' %}"></script>
+</body>
+</html>

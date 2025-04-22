@@ -1,0 +1,337 @@
+/* Основные стили для страницы создания экскурсии */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: 'Abhaya Libre', Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.page-title {
+    font-family: 'Abhaya Libre ExtraBold', 'Abhaya Libre', serif;
+    color: #21336C;
+    font-size: 36px;
+    margin-bottom: 30px;
+    text-align: center;
+    margin-top: 100px;
+}
+
+.excursion-form {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(33, 51, 108, 0.1);
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #21336C;
+    font-weight: bold;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    font-family: 'Abhaya Libre', Arial, sans-serif;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    border-color: #21336C;
+    box-shadow: 0 0 0 3px rgba(33, 51, 108, 0.1);
+    outline: none;
+}
+
+.form-textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.time-inputs {
+    display: flex;
+    gap: 20px;
+}
+
+.time-inputs .form-group {
+    flex: 1;
+}
+
+.form-checkbox-group {
+    margin-top: 15px;
+}
+
+.form-checkbox-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-checkbox {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    accent-color: #21336C;
+}
+
+.checkbox-label {
+    font-size: 16px;
+}
+
+.image-preview {
+    width: 100%;
+    height: 200px;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.image-preview span {
+    color: #aaa;
+    font-style: italic;
+}
+
+.form-help-text {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.submit-button {
+    background-color: #21336C;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 30px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+.submit-button:hover {
+    background-color: #172552;
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #21336C;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* Стили для flatpickr */
+.flatpickr-calendar {
+    box-shadow: 0 10px 30px rgba(33, 51, 108, 0.2);
+    border-radius: 8px;
+    border: none;
+    font-family: 'Abhaya Libre', Arial, sans-serif;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected.inRange,
+.flatpickr-day.startRange.inRange,
+.flatpickr-day.endRange.inRange,
+.flatpickr-day.selected:focus,
+.flatpickr-day.startRange:focus,
+.flatpickr-day.endRange:focus,
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover,
+.flatpickr-day.selected.prevMonthDay,
+.flatpickr-day.startRange.prevMonthDay,
+.flatpickr-day.endRange.prevMonthDay,
+.flatpickr-day.selected.nextMonthDay,
+.flatpickr-day.startRange.nextMonthDay,
+.flatpickr-day.endRange.nextMonthDay {
+    background: #21336C;
+    border-color: #21336C;
+}
+
+.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)),
+.flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)),
+.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
+    box-shadow: -10px 0 0 #21336C;
+}
+
+.flatpickr-day.week.selected {
+    box-shadow: -5px 0 0 #21336C, 5px 0 0 #21336C;
+}
+
+.flatpickr-months .flatpickr-month {
+    background-color: #21336C;
+    color: white;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-current-month input.cur-year {
+    color: white;
+}
+
+.flatpickr-months .flatpickr-prev-month,
+.flatpickr-months .flatpickr-next-month {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.flatpickr-months .flatpickr-prev-month:hover,
+.flatpickr-months .flatpickr-next-month:hover {
+    color: white;
+}
+
+.flatpickr-time input,
+.flatpickr-time .flatpickr-time-separator,
+.flatpickr-time .flatpickr-am-pm {
+    color: #21336C;
+}
+
+/* Стили для кастомного выбора файла */
+.file-input-container {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+}
+
+.file-input-label {
+    display: block;
+    padding: 12px 15px;
+    background-color: #f0f2f5;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.file-input-label:hover {
+    background-color: #e1e5eb;
+}
+
+.file-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-input-name {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #666;
+    word-break: break-all;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .excursion-form {
+        padding: 25px;
+    }
+    
+    .time-inputs {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .page-title {
+        font-size: 28px;
+    }
+    
+    .form-label {
+        font-size: 16px;
+    }
+}
+
+/* Стили для блока услуг */
+.services-container {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 8px;
+}
+
+.services-help-text {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #666;
+    font-size: 14px;
+}
+
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-checkbox {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.checkbox-label {
+    cursor: pointer;
+    font-size: 15px;
+    margin-bottom: 0;
+}
+
+/* Стилизация чекбоксов при наведении */
+.checkbox-item:hover .checkbox-label {
+    color: #007bff;
+}
+
+/* Стилизация чекбоксов при выборе */
+.form-checkbox:checked + .checkbox-label {
+    font-weight: 500;
+    color: #007bff;
+} 

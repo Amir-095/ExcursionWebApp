@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <title>Title</title>
+</head>
+<body>
+    <!-- Контейнер для toast-уведомлений -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Модальное окно для входа/регистрации -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideLoginModal()">&times;</span>
+
+ <!-- Форма входа -->
+<div id="loginForm">
+    <div class="modal-header">
+        <h2>Вход</h2>
+    </div>
+    <div class="modal-body">
+        <form onsubmit="handleLogin(event)">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="username" data-field-name="username" placeholder="Email или номер телефона" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" data-field-name="password" placeholder="Пароль" required>
+                <div class="error-message" data-field-name="password"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit">Войти</button>
+            </div>
+        </form>
+        <div class="switch-form">
+            <p>Нет аккаунта? <a href="#" onclick="switchToRegister()">Зарегистрироваться</a></p>
+        </div>
+    </div>
+</div>
+
+
+<!-- Форма регистрации -->
+<div id="registerForm" style="display: none;">
+    <div class="modal-header">
+        <h2>Регистрация</h2>
+    </div>
+    <div class="modal-body">
+        <form onsubmit="handleRegister(event)">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="first_name" data-field-name="first_name" placeholder="Имя" required>
+                <div class="error-message" data-field-name="first_name"></div>
+            </div>
+            <div class="form-group">
+                <input type="text" name="last_name" data-field-name="last_name" placeholder="Фамилия" required>
+                <div class="error-message" data-field-name="last_name"></div>
+            </div>
+            <div class="form-group">
+                <input type="tel" name="phone_number" data-field-name="phone_number" placeholder="Номер телефона" required>
+                <div class="error-message" data-field-name="phone_number"></div>
+            </div>
+            <div class="form-group">
+                <input type="email" name="email" data-field-name="email" placeholder="Email" required>
+                <div class="error-message" data-field-name="email"></div>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password1" data-field-name="password1" placeholder="Пароль" required>
+                <div class="error-message" data-field-name="password1"></div>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password2" data-field-name="password2" placeholder="Подтвердите пароль" required>
+                <div class="error-message" data-field-name="password2"></div>
+            </div>
+            <div id="error-message" style="color: red;"></div>
+            <div class="modal-footer">
+                <button type="submit">Зарегистрироваться</button>
+            </div>
+        </form>
+        <div class="switch-form">
+            <p>Уже есть аккаунт? <a href="#" onclick="switchToLogin()">Войти</a></p>
+        </div>
+    </div>
+</div>
+
+        </div>
+    </div>
+     <script src="{% static 'js/modal.js' %}"></script>
+</body>
+</html>

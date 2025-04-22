@@ -1,0 +1,129 @@
+#feedbackModal.modal {
+    display: none;
+    position: fixed !important;
+    bottom: 120px !important;
+    right: 30px !important;
+    left: auto !important;
+    top: auto !important;
+    z-index: 999;
+    animation: slideIn 0.3s ease-out;
+    background: none !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+#feedbackModal.modal::before {
+    display: none !important;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+#feedbackModal.modal .modal-content {
+    background-color: #ffffff;
+    width: 320px !important;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0 !important;
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    min-width: 0 !important;
+}
+
+#feedbackModal.modal h2 {
+    color: #333;
+    font-size: 18px;
+    margin: 0 0 20px 0;
+    font-weight: 600;
+}
+
+#feedbackModal.modal .close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    color: #999;
+    font-size: 20px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: color 0.3s;
+    float: none;
+}
+
+#feedbackModal.modal .close:hover {
+    color: #333;
+}
+
+#feedbackModal.modal .form-group {
+    margin-bottom: 15px;
+}
+
+#feedbackModal.modal .form-group label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+#feedbackModal.modal .form-group input,
+#feedbackModal.modal .form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+#feedbackModal.modal .form-group input:focus,
+#feedbackModal.modal .form-group textarea:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+#feedbackModal.modal .form-group textarea {
+    height: 120px;
+    resize: none;
+}
+
+#feedbackModal.modal .submit-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 5px;
+}
+
+#feedbackModal.modal .submit-button:hover {
+    background-color: #45a049;
+}
+
+/* Стили для мобильных устройств */
+@media (max-width: 480px) {
+    #feedbackModal.modal {
+        right: 15px !important;
+        left: 15px !important;
+        bottom: 100px !important;
+    }
+    
+    #feedbackModal.modal .modal-content {
+        width: auto !important;
+    }
+} 

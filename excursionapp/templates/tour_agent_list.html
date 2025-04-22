@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Список турагентов</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'css/tour_agent_list.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!-- Контейнер для toast-уведомлений -->
+    <div class="toast-container" id="toastContainer"></div>
+    {% include 'navbar.html' %}
+    <div class="container">
+        <h1>Список турагентов</h1>
+        <ul class="agent-list">
+            {% for agent in tour_agents %}
+                <li class="agent-item">
+                    <div class="agent-info">
+                        <div class="agent-name">{{ agent.username }}</div>
+                        <div class="agent-contact">
+                            <span><i class="fas fa-envelope"></i> {{ agent.email }}</span>
+                            <span><i class="fas fa-phone"></i> {{ agent.phone_number }}</span>
+                        </div>
+                    </div>
+                    <!-- Добавляем скрытый input для хранения email для каждого агента -->
+                    <input type="hidden" id="agent_email_{{ agent.id }}" value="{{ agent.email }}">
+                    <button class="edit-button" 
+                        onclick="showEditModalWithHiddenField('{{ agent.id }}', '{{ agent.username|escapejs }}', '{{ agent.phone_number|escapejs }}')">
+                        <i class="fas fa-edit"></i> Изменить
+                    </button>
+                </li>
+            {% empty %}
+                <li class="empty-message">Турагенты не найдены.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% include 'feedback.html' %}
+
+    <!-- Модальное окно для редактирования турагента -->
+    <div id="editAgentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideEditModal()">&times;</span>
+            <div class="modal-header">
+                <h2>Редактирование турагента</h2>
+            </div>
+            <div class="modal-body">
+                <form id="editAgentForm" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" id="edit_agent_id" name="agent_id">
+                    
+                    <div class="form-group">
+                        <label for="edit_username">Имя пользователя:</label>
+                        <input type="text" id="edit_username" name="username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit_agent_email">Email:</label>
+                        <input type="email" id="edit_agent_email" name="email" required autocomplete="off">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit_phone_number">Телефон:</label>
+                        <input type="text" id="edit_phone_number" name="phone_number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit_new_password">Новый пароль (оставьте пустым, чтобы не менять):</label>
+                        <input type="password" id="edit_new_password" name="new_password">
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="submit" class="submit-button">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/modal.js' %}"></script>
+    <script src="{% static 'js/tour_agent_list.js' %}"></script>
+ 
+</body>
+</html>

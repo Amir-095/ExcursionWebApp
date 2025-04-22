@@ -1,0 +1,241 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.profile-container {
+    max-width: 1200px;
+    margin: 100px auto 0;
+    padding: 20px;
+    display: flex;
+    gap: 30px;
+}
+
+h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.profile-section, .payment-section {
+    flex: 1;
+}
+
+.profile-info {  
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid #E2E2E2;
+    width: 324px;
+    height: 351px;
+}
+
+.payment-info{
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid #E2E2E2;
+    width: 810px;
+    height: 351px;
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-info h2 {
+    margin-bottom: 10px;
+}
+
+.info-item {
+    margin-bottom: 35px;
+    font-size: 16px;
+}
+
+.label {
+    color: #666;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.value {
+    color: #333;
+    font-weight: 500;
+}
+
+.profile-actions {
+    margin-top: 30px;
+}
+
+.logout-btn {
+    display: inline-block;
+    background-color: #21336C;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.logout-btn:hover {
+    background-color: #1a2a5a;
+}
+
+.card-info {
+    padding: 10px 0;
+    max-height: 250px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    flex-grow: 1;
+}
+
+.card-info::-webkit-scrollbar {
+    width: 6px;
+}
+
+.card-info::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.card-info::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.card-info::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.saved-card {
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid #E2E2E2;
+    position: relative;
+}
+
+.card-number {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.card-expiry {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.delete-card-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 20px;
+    height: 20px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    padding: 0;
+}
+
+.delete-card-btn::before {
+    content: "×";
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.delete-card-btn span {
+    display: none;
+}
+
+.delete-card-btn:hover {
+    background-color: #c0392b;
+}
+
+.no-cards {
+    color: #666;
+    font-style: italic;
+}
+
+.excursions-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.excursion-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+.excursion-card {
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.excursion-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.card-content h4 {
+    color: #333;
+    margin: 0 0 15px 0;
+    font-size: 18px;
+}
+
+.booking-date {
+    margin: 10px 0;
+}
+
+.booking-label {
+    display: inline-block;
+    background-color: #e3f2fd;
+    color: #1976d2;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.booking-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.booking-price span {
+    font-weight: bold;
+    font-size: 18px;
+    color: #21336C;
+}
+
+.book-btn {
+    display: inline-block;
+    background-color: #21336C;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.book-btn:hover {
+    background-color: #1a2a5a;
+}

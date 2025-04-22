@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Редактирование экскурсии</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/update_excursion.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <!-- Контейнер для уведомлений -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="container">
+        <h1 class="page-title">Редактирование экскурсии</h1>
+        
+        {% if user != excursion.creator %}
+        <div class="error-container">
+        <p class="error-message">Вы не являетесь создателем этой экскурсии и не можете её редактировать.</p>
+            <a href="{% url 'excursion_detail' excursion.id %}" class="back-link">
+                <i class="fas fa-arrow-left"></i> Вернуться к экскурсии
+            </a>
+        </div>
+        {% else %}
+        <form method="post" enctype="multipart/form-data" class="excursion-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}" class="form-label">Название экскурсии</label>
+                {{ form.title|add_class:"form-input" }}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.description.id_for_label }}" class="form-label">Описание</label>
+                {{ form.description|add_class:"form-textarea" }}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.program.id_for_label }}" class="form-label">Программа экскурсии</label>
+                {{ form.program|add_class:"form-textarea" }}
+                <div class="form-help-text">Укажите подробную программу экскурсии по времени (например: "05:30 — сбор на месте встречи")</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.location.id_for_label }}" class="form-label">Местоположение</label>
+                {{ form.location|add_class:"form-input" }}
+            </div>
+            
+            <div class="time-inputs">
+                <div class="form-group">
+                    <label for="{{ form.start_time.id_for_label }}" class="form-label">Время начала</label>
+                    <input type="text" name="start_time" id="{{ form.start_time.id_for_label }}" class="form-input time-picker" value="{{ form.start_time.value|time:'H:i' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.end_time.id_for_label }}" class="form-label">Время окончания</label>
+                    <input type="text" name="end_time" id="{{ form.end_time.id_for_label }}" class="form-input time-picker" value="{{ form.end_time.value|time:'H:i' }}" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.duration.id_for_label }}" class="form-label">Продолжительность</label>
+                {{ form.duration|add_class:"form-select" }}
+            </div>
+            
+            <!-- Новое поле для количества дней -->
+            <div class="form-group" id="number_of_days_group" style="display: none;">
+                <label for="{{ form.number_of_days.id_for_label }}" class="form-label">Количество дней</label>
+                {{ form.number_of_days|add_class:"form-input" }}
+            </div>
+            <!-- Конец нового поля -->
+            
+            <div class="form-group">
+                <label for="{{ form.group_type.id_for_label }}" class="form-label">Тип группы</label>
+                {{ form.group_type|add_class:"form-select" }}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.language.id_for_label }}" class="form-label">Язык проведения</label>
+                {{ form.language|add_class:"form-select" }}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.price.id_for_label }}" class="form-label">Цена (₸)</label>
+                {{ form.price|add_class:"form-input" }}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.guide_name.id_for_label }}" class="form-label">Имя гида</label>
+                {{ form.guide_name|add_class:"form-input" }}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Услуги</label>
+                <div class="services-container">
+                    <p class="services-help-text">Отметьте услуги, которые включены в стоимость экскурсии</p>
+                    
+                    <div class="checkbox-group"">
+                        <div class="checkbox-item" style="width: 50%;">
+                            {{ form.guide_services|add_class:"form-checkbox" }}
+                            <label for="{{ form.guide_services.id_for_label }}" class="checkbox-label">Услуги гида/водителя</label>
+                        </div>
+                        
+                        <div class="checkbox-item" style="width: 50%;">
+                            {{ form.transfer_service|add_class:"form-checkbox" }}
+                            <label for="{{ form.transfer_service.id_for_label }}" class="checkbox-label">Трансфер на протяжении всего пути</label>
+                        </div>
+                        
+                        <div class="checkbox-item" style="width: 50%;">
+                            {{ form.group_first_aid|add_class:"form-checkbox" }}
+                            <label for="{{ form.group_first_aid.id_for_label }}" class="checkbox-label">Групповая аптечка</label>
+                        </div>
+                        
+                        <div class="checkbox-item" style="width: 50%;">
+                            {{ form.included_lunch|add_class:"form-checkbox" }}
+                            <label for="{{ form.included_lunch.id_for_label }}" class="checkbox-label">Включенный обед</label>
+                        </div>
+                        
+                        <div class="checkbox-item" style="width: 50%;">
+                            {{ form.food_included|add_class:"form-checkbox" }}
+                            <label for="{{ form.food_included.id_for_label }}" class="checkbox-label">Питание</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Изображение экскурсии</label>
+                <div class="file-input-container">
+                    <label for="id_image_file" class="file-input-label">
+                        <i class="fas fa-upload"></i> Выберите изображение
+                    </label>
+                    {{ form.image_file|add_class:"file-input" }}
+                    <div class="file-input-name" id="file-name">{% if excursion.image_name %}{{ excursion.image_name }}{% else %}Файл не выбран{% endif %}</div>
+                </div>
+                <div class="image-preview" id="image-preview">
+                    {% if excursion.image %}
+                    <img src="data:image/jpeg;base64,{{ excursion.image|to_base64 }}" alt="Текущее изображение">
+                    {% else %}
+                    <span>Предпросмотр изображения</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="date_picker" class="form-label">Добавить новые даты</label>
+                <input type="text" id="date_picker" class="form-input" placeholder="Выберите даты">
+                <div class="selected-dates-preview" id="selected-dates-preview"></div>
+                <div class="form-help-text">Выберите новые даты, в которые будет доступна экскурсия</div>
+            </div>
+            
+            {% if form.existing_dates %}
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-calendar-alt"></i> Существующие даты экскурсии
+                </label>
+                <div class="existing-dates-container">
+                    <div class="date-cards-container">
+                        {% for value, text in form.existing_dates.field.choices %}
+                        <div class="date-card">
+                            <span class="date-text">{{ text }}</span>
+                            <label class="date-checkbox-label">
+                                <input type="checkbox" name="{{ form.existing_dates.name }}" value="{{ value }}" class="date-checkbox visually-hidden">
+                                <span class="delete-btn"><i class="fas fa-times"></i> Удалить</span>
+                                <span class="cancel-delete-btn"><i class="fas fa-undo"></i> Отменить</span>
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="form-help-text">Нажмите на кнопку "Удалить", чтобы удалить дату из расписания</div>
+            </div>
+            {% endif %}
+            
+            <input type="hidden" name="selected_dates" id="selected_dates_input" value="">
+            
+            <button type="submit" class="submit-button">Сохранить изменения</button>
+        </form>
+        
+        <a href="{% url 'excursion_detail' excursion.id %}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Назад к экскурсии
+        </a>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="{% static 'js/update_excursion.js' %}"></script>
+    
+    <!-- Модальное окно для подтверждения сохранения изменений -->
+    <div class="modal-overlay" id="saveConfirmModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Подтверждение сохранения</h2>
+                <button class="modal-close" id="closeSaveConfirmModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите сохранить внесенные изменения?</p>
+                <div class="save-changes-summary" id="changesPreview">
+                    <!-- Здесь будет отображаться резюме изменений -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelSaveChanges">Отмена</button>
+                <button class="btn btn-primary" id="confirmSaveChanges">Да, сохранить</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

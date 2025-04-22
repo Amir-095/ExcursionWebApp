@@ -1,0 +1,73 @@
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    z-index: 1;
+}
+
+.nav-kaztour {
+    position: absolute;
+    font-family: 'Abhaya Libre ExtraBold';
+    color: #21336C;
+    font-size: 36px;
+    font-weight: 800;
+    left: 370px;
+    top: 15px;
+}
+
+.nav-excursions {
+    position: absolute;
+    font-family: 'Abhaya Libre ExtraBold';
+    color: #21336C;
+    font-size: 32px;
+    font-weight: 800;
+    right: 445px;
+    top: 15px;
+}
+
+.nav-profile {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    right: 363px;
+    top: 15px;
+    cursor: pointer;
+}
+.nav-tour-agent-register {
+    position: absolute;
+    font-family: 'Abhaya Libre ExtraBold';
+    color: #21336C;
+    font-size: 32px;
+    font-weight: 800;
+    left: 700px;
+    top:15px;
+}
+.nav-tour-agent-list {
+    position: absolute;
+    font-family: 'Abhaya Libre ExtraBold';
+    color: #21336C;
+    font-size: 32px;
+    font-weight: 800;
+    right: 655px;
+    top:15px;
+}
+.nav-tour-agent-excursions {
+    position: absolute;
+    font-family: 'Abhaya Libre ExtraBold';
+    color: #21336C;
+    font-size: 32px;
+    font-weight: 800;
+    right: 650px;
+    top:15px;
+}
+.nav-tour-create-excursions {
+    position: absolute;
+    font-family: 'Abhaya Libre ExtraBold';
+    color: #21336C;
+    font-size: 32px;
+    font-weight: 800;
+    left: 700px;
+    top:15px;
+}

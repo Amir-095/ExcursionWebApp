@@ -1,0 +1,205 @@
+/* Стили для всплывающих уведомлений */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    max-width: 350px;
+    width: auto;
+    pointer-events: none;
+}
+
+.toast {
+    position: relative;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateX(120%);
+    transition: all 0.5s ease;
+    opacity: 0;
+    display: flex;
+    align-items: flex-start;
+    overflow: hidden;
+    pointer-events: auto;
+}
+
+.toast.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-success {
+    background-color: #e8f5e9;
+    border-left: 5px solid #4caf50;
+    color: #2e7d32;
+}
+
+.toast-error {
+    background-color: #ffebee;
+    border-left: 5px solid #f44336;
+    color: #c62828;
+}
+
+.toast-warning {
+    background-color: #fff8e1;
+    border-left: 5px solid #ffc107;
+    color: #ff8f00;
+}
+
+.toast-info {
+    background-color: #e3f2fd;
+    border-left: 5px solid #2196f3;
+    color: #0d47a1;
+}
+
+.toast-icon {
+    margin-right: 12px;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.toast-content {
+    flex-grow: 1;
+}
+
+.toast-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-family: 'Abhaya Libre ExtraBold', 'Abhaya Libre', serif;
+    font-size: 16px;
+}
+
+.toast-body {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.toast-close {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+    line-height: 1;
+    color: inherit;
+    opacity: 0.5;
+}
+
+.toast-close:hover {
+    opacity: 1;
+}
+
+/* Прогресс-бар для автоматического закрытия */
+.toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    transition: width linear;
+}
+
+.toast-success .toast-progress {
+    background-color: #4caf50;
+}
+
+.toast-error .toast-progress {
+    background-color: #f44336;
+}
+
+.toast-warning .toast-progress {
+    background-color: #ffc107;
+}
+
+.toast-info .toast-progress {
+    background-color: #2196f3;
+}
+
+/* Стили для модального окна */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.confirm-modal {
+    background-color: white;
+    border-radius: 12px;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .confirm-modal {
+    transform: translateY(0);
+}
+
+.confirm-modal-title {
+    font-family: 'Abhaya Libre ExtraBold', 'Abhaya Libre', serif;
+    color: #21336C;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.confirm-modal-message {
+    color: #555;
+    font-size: 16px;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.confirm-modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.modal-btn {
+    flex: 1;
+    padding: 12px 0;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.modal-btn-cancel {
+    background-color: #eaecf1;
+    color: #21336C;
+    border: 1px solid #cfd3df;
+}
+
+.modal-btn-cancel:hover {
+    background-color: #d7dbe6;
+}
+
+.modal-btn-confirm {
+    background-color: #21336C;
+    color: white;
+}
+
+.modal-btn-confirm:hover {
+    background-color: #172552;
+} 

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Title</title>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{% url 'home' %}"><span class="nav-kaztour">KazTour</span></a>
+        <a href="{% url 'all_excursions' %}"><span class="nav-excursions">Экскурсии</span></a>
+        {% if request.user.is_superuser %}
+        <a href="#" onclick="showCreateAgentModal()"><span class="nav-tour-agent-register">Регистрация Турагента</span></a>
+        <a href="{% url 'tour_agent_list'%}"><span class="nav-tour-agent-list">Турагенты</span></a>
+        {% endif %}
+        {% if request.user.role == 'tour_agent' %}
+        <a href="{% url 'my_excursions'%}"><span class="nav-tour-agent-excursions">Ваши Экскурсии</span></a>
+        <a href="{% url 'create_excursion'%}"><span class="nav-tour-create-excursions">Создать экскурсию</span></a>
+        {% endif %}
+        <a href="#" onclick="checkAuthAndProceed(() => window.location.href = '{% url 'profile' %}')">
+            <img class="nav-profile" src="{% static 'images/ic_account_circle_48px.png' %}" alt="Profile">
+        </a>
+    </nav>
+    
+    <!-- Модальное окно для создания турагента -->
+    <div id="createAgentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideCreateAgentModal()">&times;</span>
+            <div class="modal-header">
+                <h2>Создание турагента</h2>
+            </div>
+            <div class="modal-body">
+                <form id="createAgentForm" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">Имя пользователя:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone_number">Телефон:</label>
+                        <input type="text" id="phone_number" name="phone_number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Пароль:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password2">Подтверждение пароля:</label>
+                        <input type="password" id="password2" name="password2" required>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="submit" class="submit-button">Создать</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/tour_agent_list.js' %}"></script>
+</body>
+</html>

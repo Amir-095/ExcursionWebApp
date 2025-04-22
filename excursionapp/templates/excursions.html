@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Все Экскурсии</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'css/excursions.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+<body>
+    <!-- Контейнер для toast-уведомлений -->
+    <div class="toast-container" id="toastContainer"></div>
+        {% include 'navbar.html' %}
+    <h2 class="excursions-title">Все Экскурсии</h2>
+    <div class="content-wrapper">
+        <form id="filterForm" method="GET" action="{% url 'all_excursions' %}">
+            <div class="filter-category">
+                <div class="filter-header">
+                    <img src="{% static 'images/excurse type.png' %}" alt="Type" class="filter-icon">
+                    <h4>Тип экскурсии</h4>
+                </div>
+                <label><input type="checkbox" name="group_type" value="Групповые" onchange="handleFilterChange(event)"> Групповые</label>
+                <label><input type="checkbox" name="group_type" value="Индивидуальные" onchange="handleFilterChange(event)"> Индивидуальные</label>
+                <label><input type="checkbox" name="group_type" value="Семейные" onchange="handleFilterChange(event)"> Семейные</label>
+            </div>
+            <div class="filter-category">
+                <div class="filter-header">
+                    <img src="{% static 'images/access_time.png' %}" alt="Duration" class="filter-icon">
+                    <h4>Длительность</h4>
+                </div>
+                <label><input type="checkbox" name="duration" value="Несколько часов" onchange="handleFilterChange(event)"> Несколько часов</label>
+                <label><input type="checkbox" name="duration" value="1 день" onchange="handleFilterChange(event)"> 1 день</label>
+                <label><input type="checkbox" name="duration" value="Несколько дней" onchange="handleFilterChange(event)"> Несколько дней</label>
+            </div>
+            <div class="filter-category">
+                <div class="filter-header">
+                    <img src="{% static 'images/language.png' %}" alt="Language" class="filter-icon">
+                    <h4>Язык</h4>
+                </div>
+                <label><input type="checkbox" name="language" value="Казахский" onchange="handleFilterChange(event)"> Казахский</label>
+                <label><input type="checkbox" name="language" value="Русский" onchange="handleFilterChange(event)"> Русский</label>
+                <label><input type="checkbox" name="language" value="Английский" onchange="handleFilterChange(event)"> Английский</label>
+            </div>
+        </form>
+
+        <section class="popular-excursions">
+            <div class="excursion-cards-container">
+                {% for location, excursions in grouped_excursions.items %}
+                    <h3>
+                        <img src="{% static 'images/Vector.png' %}" alt="Vector" class="vector-icon">
+                        {{ location }}
+                    </h3>
+                    <div class="excursion-slider-container">
+                        <button class="slider-button prev" onclick="slideCards(this, -1)">
+                            <img src="{% static 'images/arrow-left.png' %}" alt="Previous">
+                        </button>
+                        <div class="excursion-cards">
+                            {% for excursion in excursions %}
+                            <div class="excursion-card">
+                                <img src="{{ excursion.image_url }}" alt="{{ excursion.title }}">
+                                <div class="card-content">
+                                    <h3>{{ excursion.title }}</h3>
+                                    <p class="tour-type">{{ excursion.duration }}</p>
+                                    <div class="price-book">
+                                        <span class="price">{{ excursion.price }} ₸</span>
+                                        <button class="book-button" onclick="window.location.href='{% url 'excursion_detail' excursion.id %}'">Забронировать</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button class="slider-button next" onclick="slideCards(this, 1)">
+                            <img src="{% static 'images/arrow-right.png' %}" alt="Next">
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+
+   {% include 'modal.html' %}
+   {% include 'feedback.html' %}
+    <script src="{% static 'js/slider.js' %}"></script>
+    <script src="{% static 'js/filters.js' %}"></script>
+</body>
+</html> 

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Создание экскурсии</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/create_excursion.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <!-- Контейнер для уведомлений -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="container">
+        <h1 class="page-title">Создание новой экскурсии</h1>
+        
+        <form method="post" enctype="multipart/form-data" class="excursion-form">
+        {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_title" class="form-label">Название экскурсии</label>
+                <input type="text" name="title" id="id_title" class="form-input" required placeholder="Введите название экскурсии">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_description" class="form-label">Описание</label>
+                <textarea name="description" id="id_description" class="form-textarea" required placeholder="Подробное описание экскурсии"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_program" class="form-label">Программа экскурсии</label>
+                <textarea name="program" id="id_program" class="form-textarea" placeholder="Укажите подробную программу экскурсии по времени, например:&#10;05:30 — сбор на месте встречи&#10;05:45 — выезд из Алматы&#10;08:45-10:45 — прогулка по каньону"></textarea>
+                <div class="form-help-text">Укажите подробную программу экскурсии по времени</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_location" class="form-label">Местоположение</label>
+                <input type="text" name="location" id="id_location" class="form-input" required placeholder="Например: Алматы, Астана и т.д.">
+            </div>
+            
+            <div class="time-inputs">
+                <div class="form-group">
+                    <label for="id_start_time" class="form-label">Время начала</label>
+                    <input type="text" name="start_time" id="id_start_time" class="form-input time-picker" required placeholder="Выберите время начала">
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_end_time" class="form-label">Время окончания</label>
+                    <input type="text" name="end_time" id="id_end_time" class="form-input time-picker" required placeholder="Выберите время окончания">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_duration" class="form-label">Продолжительность</label>
+                <select name="duration" id="id_duration" class="form-select" required>
+                    <option value="">Выберите продолжительность</option>
+                    <option value="Несколько часов">Несколько часов</option>
+                    <option value="1 день">1 день</option>
+                    <option value="Несколько дней">Несколько дней</option>
+                </select>
+            </div>
+            
+            <!-- Новое поле для количества дней -->
+            <div class="form-group" id="number_of_days_group" style="display: none;">
+                <label for="id_number_of_days" class="form-label">Количество дней</label>
+                <input type="number" name="number_of_days" id="id_number_of_days" step="1" min="2" class="form-input" placeholder="Укажите количество дней (минимум 2)">
+            </div>
+            <!-- Конец нового поля -->
+            
+            <div class="form-group">
+                <label for="id_group_type" class="form-label">Тип группы</label>
+                <select name="group_type" id="id_group_type" class="form-select" required>
+                    <option value="">Выберите тип группы</option>
+                    <option value="Групповые">Групповые</option>
+                    <option value="Индивидуальные">Индивидуальные</option>
+                    <option value="Семейные">Семейные</option>
+                </select>
+            </div>
+            
+            
+            <div class="form-group">
+                <label for="id_language" class="form-label">Язык проведения</label>
+                <select name="language" id="id_language" class="form-select" required>
+                    <option value="">Выберите язык</option>
+                    <option value="Казахский">Казахский</option>
+                    <option value="Русский">Русский</option>
+                    <option value="Английский">Английский</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_price" class="form-label">Цена (₸)</label>
+                <input type="number" name="price" id="id_price" step="1" min="0" class="form-input" required placeholder="Введите стоимость экскурсии">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_guide_name" class="form-label">Имя гида</label>
+                <input type="text" name="guide_name" id="id_guide_name" class="form-input" required placeholder="Введите имя гида">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Услуги</label>
+                <div class="services-container">
+                    <p class="services-help-text">Отметьте услуги, которые включены в стоимость экскурсии</p>
+                    
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="guide_services" id="id_guide_services" class="form-checkbox">
+                            <label for="id_guide_services" class="checkbox-label">Услуги гида/водителя</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="transfer_service" id="id_transfer_service" class="form-checkbox">
+                            <label for="id_transfer_service" class="checkbox-label">Трансфер на протяжении всего пути</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="group_first_aid" id="id_group_first_aid" class="form-checkbox">
+                            <label for="id_group_first_aid" class="checkbox-label">Групповая аптечка</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="included_lunch" id="id_included_lunch" class="form-checkbox">
+                            <label for="id_included_lunch" class="checkbox-label">Включенный обед</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="food_included" id="id_food_included" class="form-checkbox">
+                            <label for="id_food_included" class="checkbox-label">Питание</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Изображение экскурсии</label>
+                <div class="file-input-container">
+                    <label for="id_image" class="file-input-label">
+                        <i class="fas fa-upload"></i> Выберите изображение
+                    </label>
+                    <input type="file" name="image_file" id="id_image" accept="image/*" class="file-input" required>
+                    <div class="file-input-name" id="file-name">Файл не выбран</div>
+                </div>
+                <div class="image-preview" id="image-preview">
+                    <span>Предпросмотр изображения</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="date_picker" class="form-label">Доступные даты</label>
+                <input type="text" id="date_picker" name="selected_dates" class="form-input" placeholder="Выберите даты" required>
+                <div class="form-help-text">Выберите несколько дат, когда экскурсия будет доступна</div>
+        </div>
+            
+            <button type="submit" class="submit-button">Создать экскурсию</button>
+    </form>
+        
+        <a href="{% url 'all_excursions' %}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Назад к экскурсиям
+        </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="{% static 'js/create_excursion.js' %}"></script>
+
+</body>
+</html>

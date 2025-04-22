@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Профиль</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <!-- Контейнер для toast-уведомлений -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <div class="profile-container">
+        <div class="profile-section">
+            <div class="profile-info">
+            <h2>Информация профиля</h2>
+                <div class="info-item">
+                    <span class="label">Имя:</span>
+                    <span class="value">{{ user.username }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Email:</span>
+                    <span class="value">{{ user.email }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Телефон:</span>
+                    <span class="value">{{ user.phone_number }}</span>
+                </div>
+                <div class="profile-actions">
+                    <a href="{% url 'logout' %}" class="logout-btn">Выйти</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="payment-section">
+            <div class="payment-info">
+            <h2 style="margin-bottom: 0px;">Способы оплаты</h2 >
+                {% if saved_cards %}
+                    <div class="card-info">
+                        {% for card in saved_cards %}
+                            <div class="saved-card">
+                                <div class="card-number">**** **** **** {{ card.decrypt_four_card_number }}</div>
+                                <div class="card-expiry">Истекает {{ card.expiry_date }}</div>
+                                <button type="button" class="delete-card-btn" onclick="deleteCard({{ card.id }})"><span>Удалить карту</span></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="no-cards">Вы ещё не сохранили данные карты.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="excursions-container">
+        <h2>Забронированные экскурсии</h2>
+        {% if booked_excursions %}
+            <div class="excursion-grid">
+                {% for booking in booked_excursions %}
+                <div class="excursion-card">
+                    <img src="{{ booking.excursion.image_url }}" alt="{{ booking.excursion.title }}">
+                    <div class="card-content">
+                        <h4>{{ booking.excursion.title }}</h4>
+                        <p>{{ booking.booking_date}}</p>
+                        <p class="booking-date">
+                            <span class="booking-label">Целый день</span>
+                        </p>
+                        <div class="booking-price">
+                            <span>{{ booking.total_price }} ₸</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>У вас пока нет забронированных экскурсий</p>
+        {% endif %}
+    </div>
+{% include 'feedback.html' %}
+
+<!-- Модальное окно для подтверждения удаления карты -->
+<div class="modal-overlay" id="deleteCardModal">
+    <div class="confirm-modal">
+        <div class="confirm-modal-title">Подтверждение удаления</div>
+        <div class="confirm-modal-message">Вы уверены, что хотите удалить эту карту? Это действие нельзя будет отменить.</div>
+        <div class="confirm-modal-buttons">
+            <button class="modal-btn modal-btn-cancel" id="cancelDeleteCard">Отмена</button>
+            <button class="modal-btn modal-btn-confirm" id="confirmDeleteCard">Удалить</button>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/profile.js' %}"></script>
+</body>
+</html>

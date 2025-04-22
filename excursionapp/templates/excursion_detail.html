@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>{{ excursion.title }}</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'css/excursion_detail.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+<body>
+    <!-- Контейнер для toast-уведомлений -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    {% include 'navbar.html' %}
+    
+    <div class="excursion-detail-container">
+    <h1>{{ excursion.title }}</h1>
+        <div class="excursion-detail-header">
+                <img src="{{ excursion.image_url }}" alt="{{ excursion.title }}">
+        </div>
+
+        <div class="excursion-detail-content">
+            <div class="excursion-info">
+                <div class="info-item">
+                    <img src="{% static 'images/Clock.png' %}" alt="Clock" class="info-icon">
+                    <div class="info-text">
+                        <span class="label">Продолжительность:</span>
+                    <span class="value">
+                        {% if excursion.duration == 'Несколько часов' %}
+                            {{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }}
+                        {% elif excursion.duration == '1 день' %}
+                            1 день ({{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }})
+                        {% elif excursion.duration == 'Несколько дней' and excursion.number_of_days %}
+                            {{ excursion.number_of_days }} {% if excursion.number_of_days == 1 %}день{% elif excursion.number_of_days < 5 %}дня{% else %}дней{% endif %}
+                            ({{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }})
+                        {% else %}
+                            {{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }} {# Fallback на всякий случай #}
+                        {% endif %}
+                    </span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <img src="{% static 'images/Two-user.png' %}" alt="Group" class="info-icon">
+                    <div class="info-text">
+                        <span class="label">{{ excursion.group_type }}</span>
+                        <span class="value">{{ excursion.people_count_range }}</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <img src="{% static 'images/ic_language_48px.png' %}" alt="Language" class="info-icon">
+                    <div class="info-text">
+                        <span class="label">Язык:</span>
+                        <span class="value price">{{ excursion.language }}</span>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="description-guide-container">
+                <div class="excursion-description">
+                    <p>{{ excursion.description }}</p>
+                </div>
+
+                <div class="guide-info">
+                    <div class="guide-header">
+                        <div class="guide-details">
+                            <h3>Гид</h3>
+                            <img src="{% static 'images/guideprofile.png' %}" alt="Гид" class="guide-avatar">
+                            <p class="guide-name">{{ excursion.guide_name }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="lists-container">
+                {% if included_items %}
+                    <div class="list-column">
+                        <h3>Что включено</h3>
+                        <ul class="included-list">
+                            {% for item in included_items %}
+                                <li>
+                                    <img src="{% static 'images/check-circle.png' %}" alt="✔" class="list-icon">
+                                    {{ item }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% if not_included_items %}
+                    <div class="list-column">
+                        <h3>Что не включено</h3>
+                        <ul class="not-included-list">
+                            {% for item in not_included_items %}
+                                <li>
+                                    <img src="{% static 'images/close-circle.png' %}" alt="✘" class="list-icon">
+                                    {{ item }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+            <hr>
+            {% if excursion.program %}
+            <div class="program-container">
+                <h3>Программа</h3>
+                <div class="program-content">
+                    {{ excursion.program|linebreaks }}
+                </div>
+            </div>
+            <hr>
+            {% endif %}
+            <h3>Доступные даты</h3>
+            
+            <!-- Новый контейнер для двух колонок -->
+            <div class="booking-details-container">
+                <!-- Левая колонка с бронированием -->
+                <div class="booking-column">
+                    <div class="booking-card">
+                        <h2 class="booking-title">Выберите дату и время</h2>
+                        
+                        <div class="date-selector">
+                            {% if dates %}
+                                <!-- Показываем только две первые даты -->
+                                {% for date in dates|slice:":2" %}
+                                    <div class="date-option {% if forloop.first %}active{% endif %}" onclick="selectDate('{{ date }}')">
+                                        <div class="date-label">{% if forloop.first %}Завтра{% elif forloop.counter == 2 %}Послезавтра{% endif %}</div>
+                                        <div class="date-value">{{ date }}</div>
+                                    </div>
+                                {% endfor %}
+
+                                <!-- Кнопка для открытия календаря с остальными датами -->
+                                <div class="date-option date-picker" id="datepicker-btn">
+                                    <img src="{% static 'images/calendar-search.png' %}" alt="Календарь" class="calendar-icon">
+                                    <div class="date-value">Выбрать дату</div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Hidden input to track the selected date -->
+                        <input type="hidden" id="selectedDate" name="selectedDate" value="{{ dates.0 }}" />
+                        
+                        <div class="divider"></div>
+                        
+                        <div class="ticket-row">
+                            <div class="ticket-info">
+                                <div class="ticket-type">Стандартный билет</div>
+                            </div>
+                            <div class="ticket-price" data-price="{{ excursion.price }}">₸ {{ excursion.price }}</div>
+                            <div class="ticket-counter">
+                                <button class="counter-btn decrease" onclick="updateTicketCount(-1)">−</button>
+                                <input type="number" id="ticketCount" value="1" min="1" onchange="updateTotalPrice()" readonly>
+                                <button class="counter-btn increase" onclick="updateTicketCount(1)">+</button>
+                            </div>
+                        </div>
+                        
+                        <button class="booking-btn" onclick="checkAuthAndProceed(() => redirectToPayment({{ excursion.id }}))">
+                            Начать бронирование
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Правая колонка с деталями экскурсии -->
+                <div class="details-column">
+                    <div class="details-card">
+                        <h2 class="details-title">Детали экскурсии</h2>
+                        
+                        <div class="organizer-info">
+                            <div class="organizer-avatar">
+                                <img src="{% static 'images/guideprofile.png' %}" alt="Организатор" class="avatar-img">
+                            </div>
+                            <div class="organizer-details">
+                                <div class="organizer-name">{{ excursion.guide_name }}</div>
+                                <div class="organizer-role">Организатор</div>
+                            </div>
+                        </div>
+                        
+                        <div class="excursion-details-list">
+                            <div class="detail-item">
+                                <div class="detail-label">Тип экскурсии:</div>
+                                <div class="detail-value">{{ excursion.group_type }}</div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-label">Время начала:</div>
+                                <div class="detail-value">
+                                    {% if dates.0 %}{{ dates.0 }} в {{ excursion.start_time|time:"H:i" }}{% else %}По выбранной дате{% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-label">Длительность:</div>
+                                <div class="detail-value">
+                                    {% if excursion.duration == 'Несколько часов' %}
+                                        {{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }}
+                                    {% elif excursion.duration == '1 день' %}
+                                        1 день
+                                    {% elif excursion.duration == 'Несколько дней' and excursion.number_of_days %}
+                                        {{ excursion.number_of_days }} {% if excursion.number_of_days == 1 %}день{% elif excursion.number_of_days < 5 %}дня{% else %}дней{% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-label">Место встречи:</div>
+                                <div class="detail-value">{{ excursion.location }}</div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-label">Место окончания:</div>
+                                <div class="detail-value">{{ excursion.location }}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="map-placeholder">
+                            <a href="#" class="map-link">Google карта</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'modal.html' %}
+    {% include 'feedback.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="{% static 'js/excursion_detail.js' %}"></script>
+    <script>
+        // Инициализация flatpickr с доступными датами
+        document.addEventListener('DOMContentLoaded', function() {
+            // Собираем доступные даты
+            const availableDates = [
+                {% for date in dates %}
+                    "{{ date }}",
+                {% endfor %}
+            ];
+            
+            // Инициализируем flatpickr
+            const datePickerBtn = document.getElementById('datepicker-btn');
+            if (datePickerBtn) {
+                flatpickr(datePickerBtn, {
+                    inline: false,
+                    enable: availableDates,
+                    dateFormat: "Y-m-d",
+                    onChange: function(selectedDates, dateStr) {
+                        selectDate(dateStr);
+                        // Активируем выбранную дату
+                        document.querySelectorAll('.date-option').forEach(el => {
+                            el.classList.remove('active');
+                        });
+                        datePickerBtn.classList.add('active');
+                        
+                        // Обновляем текст кнопки
+                        const dateValueEl = datePickerBtn.querySelector('.date-value');
+                        if (dateValueEl) {
+                            dateValueEl.textContent = dateStr;
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

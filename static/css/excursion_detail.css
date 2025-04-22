@@ -1,0 +1,557 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.excursion-detail-container {
+    max-width: 1200px;
+    margin: 50px auto 0;
+    padding: 20px;
+}
+
+.excursion-detail-header img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.excursion-detail-content {
+    margin-top: 30px;
+    padding: 20px;
+}
+
+.excursion-detail-container h1 {
+    font-family: 'Roboto';
+    font-weight: 800;
+    font-size: 36px;
+    color: #21336C;
+}
+
+.excursion-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.info-item {
+    display: flex;
+    align-items: center; /* Выравнивание по центру вертикально */
+    gap: 10px; /* Отступ между иконкой и текстом */
+    padding: 15px;
+    position: relative;
+    left: 100px;
+}
+
+.info-icon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.info-text {
+    display: flex;
+    flex-direction: column; /* Расположить label и value в колонку */
+    gap: 5px; /* Отступ между label и value */
+}
+.info-item .label {
+    font-family: 'Abhaya Libre';
+    font-size: 16px;
+    color: #666;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.info-item .value {
+    font-family: 'Abhaya Libre ExtraBold';
+    font-size: 18px;
+    color: #21336C;
+}
+
+.booking-section {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.book-now-button {
+    background-color: #21336C;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 40px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.book-now-button:hover {
+    background-color: #182552;
+}
+
+.excursion-description {
+    padding: 20px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    flex: 4;
+}
+
+.excursion-description p {
+    color: #4A4A4A;
+    position: relative;
+    top:50px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.date-button.active {
+    background-color: #4CAF50;
+    color: white;
+    border: 2px solid #2E7D32;
+}
+.ticket-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ticket-selector input {
+    width: 50px;
+    text-align: center;
+}
+
+.ticket-selector button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.ticket-selector button:hover {
+    background-color: #2E7D32;
+}
+.price-display {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Стили для списков "Что включено" и "Что не включено" */
+.excursion-detail-content h3 {
+    color: #21336C;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 30px 0 20px 0;
+}
+
+/* Контейнер для списков */
+.lists-container {
+    display: flex;
+    gap: 40px;
+    position: relative;
+    left: 150px;
+}
+
+.list-column {
+    flex: 1;
+}
+
+.list-column h3 {
+    color: #21336C;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.excursion-detail-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.excursion-detail-content ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #4A4A4A;
+    gap: 10px;
+}
+
+.list-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.included-list li {
+    color: #4CAF50;
+}
+
+.not-included-list li {
+    color: #d45454;
+}
+
+/* Контейнер для описания и информации о гиде */
+.description-guide-container {
+    display: flex;
+}
+
+.guide-info {
+    position: relative;
+    bottom:20px;
+    padding: 20px;
+    text-align: center;
+}
+
+.guide-header {
+    display: flex;
+    align-items: center;
+}
+
+.guide-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.guide-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 15px 0;
+}
+
+.guide-details h3 {
+    color: #000000;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: -10px;
+}
+
+.guide-name {
+    color: #4A4A4A;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0;
+}
+
+/* Стили блока бронирования */
+.booking-card {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: white;
+}
+
+.booking-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #21336C;
+    margin-bottom: 25px;
+}
+
+.date-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.date-option {
+    flex: 1;
+    min-width: 120px;
+    padding: 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.date-option.active {
+    background-color: #21336C;
+    border-color: #21336C;
+    color: white;
+}
+
+.date-label {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.date-value {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.calendar-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 5px;
+}
+
+.divider {
+    height: 1px;
+    background-color: #E0E0E0;
+    margin: 25px 0;
+}
+
+.ticket-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.ticket-type {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.ticket-price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #21336C;
+}
+
+.ticket-counter {
+    display: flex;
+    align-items: center;
+}
+
+.counter-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background-color: #F2F2F2;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.counter-btn.decrease {
+    border-radius: 4px 0 0 4px;
+}
+
+.counter-btn.increase {
+    border-radius: 0 4px 4px 0;
+}
+
+#ticketCount {
+    width: 40px;
+    height: 36px;
+    border: 1px solid #F2F2F2;
+    text-align: center;
+    font-size: 18px;
+    padding: 0;
+}
+
+.booking-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #21336C;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.booking-btn:hover {
+    background-color: #182552;
+}
+
+
+/* Стиль для активной кнопки выбора даты */
+.date-option.active {
+    background-color: #21336C;
+    color: white;
+}
+
+.date-option.date-picker.active {
+    background-color: #21336C;
+    color: white;
+}
+
+.date-option.date-picker.active .date-value {
+    color: white;
+}
+
+.date-option.date-picker.active img.calendar-icon {
+    filter: brightness(0) invert(1);
+}
+
+/* Переопределение стилей flatpickr для отключенных дат */
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.flatpickr-disabled:hover {
+    color: #999 !important;
+    cursor: not-allowed;
+    background-color: #f0f0f0;
+}
+
+/* Стили для программы экскурсии */
+.program-container {
+    margin: 20px 0;
+}
+
+.program-content {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    white-space: pre-line;
+}
+
+.program-content p {
+    margin-bottom: 10px;
+}
+
+/* Адаптивный контейнер для описания и гида */
+.description-guide-container {
+    display: flex;
+}
+
+/* Добавляем стили для нового двухколоночного макета */
+.booking-details-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.booking-column {
+    flex: 1;
+    min-width: 300px;
+}
+
+.details-column {
+    flex: 1;
+    min-width: 300px;
+}
+
+.booking-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+}
+
+.details-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+}
+
+.details-title {
+    color: #21336C;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.organizer-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.organizer-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.organizer-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.organizer-name {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+}
+
+.organizer-role {
+    font-size: 14px;
+    color: #666;
+}
+
+.excursion-details-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.detail-value {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+
+.map-placeholder {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.map-link {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #f0f0f0;
+    color: #21336C;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.map-link:hover {
+    background-color: #e0e0e0;
+}
+
+/* Адаптивный дизайн для мобильных устройств */
+@media (max-width: 768px) {
+    .booking-details-container {
+        flex-direction: column;
+    }
+    
+    .booking-column,
+    .details-column {
+        width: 100%;
+    }
+}
