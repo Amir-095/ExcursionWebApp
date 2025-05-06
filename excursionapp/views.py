@@ -141,16 +141,31 @@ def index(request):
 def all_excursions(request):
     excursions = Excursion.objects.all().order_by('location')
 
+    # Собираем все параметры фильтрации
     group_type = request.GET.getlist('group_type')
     duration = request.GET.getlist('duration')
     language = request.GET.getlist('language')
-
+    location = request.GET.get('location')  # Может прийти из поиска
+    
+    # Применяем фильтры
     if group_type:
         excursions = excursions.filter(group_type__in=group_type)
     if duration:
         excursions = excursions.filter(duration__in=duration)
     if language:
         excursions = excursions.filter(language__in=language)
+    if location:  # Фильтрация по локации
+        excursions = excursions.filter(location__iexact=location)
+
+    # Добавляем логирование для отладки
+    print(f"Фильтры: группа={group_type}, длительность={duration}, язык={language}, локация={location}")
+    print(f"SQL запрос: {excursions.query}")
+    
+    # Проверка, есть ли результаты
+    if not excursions.exists() and location:
+        # Если результатов нет, попробуем более мягкий поиск по локации
+        print(f"Результаты не найдены для точного совпадения локации. Пробуем нечеткий поиск.")
+        excursions = Excursion.objects.filter(location__icontains=location).order_by('location')
 
     # Группируем экскурсии по локациям
     grouped_excursions = {}
@@ -162,6 +177,10 @@ def all_excursions(request):
             grouped_excursions[excursion.location] = []
         grouped_excursions[excursion.location].append(excursion)
 
+    # Если после всех фильтров ничего не найдено
+    if not grouped_excursions:
+        print("Нет результатов после применения всех фильтров")
+    
     return render(request, "excursions.html", {'grouped_excursions': grouped_excursions})
 
 
@@ -215,6 +234,7 @@ def excursion_detail(request, excursion_id):
         'included_items': included_items,
         'not_included_items': not_included_items,
         'dates': excursion.get_dates_list(),
+        'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
         })
 
 @login_required(login_url='home')
@@ -691,3 +711,40 @@ def send_feedback(request):
             'status': 'error',
             'message': str(e)
         }, status=500)
+
+# API для автокомплита и поиска
+def search_locations_excursions(request):
+    query = request.GET.get('query', '').strip()
+    
+    if not query or len(query) < 2:
+        return JsonResponse({'results': []})
+    
+    # Поиск по локациям
+    locations = Excursion.objects.filter(
+        location__icontains=query
+    ).values('location').distinct()
+    
+    location_results = [{
+        'id': f"location_{idx}",
+        'title': location['location'],
+        'type': 'location',
+        'url': f"/excursions/?location={location['location']}"
+    } for idx, location in enumerate(locations)]
+    
+    # Поиск по названиям экскурсий
+    excursions = Excursion.objects.filter(
+        title__icontains=query
+    ).values('id', 'title', 'location')
+    
+    excursion_results = [{
+        'id': f"excursion_{excursion['id']}",
+        'title': excursion['title'],
+        'location': excursion['location'],
+        'type': 'excursion',
+        'url': f"/excursion/{excursion['id']}/"
+    } for excursion in excursions]
+    
+    # Объединяем результаты, сначала локации, потом экскурсии
+    results = location_results + excursion_results
+    
+    return JsonResponse({'results': results})

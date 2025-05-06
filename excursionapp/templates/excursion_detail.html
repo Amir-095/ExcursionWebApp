@@ -29,13 +29,12 @@
                     <div class="info-text">
                         <span class="label">Продолжительность:</span>
                     <span class="value">
-                        {% if excursion.duration == 'Несколько часов' %}
-                            {{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }}
+                        {% if excursion.duration == 'Несколько дней' and excursion.number_of_days %}
+                            {{ excursion.number_of_days }} {% if excursion.number_of_days == 1 %}день{% elif excursion.number_of_days < 5 %}дня{% else %}дней{% endif %} ({{ excursion.start_time|time:"H:i" }})
                         {% elif excursion.duration == '1 день' %}
                             1 день ({{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }})
-                        {% elif excursion.duration == 'Несколько дней' and excursion.number_of_days %}
-                            {{ excursion.number_of_days }} {% if excursion.number_of_days == 1 %}день{% elif excursion.number_of_days < 5 %}дня{% else %}дней{% endif %}
-                            ({{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }})
+                        {% elif excursion.duration == 'Несколько часов' %}
+                            {{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }}
                         {% else %}
                             {{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }} {# Fallback на всякий случай #}
                         {% endif %}
@@ -187,37 +186,64 @@
                             <div class="detail-item">
                                 <div class="detail-label">Время начала:</div>
                                 <div class="detail-value">
-                                    {% if dates.0 %}{{ dates.0 }} в {{ excursion.start_time|time:"H:i" }}{% else %}По выбранной дате{% endif %}
+                                    {% if dates.0 %}
+                                        {% if excursion.duration == 'Несколько дней' %}
+                                            {{ dates.0 }} в {{ excursion.start_time|time:"H:i" }}
+                                        {% else %}
+                                            {{ dates.0 }} в {{ excursion.start_time|time:"H:i" }}
+                                        {% endif %}
+                                    {% else %}
+                                        По выбранной дате
+                                    {% endif %}
                                 </div>
                             </div>
                             
                             <div class="detail-item">
                                 <div class="detail-label">Длительность:</div>
                                 <div class="detail-value">
-                                    {% if excursion.duration == 'Несколько часов' %}
-                                        {{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }}
+                                    {% if excursion.duration == 'Несколько дней' and excursion.number_of_days %}
+                                        {{ excursion.number_of_days }} {% if excursion.number_of_days == 1 %}день{% elif excursion.number_of_days < 5 %}дня{% else %}дней{% endif %} ({{ excursion.start_time|time:"H:i" }})
                                     {% elif excursion.duration == '1 день' %}
-                                        1 день
-                                    {% elif excursion.duration == 'Несколько дней' and excursion.number_of_days %}
-                                        {{ excursion.number_of_days }} {% if excursion.number_of_days == 1 %}день{% elif excursion.number_of_days < 5 %}дня{% else %}дней{% endif %}
+                                        1 день ({{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }})
+                                    {% else %}
+                                        {{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }}
                                     {% endif %}
                                 </div>
                             </div>
                             
                             <div class="detail-item">
+                            {% if excursion.meeting_address %}
                                 <div class="detail-label">Место встречи:</div>
-                                <div class="detail-value">{{ excursion.location }}</div>
+                                <div class="detail-value">{{ excursion.meeting_address }}</div>
+                            {% endif %}
                             </div>
                             
                             <div class="detail-item">
                                 <div class="detail-label">Место окончания:</div>
-                                <div class="detail-value">{{ excursion.location }}</div>
+                                <div class="detail-value">
+                                    {% if excursion.end_location %}
+                                        {{ excursion.end_location }}
+                                    {% else %}
+                                        {{ excursion.location }}
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="map-placeholder">
-                            <a href="#" class="map-link">Google карта</a>
-                        </div>
+                            {% if excursion.meeting_address %}
+                                <div class="google-map">
+                                    <!-- API ключ передаётся из контекста в шаблон -->
+                                    <iframe
+                                        width="100%"
+                                        height="250"
+                                        frameborder="0" style="border:0"
+                                        src="https://www.google.com/maps/embed/v1/place?key={{ google_maps_api_key }}&q={{ excursion.meeting_address|urlencode }}"
+                                        allowfullscreen>
+                                    </iframe>
+                                </div>
+                            {% else %}
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ excursion.location|urlencode }}" class="map-link" target="_blank">Google карта</a>
+                            {% endif %}
                     </div>
                 </div>
             </div>
@@ -228,40 +254,10 @@
     {% include 'feedback.html' %}
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{% static 'js/excursion_detail.js' %}"></script>
-    <script>
-        // Инициализация flatpickr с доступными датами
-        document.addEventListener('DOMContentLoaded', function() {
-            // Собираем доступные даты
-            const availableDates = [
-                {% for date in dates %}
-                    "{{ date }}",
-                {% endfor %}
-            ];
-            
-            // Инициализируем flatpickr
-            const datePickerBtn = document.getElementById('datepicker-btn');
-            if (datePickerBtn) {
-                flatpickr(datePickerBtn, {
-                    inline: false,
-                    enable: availableDates,
-                    dateFormat: "Y-m-d",
-                    onChange: function(selectedDates, dateStr) {
-                        selectDate(dateStr);
-                        // Активируем выбранную дату
-                        document.querySelectorAll('.date-option').forEach(el => {
-                            el.classList.remove('active');
-                        });
-                        datePickerBtn.classList.add('active');
-                        
-                        // Обновляем текст кнопки
-                        const dateValueEl = datePickerBtn.querySelector('.date-value');
-                        if (dateValueEl) {
-                            dateValueEl.textContent = dateStr;
-                        }
-                    }
-                });
-            }
-        });
-    </script>
+    
+    <!-- Скрытое поле с доступными датами -->
+    <div id="availableDatesData" style="display: none;" 
+         data-dates="{% for date in dates %}{{ date }}{% if not forloop.last %},{% endif %}{% endfor %}">
+    </div>
 </body>
 </html> 

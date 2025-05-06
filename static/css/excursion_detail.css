@@ -544,6 +544,31 @@ body {
     background-color: #e0e0e0;
 }
 
+.google-map {
+    margin-top: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.meeting-address {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 3px solid #21336C;
+}
+
+.meeting-address .detail-label {
+    color: #21336C;
+    font-weight: 600;
+}
+
+.meeting-address .detail-value {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
 /* Адаптивный дизайн для мобильных устройств */
 @media (max-width: 768px) {
     .booking-details-container {

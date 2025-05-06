@@ -39,12 +39,14 @@ class Excursion(models.Model):
     image = models.BinaryField(null=True, blank=True)
     image_name = models.CharField(max_length=100, null=True, blank=True)
     location = models.CharField(max_length=100, default='Unknown')
+    meeting_address = models.CharField(max_length=200, blank=True, null=True, verbose_name="Адрес места встречи")
+    end_location = models.CharField(max_length=200, blank=True, null=True, verbose_name="Место окончания экскурсии")
     group_type = models.CharField(max_length=50, choices=GROUP_TYPE_CHOICES, default='Group')
     duration = models.CharField(max_length=50, choices=DURATION_CHOICES, default='1 day')
     number_of_days = models.PositiveIntegerField(null=True, blank=True, verbose_name="Количество дней")
     language = models.CharField(max_length=50, choices=LANGUAGE_CHOICES, default='English')
     start_time = models.TimeField()  # Время начала экскурсии
-    end_time = models.TimeField()  # Время окончания экскурсии
+    end_time = models.TimeField(null=True, blank=True)  # Время окончания экскурсии (может быть пустым для многодневных экскурсий)
     description = models.TextField()  # Описание экскурсии
     guide_name = models.CharField(max_length=100)  # Имя гида
     program = models.TextField(blank=True, null=True, verbose_name="Программа экскурсии")  # Программа экскурсии

@@ -27,7 +27,7 @@ class ExcursionAdminForm(forms.ModelForm):
     class Meta:
         model = Excursion
         fields = [
-            'title', 'price', 'image_file', 'location', 'group_type',
+            'title', 'price', 'image_file', 'location', 'meeting_address', 'end_location', 'group_type',
             'duration', 'language','start_time', 'end_time', 'description',
             'guide_name', 'program', 'guide_services', 'transfer_service','group_first_aid', 'included_lunch',
             'food_included', 'existing_dates', 'number_of_days'

@@ -27,7 +27,8 @@ urlpatterns = [
     path('register/', views.registerPage, name='register'),
     path('login', views.loginPage, name='login'),
     path('logout', views.logoutUser, name='logout'),
-    path('excursions', views.all_excursions, name='all_excursions'),
+    path('excursions/', views.all_excursions, name='all_excursions'),
+    path('excursions', views.all_excursions),
     path('profile', views.profile_view, name='profile'),
     path('excursion/<int:excursion_id>/', views.excursion_detail, name='excursion_detail'),
     path('book-excursion/<int:excursion_id>/', views.book_excursion, name='book_excursion'),
@@ -44,4 +45,5 @@ urlpatterns = [
     path('tour-agents/', views.tour_agent_list, name='tour_agent_list'),
     path('update-agent/<int:pk>/', views.update_tour_agent, name='update_agent'),
     path('send_feedback/', views.send_feedback, name='send_feedback'),
+    path('search-api/', views.search_locations_excursions, name='search_api'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

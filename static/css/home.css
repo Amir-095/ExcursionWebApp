@@ -58,50 +58,129 @@ body {
 
 .search-container {
     position: relative;
-    width: 500px;
-    margin-top: 20px;
     display: flex;
-    align-items: center;
+    max-width: 600px;
+    margin: 20px auto;
+    border-radius: 30px;
+    overflow: visible;
+}
+
+.search-input-wrapper {
+    position: relative;
+    flex-grow: 1;
 }
 
 .search-input {
     width: 100%;
-    padding: 15px 120px 15px 40px;
-    font-size: 16px;
+    padding: 15px 50px;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'Abhaya Libre', Arial, sans-serif;
+    position: relative;
+    right: 45px;
+}
+
+.search-input:focus {
     outline: none;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #666;
-}
-
-.search-input::placeholder {
-    color: #666;
-    opacity: 0.7;
-}
-
-.search-button {
-    position: absolute;
-    right: 0;
-    height: 100%;
-    background-color: #21336C;
-    color: white;
-    border: none;
-    border-radius: 0 5px 5px 0;
-    padding: 0 30px;
-    font-size: 16px;
-    cursor: pointer;
-    white-space: nowrap;
+    box-shadow: 0 0 0 2px rgba(33, 51, 108, 0.2);
 }
 
 .search-icon {
     position: absolute;
-    left: 12px;
+    left: -30px;
     top: 50%;
     transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    opacity: 0.6;
+    width: 24px;
+    height: 24px;
+}
+
+.search-clear {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    display: none;
+}
+
+.search-button {
+    padding: 0 30px;
+    border: none;
+    background-color: #21336C;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 0 30px 30px 0;
+    font-family: 'Abhaya Libre', Arial, sans-serif;
+    font-size: 16px;
+}
+
+.search-button:hover {
+    background-color: #182552;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.search-results.active {
+    display: block;
+}
+
+.search-result-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: #f5f5f5;
+}
+
+.search-result-icon {
+    margin-right: 10px;
+    width: 24px;
+    height: 24px;
+    color: #21336C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-result-content {
+    flex-grow: 1;
+}
+
+.search-result-title {
+    font-weight: bold;
+    color: #333;
+}
+
+.search-result-location {
+    color: #777;
+    font-size: 14px;
+    margin-top: 2px;
 }
 
 .popular-excursions {

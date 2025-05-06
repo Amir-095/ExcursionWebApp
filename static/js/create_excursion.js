@@ -119,15 +119,39 @@ document.addEventListener('DOMContentLoaded', function() {
     const durationSelect = document.getElementById('id_duration');
     const numberOfDaysGroup = document.getElementById('number_of_days_group');
     const numberOfDaysInput = document.getElementById('id_number_of_days');
+    const endTimeGroup = document.getElementById('end_time_group'); // Добавлено для работы с группой времени окончания
+    const endTimeInput = document.getElementById('id_end_time'); // Добавлено для работы с полем времени окончания
 
     function toggleNumberOfDaysField() {
         if (durationSelect.value === 'Несколько дней') {
+            // Показываем поле количества дней
             numberOfDaysGroup.style.display = 'block';
-            numberOfDaysInput.required = true; // Сделать поле обязательным
+            numberOfDaysInput.required = true; // Делаем поле обязательным
+            
+            // Скрываем поле времени окончания
+            if (endTimeGroup) {
+                endTimeGroup.style.display = 'none';
+            }
+            if (endTimeInput) {
+                endTimeInput.required = false; // Делаем поле необязательным
+                // Если поле скрыто, устанавливаем значение по умолчанию, чтобы форма могла быть отправлена
+                if (!endTimeInput.value) {
+                    endTimeInput.value = '18:00'; // Устанавливаем какое-то стандартное значение
+                }
+            }
         } else {
+            // Скрываем поле количества дней
             numberOfDaysGroup.style.display = 'none';
-            numberOfDaysInput.required = false; // Сделать поле необязательным
-            numberOfDaysInput.value = ''; // Очистить значение при скрытии
+            numberOfDaysInput.required = false; // Делаем поле необязательным
+            numberOfDaysInput.value = ''; // Очищаем значение при скрытии
+            
+            // Показываем поле времени окончания
+            if (endTimeGroup) {
+                endTimeGroup.style.display = 'block';
+            }
+            if (endTimeInput) {
+                endTimeInput.required = true; // Делаем поле обязательным
+            }
         }
     }
 

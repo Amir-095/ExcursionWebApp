@@ -21,9 +21,12 @@
             <h1>Откройте для себя красоту Казахстана</h1>
             <p>Исследуйте захватывающие дух пейзажи и богатое <br> культурное наследие с нашими экскурсиями с гидом</p>
                 <div class="search-container">
-                    <input type="text" placeholder="" class="search-input">
-                    <img class="search-icon" src="{% static 'images/ic_search_48px.png' %}" alt="Search">
-                    <button class="search-button">Найти</button>
+                    <div class="search-input-wrapper">
+                        <input type="text" placeholder="Введите название места или экскурсии" class="search-input" id="searchInput">
+                        <img class="search-icon" src="{% static 'images/ic_search_48px.png' %}" alt="Search">
+                        <button class="search-clear" id="searchClear" style="display: none;">×</button>
+                    </div>
+                    <div class="search-results" id="searchResults"></div>
                 </div>
         </div>
     </div>
@@ -49,5 +52,6 @@
 
     {% include 'modal.html' %}
     {% include 'feedback.html' %}
+    <script src="{% static 'js/search.js' %}"></script>
 </body>
 </html>

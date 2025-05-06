@@ -44,16 +44,16 @@
                 <input type="text" name="location" id="id_location" class="form-input" required placeholder="Например: Алматы, Астана и т.д.">
             </div>
             
-            <div class="time-inputs">
-                <div class="form-group">
-                    <label for="id_start_time" class="form-label">Время начала</label>
-                    <input type="text" name="start_time" id="id_start_time" class="form-input time-picker" required placeholder="Выберите время начала">
-                </div>
-                
-                <div class="form-group">
-                    <label for="id_end_time" class="form-label">Время окончания</label>
-                    <input type="text" name="end_time" id="id_end_time" class="form-input time-picker" required placeholder="Выберите время окончания">
-                </div>
+            <div class="form-group">
+                <label for="id_meeting_address" class="form-label">Адрес места встречи</label>
+                <input type="text" name="meeting_address" id="id_meeting_address" class="form-input" required placeholder="Укажите точный адрес места встречи">
+                <div class="form-help-text">Укажите полный адрес места встречи для отображения на карте</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_end_location" class="form-label">Место окончания экскурсии</label>
+                <input type="text" name="end_location" id="id_end_location" class="form-input" placeholder="Укажите место окончания экскурсии">
+                <div class="form-help-text">Укажите место, где закончится экскурсия (если отличается от места встречи)</div>
             </div>
             
             <div class="form-group">
@@ -65,13 +65,25 @@
                     <option value="Несколько дней">Несколько дней</option>
                 </select>
             </div>
-            
+
             <!-- Новое поле для количества дней -->
             <div class="form-group" id="number_of_days_group" style="display: none;">
                 <label for="id_number_of_days" class="form-label">Количество дней</label>
                 <input type="number" name="number_of_days" id="id_number_of_days" step="1" min="2" class="form-input" placeholder="Укажите количество дней (минимум 2)">
             </div>
             <!-- Конец нового поля -->
+
+            <div class="time-inputs">
+                <div class="form-group">
+                    <label for="id_start_time" class="form-label">Время начала</label>
+                    <input type="text" name="start_time" id="id_start_time" class="form-input time-picker" required placeholder="Выберите время начала">
+                </div>
+                
+                <div class="form-group" id="end_time_group">
+                    <label for="id_end_time" class="form-label">Время окончания</label>
+                    <input type="text" name="end_time" id="id_end_time" class="form-input time-picker" required placeholder="Выберите время окончания">
+                </div>
+            </div>
             
             <div class="form-group">
                 <label for="id_group_type" class="form-label">Тип группы</label>

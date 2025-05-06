@@ -40,7 +40,8 @@ function updateTicketCount(change) {
 }
 
 function redirectToPayment(excursionId) {
-    const selectedDate = document.getElementById('selectedDate').value;
+    const selectedDateInput = document.getElementById('selectedDate');
+    const selectedDate = selectedDateInput.value;
     const ticketCount = parseInt(document.getElementById('ticketCount').value, 10);
 
     if (!selectedDate) {
@@ -67,392 +68,153 @@ function getCookie(name) {
     return cookieValue;
 }
 
-// Функция для выбора даты
+// Функция для преобразования формата даты из ISO (YYYY-MM-DD) в формат "DD месяца"
+function formatDateToRussian(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    
+    const months = [
+        'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+        'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+    ];
+    
+    const month = months[date.getMonth()];
+    return `${day} ${month}`;
+}
+
+// Функция для получения доступных дат относительно текущего дня
+function updateAvailableDates() {
+    // Получаем доступные даты из скрытого поля
+    const datesElement = document.getElementById('availableDatesData');
+    if (!datesElement) return;
+    
+    const datesString = datesElement.getAttribute('data-dates');
+    if (!datesString) return;
+    
+    const availableDates = datesString.split(',');
+    if (!availableDates.length) return;
+    
+    // Получаем текущую локальную дату (без времени)
+    const now = new Date();
+    // Создаем локальную дату в формате YYYY-MM-DD
+    const today = now.getFullYear() + '-' + 
+                 String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                 String(now.getDate()).padStart(2, '0');
+    
+    // Отфильтровываем даты, которые уже прошли
+    const futureDates = availableDates.filter(dateStr => {
+        return dateStr >= today;
+    }).sort(); // Сортируем по возрастанию
+    
+    // Если есть доступные даты в будущем
+    if (futureDates.length) {
+        // Находим контейнер с кнопками дат
+        const dateContainer = document.querySelector('.date-selector');
+        if (!dateContainer) return;
+        
+        // Очищаем текущие кнопки дат (кроме календаря)
+        const datePicker = document.querySelector('.date-picker');
+        dateContainer.innerHTML = '';
+        
+        // Вычисляем завтрашнюю и послезавтрашнюю дату в локальном формате YYYY-MM-DD
+        const tomorrowDate = new Date();
+        tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+        const tomorrowISO = tomorrowDate.getFullYear() + '-' + 
+                           String(tomorrowDate.getMonth() + 1).padStart(2, '0') + '-' + 
+                           String(tomorrowDate.getDate()).padStart(2, '0');
+        
+        const dayAfterTomorrowDate = new Date();
+        dayAfterTomorrowDate.setDate(dayAfterTomorrowDate.getDate() + 2);
+        const dayAfterTomorrowISO = dayAfterTomorrowDate.getFullYear() + '-' + 
+                                   String(dayAfterTomorrowDate.getMonth() + 1).padStart(2, '0') + '-' + 
+                                   String(dayAfterTomorrowDate.getDate()).padStart(2, '0');
+        
+        console.log('Сегодня:', today);
+        console.log('Завтра:', tomorrowISO);
+        console.log('Послезавтра:', dayAfterTomorrowISO);
+        console.log('Доступные даты:', futureDates);
+        
+        // Добавляем первые две даты (если они есть)
+        for (let i = 0; i < Math.min(2, futureDates.length); i++) {
+            const dateOption = document.createElement('div');
+            dateOption.className = `date-option ${i === 0 ? 'active' : ''}`;
+            dateOption.onclick = function() { selectDate(futureDates[i]); };
+            
+            const dateLabel = document.createElement('div');
+            dateLabel.className = 'date-label';
+            
+            // Определяем, является ли дата "Завтра" или "Послезавтра"
+            if (futureDates[i] === tomorrowISO) {
+                dateLabel.textContent = 'Завтра';
+            } else if (futureDates[i] === dayAfterTomorrowISO) {
+                dateLabel.textContent = 'Послезавтра';
+            } else {
+                // Если не завтра и не послезавтра, просто показываем формат даты
+                dateLabel.textContent = 'Доступная дата';
+            }
+            
+            const dateValue = document.createElement('div');
+            dateValue.className = 'date-value';
+            dateValue.textContent = formatDateToRussian(futureDates[i]);
+            dateValue.setAttribute('data-iso-date', futureDates[i]);
+            
+            dateOption.appendChild(dateLabel);
+            dateOption.appendChild(dateValue);
+            dateContainer.appendChild(dateOption);
+        }
+        
+        // Добавляем календарь обратно
+        if (datePicker) {
+            dateContainer.appendChild(datePicker);
+        } else {
+            // Если по какой-то причине датапикер не был найден, создаем новый
+            const newDatePicker = document.createElement('div');
+            newDatePicker.className = 'date-option date-picker';
+            newDatePicker.id = 'datepicker-btn';
+            
+            const calendarIcon = document.createElement('img');
+            calendarIcon.src = '/static/images/calendar-search.png';
+            calendarIcon.alt = 'Календарь';
+            calendarIcon.className = 'calendar-icon';
+            
+            const dateValue = document.createElement('div');
+            dateValue.className = 'date-value';
+            dateValue.textContent = 'Выбрать дату';
+            
+            newDatePicker.appendChild(calendarIcon);
+            newDatePicker.appendChild(dateValue);
+            dateContainer.appendChild(newDatePicker);
+        }
+        
+        // Устанавливаем первую доступную дату как выбранную
+        if (futureDates.length > 0) {
+            document.getElementById('selectedDate').value = futureDates[0];
+        }
+    }
+}
+
+// Обновляем функцию selectDate для работы с новым форматом дат
 function selectDate(date) {
-    // Обновляем скрытое поле с выбранной датой
+    // Обновляем скрытое поле с выбранной датой (в ISO формате)
     document.getElementById('selectedDate').value = date;
 
     // Обновляем активную кнопку
     const dateOptions = document.querySelectorAll('.date-option');
     dateOptions.forEach(option => {
         const dateValueElement = option.querySelector('.date-value');
-        if (dateValueElement && dateValueElement.innerText === date) {
-            option.classList.add('active');
-        } else if (!option.classList.contains('date-picker')) {
+        if (dateValueElement) {
+            const isoDate = dateValueElement.getAttribute('data-iso-date') || dateValueElement.textContent;
+            
+            if (isoDate === date) {
+                option.classList.add('active');
+            } else if (!option.classList.contains('date-picker')) {
+                option.classList.remove('active');
+            }
+        } else {
             option.classList.remove('active');
         }
     });
 }
-
-// Инициализация при загрузке страницы
-document.addEventListener('DOMContentLoaded', function() {
-    // Инициализируем общую цену
-    updateTotalPrice();
-});
-
-
-function validateCardNumber(cardNumber) {
-    // Убираем пробелы из номера карты
-    cardNumber = cardNumber.replace(/\s+/g, '');
-
-    // Проверяем, что номер карты состоит только из цифр и длина от 13 до 19 символов
-    if (!/^\d{13,19}$/.test(cardNumber)) {
-        return false;
-    }
-
-    // Алгоритм Луна
-    let sum = 0;
-    let shouldDouble = false;
-    for (let i = cardNumber.length - 1; i >= 0; i--) {
-        let digit = parseInt(cardNumber[i]);
-
-        if (shouldDouble) {
-            digit *= 2;
-            if (digit > 9) {
-                digit -= 9;
-            }
-        }
-
-        sum += digit;
-        shouldDouble = !shouldDouble;
-    }
-
-    return sum % 10 === 0;
-}
-
-function validatePaymentData(cardNumber, expiryDate, cvc, cardholderName) {
-    // Проверка номера карты (используем функцию validateCardNumber)
-    if (!validateCardNumber(cardNumber)) {
-        showToast('error', 'Ошибка проверки карты', 'Номер карты некорректен. Пожалуйста, проверьте введённые данные.');
-        return false;
-    }
-
-    // Проверка срока действия карты в формате MM/YY
-    if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
-        showToast('error', 'Ошибка проверки карты', 'Срок действия карты некорректен. Используйте формат ММ/ГГ.');
-        return false;
-    }
-
-    // Разделяем месяц и год для дальнейшей проверки
-    const [month, year] = expiryDate.split('/').map(num => parseInt(num, 10));
-    const currentYear = new Date().getFullYear() % 100; // Последние 2 цифры текущего года
-    const currentMonth = new Date().getMonth() + 1; // Текущий месяц (от 1 до 12)
-
-    // Проверка месяца
-    if (month < 1 || month > 12) {
-        showToast('error', 'Ошибка проверки карты', 'Месяц окончания карты некорректен.');
-        return false;
-    }
-
-    // Проверка, что срок действия карты не истёк
-    if (year < currentYear || (year === currentYear && month < currentMonth)) {
-        showToast('error', 'Ошибка проверки карты', 'Срок действия карты истёк.');
-        return false;
-    }
-
-    // Проверка CVC-кода
-    if (!/^\d{3,4}$/.test(cvc)) {
-        showToast('error', 'Ошибка проверки карты', 'CVC-код некорректен.');
-        return false;
-    }
-
-    // Проверка имени владельца карты
-    if (!cardholderName || cardholderName.trim().length < 2) {
-        showToast('error', 'Ошибка проверки карты', 'Имя владельца карты некорректно.');
-        return false;
-    }
-
-    return true;
-}
-
-// Временное хранение данных формы для модального подтверждения
-let tempFormData = null;
-let processingExcursionId = null;
-
-function processPayment(excursionId) {
-    // Добавляем анимацию загрузки на кнопку
-    const paymentButton = document.querySelector('.payment-btn');
-    if (paymentButton) {
-        paymentButton.classList.add('loading');
-    }
-
-    const formData = new FormData(document.getElementById('paymentForm')); // Сбор данных из формы
-    const savedCardSelect = document.getElementById('savedCardSelect');
-    const selectedSavedCard = savedCardSelect.value; // Выбранная карта
-
-    // Добавляем информацию о карте в данные формы
-    if (!selectedSavedCard) {
-        // Если выбрана новая карта, сохраняем параметры новой карты
-        const cardNumber = document.querySelector('input[name="card_number"]').value.trim();
-        const expiryDate = document.querySelector('input[name="expiry_date"]').value.trim();
-        const cvc = document.querySelector('input[name="cvc"]').value.trim();
-        const cardholderName = document.querySelector('input[name="cardholder_name"]').value.trim();
-
-        // Проверяем корректность введённых данных карты
-        if (!validatePaymentData(cardNumber, expiryDate, cvc, cardholderName)) {
-            console.log("Ошибка валидации данных карты");
-            // Убираем анимацию загрузки при ошибке
-            if (paymentButton) {
-                paymentButton.classList.remove('loading');
-            }
-            return;
-        }
-
-        // Сначала проверяем, существует ли карта уже у пользователя
-        checkCardExists(cardNumber, expiryDate, cardholderName)
-            .then(exists => {
-                if (exists) {
-                    console.log("Карта уже существует, пропускаем запрос на сохранение");
-                    // Устанавливаем значение "false" для сохранения карты, так как она уже есть
-                    formData.append('save_card', "false");
-                    
-                    // Добавляем данные карты к запросу
-                    formData.append('card_number', cardNumber);
-                    formData.append('expiry_date', expiryDate);
-                    formData.append('cvc', cvc);
-                    formData.append('cardholder_name', cardholderName);
-                    
-                    // НЕ убираем анимацию загрузки здесь, пусть она останется до завершения запроса
-                    submitPaymentRequest(formData, excursionId);
-                } else {
-                    // Сохраняем данные формы и ID экскурсии для последующей обработки
-                    tempFormData = new FormData(document.getElementById('paymentForm'));
-                    
-                    // Добавляем данные карты к временной форме
-                    tempFormData.append('card_number', cardNumber);
-                    tempFormData.append('expiry_date', expiryDate);
-                    tempFormData.append('cvc', cvc);
-                    tempFormData.append('cardholder_name', cardholderName);
-                    
-                    processingExcursionId = excursionId;
-
-                    // Показываем модальное окно для подтверждения сохранения карты
-                    showSaveCardModal();
-                    
-                    // Убираем анимацию загрузки при показе модального окна
-                    if (paymentButton) {
-                        paymentButton.classList.remove('loading');
-                    }
-                }
-            })
-            .catch(error => {
-                console.error("Ошибка при проверке карты:", error);
-                // При ошибке проверки карты, всё равно показываем модальное окно
-                tempFormData = new FormData(document.getElementById('paymentForm'));
-                
-                // Добавляем данные карты к временной форме
-                tempFormData.append('card_number', cardNumber);
-                tempFormData.append('expiry_date', expiryDate);
-                tempFormData.append('cvc', cvc);
-                tempFormData.append('cardholder_name', cardholderName);
-                
-                processingExcursionId = excursionId;
-                showSaveCardModal();
-                
-                // Убираем анимацию загрузки при ошибке
-                if (paymentButton) {
-                    paymentButton.classList.remove('loading');
-                }
-            });
-    } else {
-        // Если выбрана сохранённая карта, передаём её ID
-        formData.append('saved_card', selectedSavedCard);
-        
-        // Продолжаем с отправкой запроса
-        submitPaymentRequest(formData, excursionId);
-    }
-}
-
-// Функция для проверки существования карты через API
-function checkCardExists(cardNumber, expiryDate, cardholderName) {
-    const last4 = cardNumber.replace(/\s+/g, '').slice(-4); // Последние 4 цифры
-    
-    return fetch('/check-card/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
-        },
-        body: JSON.stringify({
-            last4: last4,
-            expiry_date: expiryDate,
-            cardholder_name: cardholderName
-        })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Ошибка при проверке карты');
-        }
-        return response.json();
-    })
-    .then(data => {
-        return data.exists; // true или false
-    });
-}
-
-// Функция для отображения модального окна подтверждения
-function showSaveCardModal() {
-    const modal = document.getElementById('saveCardModal');
-    if (modal) {
-        modal.classList.add('active');
-    }
-}
-
-// Функция для скрытия модального окна
-function hideSaveCardModal() {
-    const modal = document.getElementById('saveCardModal');
-    if (modal) {
-        modal.classList.remove('active');
-    }
-}
-
-// Функция для отправки запроса на оплату
-function submitPaymentRequest(formData, excursionId) {
-    // Добавляем анимацию загрузки на кнопку
-    const paymentButton = document.querySelector('.payment-btn');
-    if (paymentButton) {
-        paymentButton.classList.add('loading');
-    }
-    
-    // Отправляем запрос на сервер
-    fetch('/process-payment/', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRFToken': getCookie('csrftoken')
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Убираем анимацию загрузки
-        if (paymentButton) {
-            paymentButton.classList.remove('loading');
-        }
-
-        if (data.status === 'success') {
-            showToast('success', 'Оплата успешна', data.message);
-            // Перенаправляем на список экскурсий после небольшой задержки
-            setTimeout(() => {
-                window.location.href = "/excursions";
-            }, 2000);
-        } else {
-            showToast('error', 'Ошибка оплаты', data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Ошибка при обработке оплаты:', error);
-        showToast('error', 'Ошибка', 'Произошла ошибка при обработке оплаты. Попробуйте ещё раз.');
-        
-        // Убираем анимацию загрузки при ошибке
-        if (paymentButton) {
-            paymentButton.classList.remove('loading');
-        }
-    });
-}
-
-// Функции для работы с кредитной картой
-function showHideNewCardFields() {
-    const newCardFields = document.getElementById('newCardFields');
-    const savedCardSelect = document.getElementById('savedCardSelect');
-    
-    if (newCardFields && savedCardSelect) {
-        if (savedCardSelect.value === "") {
-            newCardFields.style.display = 'block';
-        } else {
-            newCardFields.style.display = 'none';
-        }
-    }
-}
-
-function flipCard(direction) {
-    const creditCard = document.getElementById('creditCard');
-    if (creditCard) {
-        if (direction === 'back') {
-            creditCard.classList.add('flipped');
-        } else {
-            creditCard.classList.remove('flipped');
-        }
-    }
-}
-
-// Функция для автофокуса на CVC поле при переворота карты
-function focusOnCVC() {
-    setTimeout(function() {
-        const cvcInput = document.getElementById('cvc');
-        if (cvcInput) {
-            cvcInput.focus();
-        }
-    }, 600); // Время анимации переворота
-}
-
-// Инициализация обработчиков событий для страницы оплаты
-function initPaymentPage() {
-    // Обработчик для селекта сохраненных карт
-    const savedCardSelect = document.getElementById('savedCardSelect');
-    if (savedCardSelect) {
-        savedCardSelect.addEventListener('change', showHideNewCardFields);
-    }
-
-    // Обработчики для кнопок переворота карты
-    const flipToBackBtn = document.getElementById('flipToBack');
-    const flipToFrontBtn = document.getElementById('flipToFront');
-
-    if (flipToBackBtn) {
-        flipToBackBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            flipCard('back');
-            focusOnCVC();
-        });
-    }
-
-    if (flipToFrontBtn) {
-        flipToFrontBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            flipCard('front');
-        });
-    }
-    
-    // Обработчики для модального окна сохранения карты
-    const confirmSaveCardBtn = document.getElementById('confirmSaveCard');
-    const cancelSaveCardBtn = document.getElementById('cancelSaveCard');
-    
-    if (confirmSaveCardBtn) {
-        confirmSaveCardBtn.addEventListener('click', function() {
-            // Устанавливаем значение "true" для сохранения карты
-            document.getElementById('saveCardInput').value = "true";
-            if (tempFormData) {
-                tempFormData.set('save_card', "true");
-                submitPaymentRequest(tempFormData, processingExcursionId);
-            }
-            hideSaveCardModal();
-        });
-    }
-    
-    if (cancelSaveCardBtn) {
-        cancelSaveCardBtn.addEventListener('click', function() {
-            // Устанавливаем значение "false" для НЕ сохранения карты
-            document.getElementById('saveCardInput').value = "false";
-            if (tempFormData) {
-                tempFormData.set('save_card', "false");
-                submitPaymentRequest(tempFormData, processingExcursionId);
-            }
-            hideSaveCardModal();
-        });
-    }
-}
-
-// Инициализация функций при загрузке страницы
-document.addEventListener('DOMContentLoaded', function() {
-    // Проверяем, находимся ли мы на странице оплаты
-    if (document.getElementById('paymentForm')) {
-        initPaymentPage();
-    } else {
-        // Инициализируем общую цену для страницы деталей экскурсии
-        if (document.getElementById('ticketCount')) {
-            updateTotalPrice();
-        }
-    }
-});
 
 // Функция для отображения всплывающего уведомления
 function showToast(type, title, message, duration = 5000) {
@@ -514,4 +276,157 @@ function showToast(type, title, message, duration = 5000) {
             }, 500);
         }, duration);
     }, 10);
+}
+
+// Функция для корректировки отображения времени в зависимости от продолжительности экскурсии
+function adjustTimeDisplay() {
+    // Ищем элемент с информацией о длительности
+    const durationElement = document.querySelector('.detail-item .detail-value:not(.price)');
+    
+    if (durationElement) {
+        const durationText = durationElement.textContent.trim();
+        
+        // Если длительность содержит "день" или "дней", значит это многодневная экскурсия
+        if (durationText.includes('день') || durationText.includes('дня') || durationText.includes('дней')) {
+            // Находим элемент со временем начала и заменяем его текст
+            const timeDetailElements = document.querySelectorAll('.detail-item');
+            
+            // Ищем элемент с временем начала (обычно это второй элемент в списке деталей)
+            timeDetailElements.forEach(item => {
+                const label = item.querySelector('.detail-label');
+                
+                if (label && label.textContent.includes('Время начала')) {
+                    // Не изменяем этот элемент, он должен отображаться
+                } 
+                // Находим элемент с длительностью
+                else if (label && label.textContent.includes('Длительность')) {
+                    const valueElement = item.querySelector('.detail-value');
+                    // Для многодневных экскурсий проверяем, что время отображается корректно
+                    if (valueElement && !valueElement.textContent.includes('(')) {
+                        // Если не содержит времени в скобках, добавляем
+                        const match = /(\d+) (день|дня|дней)/.exec(valueElement.textContent);
+                        if (match) {
+                            const days = match[1];
+                            const daysText = match[2];
+                            // Находим время начала из другого элемента
+                            const startTimeElement = document.querySelector('.detail-item .detail-value:contains("Время начала")');
+                            let startTime = "12:00"; // Значение по умолчанию, если не найдено
+                            if (startTimeElement) {
+                                const timeMatch = /(\d{2}:\d{2})/.exec(startTimeElement.textContent);
+                                if (timeMatch) {
+                                    startTime = timeMatch[1];
+                                }
+                            }
+                            valueElement.textContent = `${days} ${daysText} (${startTime})`;
+                        }
+                    }
+                }
+            });
+        }
+    }
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    // Инициализируем общую цену
+    if (document.getElementById('ticketCount')) {
+        updateTotalPrice();
+    }
+    
+    // Обновляем доступные даты относительно текущего дня
+    updateAvailableDates();
+    
+    // Проверяем, если у экскурсии продолжительность "Несколько дней",
+    // то изменяем отображение времени в деталях экскурсии
+    adjustTimeDisplay();
+    
+    // Инициализируем flatpickr с доступными датами
+    initFlatpickr();
+    
+    // Устанавливаем таймер для обновления дат при смене дня
+    scheduleNextDayUpdate();
+});
+
+// Инициализация flatpickr с обработкой форматов дат
+function initFlatpickr() {
+    // Получаем доступные даты из скрытого поля
+    const datesElement = document.getElementById('availableDatesData');
+    if (!datesElement) return;
+    
+    const datesString = datesElement.getAttribute('data-dates');
+    if (!datesString) return;
+    
+    const availableDates = datesString.split(',');
+    
+    // Получаем текущую локальную дату (без времени)
+    const now = new Date();
+    // Создаем локальную дату в формате YYYY-MM-DD
+    const today = now.getFullYear() + '-' + 
+                 String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                 String(now.getDate()).padStart(2, '0');
+    
+    // Отфильтровываем даты, которые уже прошли
+    const futureDates = availableDates.filter(dateStr => {
+        return dateStr >= today;
+    }).sort(); // Сортируем по возрастанию
+    
+    // Если нет доступных дат, не инициализируем datepicker
+    if (!futureDates.length) return;
+    
+    // Инициализируем flatpickr
+    const datePickerBtn = document.getElementById('datepicker-btn');
+    if (datePickerBtn) {
+        flatpickr(datePickerBtn, {
+            inline: false,
+            enable: futureDates,
+            dateFormat: "Y-m-d",
+            onChange: function(selectedDates, dateStr) {
+                selectDate(dateStr);
+                // Активируем выбранную дату
+                document.querySelectorAll('.date-option').forEach(el => {
+                    el.classList.remove('active');
+                });
+                datePickerBtn.classList.add('active');
+                
+                // Обновляем текст кнопки
+                const dateValueEl = datePickerBtn.querySelector('.date-value');
+                if (dateValueEl) {
+                    dateValueEl.textContent = formatDateToRussian(dateStr);
+                    dateValueEl.setAttribute('data-iso-date', dateStr);
+                }
+            }
+        });
+    }
+}
+
+// Функция для планирования обновления дат при смене дня
+function scheduleNextDayUpdate() {
+    const now = new Date();
+    // Создаем дату "завтра в полночь" в локальном часовом поясе
+    const tomorrow = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1,
+        0, 0, 0, 0
+    );
+    
+    // Вычисляем миллисекунды до полуночи
+    const timeUntilMidnight = tomorrow - now;
+    
+    // Устанавливаем таймер, который сработает в полночь
+    setTimeout(() => {
+        console.log('Наступила полночь! Обновляем даты...');
+        // Обновляем даты
+        updateAvailableDates();
+        initFlatpickr();
+        
+        // Планируем следующее обновление
+        scheduleNextDayUpdate();
+    }, timeUntilMidnight);
+    
+    const minutes = Math.floor(timeUntilMidnight / 60000);
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    const formattedNow = now.toLocaleDateString('ru-RU');
+    console.log(`Следующее обновление дат запланировано через ${hours} ч ${remainingMinutes} мин (${formattedNow})`);
 }
