@@ -13,7 +13,19 @@
     <!-- Контейнер для toast-уведомлений -->
     <div class="toast-container" id="toastContainer"></div>
         {% include 'navbar.html' %}
-    <h2 class="excursions-title">Все Экскурсии</h2>
+    
+    <div class="header-search-container">
+        <h2 class="excursions-title">Все Экскурсии</h2>
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <input type="text" placeholder="Введите название места или экскурсии" class="search-input" id="searchInput">
+                <img class="search-icon" src="{% static 'images/ic_search_48px.png' %}" alt="Search">
+                <button class="search-clear" id="searchClear" style="display: none;">×</button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+    
     <div class="content-wrapper">
         <form id="filterForm" method="GET" action="{% url 'all_excursions' %}">
             <div class="filter-category">
@@ -84,5 +96,6 @@
    {% include 'feedback.html' %}
     <script src="{% static 'js/slider.js' %}"></script>
     <script src="{% static 'js/filters.js' %}"></script>
+    <script src="{% static 'js/search.js' %}"></script>
 </body>
 </html> 
