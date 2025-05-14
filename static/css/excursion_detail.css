@@ -404,6 +404,9 @@ body {
 /* Стили для программы экскурсии */
 .program-container {
     margin: 20px 0;
+    max-height: 400px;
+    overflow: hidden;
+    position: relative;
 }
 
 .program-content {
@@ -411,10 +414,28 @@ body {
     line-height: 1.6;
     color: #333;
     white-space: pre-line;
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 15px;
 }
 
-.program-content p {
-    margin-bottom: 10px;
+/* Стилизация скроллбара */
+.program-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.program-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.program-content::-webkit-scrollbar-thumb {
+    background: #21336C;
+    border-radius: 4px;
+}
+
+.program-content::-webkit-scrollbar-thumb:hover {
+    background: #182552;
 }
 
 /* Адаптивный контейнер для описания и гида */
