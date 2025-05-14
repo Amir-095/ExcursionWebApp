@@ -41,7 +41,9 @@ body {
 /* Стили для компонента поиска на странице экскурсий */
 .search-container {
     position: relative;
-    max-width: 400px;
+    width: 100%;
+    max-width: none;
+    margin-left: 20px;
     border-radius: 10px;
     overflow: visible;
 }
