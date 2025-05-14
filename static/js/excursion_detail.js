@@ -376,10 +376,13 @@ function initFlatpickr() {
     // Инициализируем flatpickr
     const datePickerBtn = document.getElementById('datepicker-btn');
     if (datePickerBtn) {
+        flatpickr.localize(flatpickr.l10ns.ru); // Устанавливаем русскую локализацию глобально
         flatpickr(datePickerBtn, {
             inline: false,
             enable: futureDates,
             dateFormat: "Y-m-d",
+            locale: 'ru',
+            monthSelectorType: 'static',
             onChange: function(selectedDates, dateStr) {
                 selectDate(dateStr);
                 // Активируем выбранную дату

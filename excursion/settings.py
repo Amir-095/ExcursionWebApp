@@ -14,7 +14,6 @@ from pathlib import Path
 
 from django.conf.global_settings import EMAIL_BACKEND, EMAIL_HOST_PASSWORD
 from dotenv import load_dotenv
-import dj_database_url
 import os
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -87,13 +86,14 @@ POSTGRES_PORT = 5432
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',     
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': POSTGRES_DB,
+        'USER': POSTGRES_US,
+        'PASSWORD': POSTGRES_PASS,
+        'HOST': POSTGRES_HOST,
+        'PORT': POSTGRES_PORT,
     }
 }
-
-DATABASES['default'] = dj_database_url.parse(os.environ.get('DATABASE_URL'))
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 

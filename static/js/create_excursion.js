@@ -1,12 +1,35 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Инициализация flatpickr для выбора дат
+    const Russian = {
+        weekdays: {
+            shorthand: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+            longhand: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
+        },
+        months: {
+            shorthand: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+            longhand: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+        },
+        firstDayOfWeek: 1,
+        ordinal: function() {
+            return '';
+        },
+        rangeSeparator: ' — ',
+        weekAbbreviation: 'Нед.',
+        scrollTitle: 'Прокрутите для увеличения',
+        toggleTitle: 'Нажмите для переключения',
+        amPM: ['ДП', 'ПП'],
+        yearAriaLabel: 'Год',
+        time_24hr: true
+    };
+
+    flatpickr.localize(Russian);
+    
     flatpickr("#date_picker", {
         mode: "multiple",
         dateFormat: "Y-m-d",
         minDate: "today",
-        locale: {
-            firstDayOfWeek: 1
-        }
+        locale: Russian,
+        monthSelectorType: 'static'
     });
     
     // Инициализация flatpickr для выбора времени
@@ -14,7 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
         enableTime: true,
         noCalendar: true,
         dateFormat: "H:i",
-        time_24hr: true
+        time_24hr: true,
+        locale: Russian
     });
     
     // Обработчик для превью изображения
