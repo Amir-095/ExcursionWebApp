@@ -13,7 +13,7 @@ body {
     margin-top: 80px;
 }
 
-.fon-image {
+.fon-image {            
     width: 1173px;
     height: 660px;
     position: absolute;
@@ -134,6 +134,7 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     max-height: 400px;
     overflow-y: auto;
+    color: black;
     z-index: 1000;
     display: none;
 }

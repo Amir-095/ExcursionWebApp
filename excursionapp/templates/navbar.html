@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
     <link rel="stylesheet" href="{% static 'css/modal.css' %}" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -13,11 +14,11 @@
         <a href="{% url 'home' %}"><span class="nav-kaztour">KazTour</span></a>
         <a href="{% url 'all_excursions' %}"><span class="nav-excursions">Экскурсии</span></a>
         {% if request.user.is_superuser %}
-        <a href="#" onclick="showCreateAgentModal()"><span class="nav-tour-agent-register">Регистрация Турагента</span></a>
+        <a href="#" onclick="showCreateAgentModal()"><span class="nav-tour-agent-register">Регистрация турагента</span></a>
         <a href="{% url 'tour_agent_list'%}"><span class="nav-tour-agent-list">Турагенты</span></a>
         {% endif %}
         {% if request.user.role == 'tour_agent' %}
-        <a href="{% url 'my_excursions'%}"><span class="nav-tour-agent-excursions">Ваши Экскурсии</span></a>
+        <a href="{% url 'my_excursions'%}"><span class="nav-tour-agent-excursions">Ваши экскурсии</span></a>
         <a href="{% url 'create_excursion'%}"><span class="nav-tour-create-excursions">Создать экскурсию</span></a>
         {% endif %}
         <a href="#" onclick="checkAuthAndProceed(() => window.location.href = '{% url 'profile' %}')">
