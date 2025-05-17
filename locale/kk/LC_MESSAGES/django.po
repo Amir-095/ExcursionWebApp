@@ -1,0 +1,120 @@
+# Kazakh translation for excursion project.
+# Copyright (C) 2025
+# This file is distributed under the same license as the excursion package.
+# Your Name <your.email@example.com>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-15 14:00+0000\n"
+"PO-Revision-Date: 2025-05-15 14:00+0000\n"
+"Last-Translator: Your Name <your.email@example.com>\n"
+"Language-Team: Kazakh <kk@li.org>\n"
+"Language: kk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+# Навигационная панель
+msgid "Экскурсии"
+msgstr "Экскурсиялар"
+
+msgid "Регистрация турагента"
+msgstr "Турагент тіркеу"
+
+msgid "Турагенты"
+msgstr "Турагенттер"
+
+msgid "Ваши экскурсии"
+msgstr "Сіздің экскурсиялар"
+
+msgid "Создать экскурсию"
+msgstr "Экскурсия жасау"
+
+# Модальное окно создания турагента
+msgid "Создание турагента"
+msgstr "Турагентті құру"
+
+msgid "Имя пользователя"
+msgstr "Пайдаланушы аты"
+
+msgid "Телефон"
+msgstr "Телефон"
+
+msgid "Пароль"
+msgstr "Құпия сөз"
+
+msgid "Подтверждение пароля"
+msgstr "Құпия сөзді растау"
+
+msgid "Создать"
+msgstr "Жасау"
+
+# Общие элементы UI
+msgid "Войти"
+msgstr "Кіру"
+
+msgid "Выйти"
+msgstr "Шығу"
+
+msgid "Профиль"
+msgstr "Профиль"
+
+msgid "Поиск"
+msgstr "Іздеу"
+
+msgid "Подробнее"
+msgstr "Толығырақ"
+
+msgid "Забронировать"
+msgstr "Брондау"
+
+msgid "Оплата"
+msgstr "Төлем"
+
+msgid "Отмена"
+msgstr "Бас тарту"
+
+msgid "Сохранить"
+msgstr "Сақтау"
+
+msgid "Удалить"
+msgstr "Жою"
+
+msgid "Редактировать"
+msgstr "Өңдеу"
+
+# Заголовки страниц
+msgid "Главная"
+msgstr "Басты бет"
+
+msgid "Список экскурсий"
+msgstr "Экскурсиялар тізімі"
+
+msgid "Детали экскурсии"
+msgstr "Экскурсия мәліметтері"
+
+msgid "Страница профиля"
+msgstr "Профиль беті"
+
+msgid "Настройки"
+msgstr "Параметрлер"
+
+# Главная страница
+msgid "Откройте для себя красоту Казахстана"
+msgstr "Қазақстанның әсемдігін ашыңыз"
+
+msgid "Исследуйте захватывающие дух пейзажи и богатое"
+msgstr "Тыныс тарылтатын көріністер мен бай"
+
+msgid "культурное наследие с нашими экскурсиями с гидом"
+msgstr "мәдени мұраны біздің гид жетекшілігімен зерттеңіз"
+
+msgid "Введите название места или экскурсии"
+msgstr "Орын немесе экскурсия атауын енгізіңіз"
+
+msgid "Популярные экскурсии"
+msgstr "Танымал экскурсиялар" 

@@ -89,7 +89,7 @@ function showToast(type, title, message, duration = 8000) {
 function handleLogin(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
-    fetch('/login', {
+    fetch(loginUrl, {
         method: 'POST',
         body: formData,
         headers: {
@@ -136,7 +136,7 @@ function handleRegister(event) {
 
     let formData = new FormData(event.target);
 
-    fetch('/register/', {
+    fetch(registerUrl, {
         method: 'POST',
         body: formData,
     })
@@ -193,7 +193,7 @@ function getCookie(name) {
 
 // Проверка авторизации перед выполнением действия
 function checkAuthAndProceed(action) {
-    fetch('/check-auth/', {
+    fetch(checkAuthUrl, {
         method: 'GET',
         headers: {
             'X-Requested-With': 'XMLHttpRequest'

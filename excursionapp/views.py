@@ -33,45 +33,54 @@ def add_class(field, css_class):
 #user
 def registerPage(request):
     if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data.get('email')
-            phone_number = form.cleaned_data.get('phone_number')
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                email = form.cleaned_data.get('email')
+                phone_number = form.cleaned_data.get('phone_number')
 
-            if CustomUser.objects.filter(email=email).exists():
-                return JsonResponse({'status': 'error', 'errors': {'email': 'Этот email уже зарегистрирован'}},
-                                    status=400)
+                if CustomUser.objects.filter(email=email).exists():
+                    return JsonResponse({'status': 'error', 'errors': {'email': 'Этот email уже зарегистрирован'}},
+                                        status=400)
 
-            if CustomUser.objects.filter(phone_number=phone_number).exists():
-                return JsonResponse({'status': 'error', 'errors': {'phone_number': 'Этот номер уже зарегистрирован'}},
-                                    status=400)
+                if CustomUser.objects.filter(phone_number=phone_number).exists():
+                    return JsonResponse({'status': 'error', 'errors': {'phone_number': 'Этот номер уже зарегистрирован'}},
+                                        status=400)
 
-            user = form.save(commit=False)
-            first_name = form.cleaned_data.get('first_name', '').strip()
-            last_name = form.cleaned_data.get('last_name', '').strip()
-            user.username = f"{first_name} {last_name}".strip()
-            user.save()
+                user = form.save(commit=False)
+                first_name = form.cleaned_data.get('first_name', '').strip()
+                last_name = form.cleaned_data.get('last_name', '').strip()
+                user.username = f"{first_name} {last_name}".strip()
+                user.save()
 
-            return JsonResponse({'status': 'success'})
+                return JsonResponse({'status': 'success'})
 
-        # Обрабатываем ошибки формы
-        errors = json.loads(form.errors.as_json())
-        custom_error_messages = {}
+            # Обрабатываем ошибки формы
+            errors = json.loads(form.errors.as_json())
+            custom_error_messages = {}
 
-        for field, error_list in errors.items():
-            error_code = error_list[0]['code']
+            for field, error_list in errors.items():
+                error_code = error_list[0]['code']
 
-            if field == "email" and error_code == "unique":
-                custom_error_messages["email"] = "Этот email уже зарегистрирован"
-            elif field == "phone_number" and error_code == "unique":
-                custom_error_messages["phone_number"] = "Этот номер уже зарегистрирован"
-            elif field == "password2" and error_code == "password_mismatch":
-                custom_error_messages["password2"] = "Пароли не совпадают"
-            else:
-                custom_error_messages[field] = error_list[0]['message']
+                if field == "email" and error_code == "unique":
+                    custom_error_messages["email"] = "Этот email уже зарегистрирован"
+                elif field == "phone_number" and error_code == "unique":
+                    custom_error_messages["phone_number"] = "Этот номер уже зарегистрирован"
+                elif field == "password2" and error_code == "password_mismatch":
+                    custom_error_messages["password2"] = "Пароли не совпадают"
+                else:
+                    custom_error_messages[field] = error_list[0]['message']
 
-        return JsonResponse({'status': 'error', 'errors': custom_error_messages}, status=400)
+            return JsonResponse({'status': 'error', 'errors': custom_error_messages}, status=400)
+        else:
+            # Если это не AJAX запрос, возвращаем ошибку
+            return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
 
+    # Для GET запросов возвращаем JSON с сообщением об ошибке
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+    
+    # Для обычных GET запросов возвращаем страницу регистрации
     form = CreateUserForm()
     return render(request, 'register.html', {'form': form})
 

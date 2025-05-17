@@ -15,17 +15,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from excursionapp import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
 
 
 urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),
+]
+
+urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
     path('', views.index,name='home'),
     path('register/', views.registerPage, name='register'),
-    path('login', views.loginPage, name='login'),
+    path('login/', views.loginPage, name='login'),
     path('logout', views.logoutUser, name='logout'),
     path('excursions/', views.all_excursions, name='all_excursions'),
     path('excursions', views.all_excursions),
@@ -46,4 +51,5 @@ urlpatterns = [
     path('update-agent/<int:pk>/', views.update_tour_agent, name='update_agent'),
     path('send_feedback/', views.send_feedback, name='send_feedback'),
     path('search-api/', views.search_locations_excursions, name='search_api'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    prefix_default_language=True
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

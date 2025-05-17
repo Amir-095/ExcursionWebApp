@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
-<html>
+{% load i18n %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <title>KazTour</title>
     <meta charset="utf-8" />
@@ -19,12 +20,12 @@
     <div class="image-container">
         <img class="fon-image" src="{% static 'images/be inspired seasons 3 1.png' %}">
         <div class="overlay">
-            <h1>Откройте для себя красоту Казахстана</h1>
-            <p>Исследуйте захватывающие дух пейзажи и богатое <br> культурное наследие с нашими экскурсиями с гидом</p>
+            <h1>{% trans "Откройте для себя красоту Казахстана" %}</h1>
+            <p>{% trans "Исследуйте захватывающие дух пейзажи и богатое" %} <br> {% trans "культурное наследие с нашими экскурсиями с гидом" %}</p>
                 <div class="search-container">
                     <div class="search-input-wrapper">
-                        <input type="text" placeholder="Введите название места или экскурсии" class="search-input" id="searchInput">
-                        <img class="search-icon" src="{% static 'images/ic_search_48px.png' %}" alt="Search">
+                        <input type="text" placeholder="{% trans 'Введите название места или экскурсии' %}" class="search-input" id="searchInput">
+                        <img class="search-icon" src="{% static 'images/ic_search_48px.png' %}" alt="{% trans 'Поиск' %}">
                         <button class="search-clear" id="searchClear" style="display: none;">×</button>
                     </div>
                     <div class="search-results" id="searchResults"></div>
@@ -32,24 +33,26 @@
         </div>
     </div>
     
-    <section class="popular-excursions">
-        <h2>Популярные экскурсии</h2>
-        <div class="home-excursion-container">
-            {% for excursion in excursions %}
-            <div class="home-excursion-card">
+    <div class="content-container">
+        <section class="popular-excursions">
+            <h2>{% trans "Популярные экскурсии" %}</h2>
+            <div class="home-excursion-container">
+                {% for excursion in excursions %}
+                <div class="home-excursion-card">
                     <img src="{{ excursion.image_url }}" alt="{{ excursion.title }}">
-                <div class="card-content">
-                    <h3>{{ excursion.title }}</h3>
-                    <p class="tour-type">{{ excursion.duration }}</p>
-                    <div class="price-book">
-                        <span class="price">{{ excursion.price }} ₸</span>
-                        <button class="book-button" onclick="window.location.href='{% url 'excursion_detail' excursion.id %}'">Забронировать</button>
+                    <div class="card-content">
+                        <h3>{{ excursion.title }}</h3>
+                        <p class="tour-type">{{ excursion.duration }}</p>
+                        <div class="price-book">
+                            <span class="price">{{ excursion.price }} ₸</span>
+                            <button class="book-button" onclick="window.location.href='{% url 'excursion_detail' excursion.id %}'">{% trans "Забронировать" %}</button>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
-    </section>
+        </section>
+    </div>
 
     {% include 'modal.html' %}
     {% include 'feedback.html' %}

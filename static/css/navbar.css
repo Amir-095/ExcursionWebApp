@@ -1,73 +1,126 @@
 .navbar {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     height: 80px;
-    z-index: 1;
+    z-index: 1000;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+}
+
+.navbar-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 25px; /* Добавляем отступ слева */
 }
 
 .nav-kaztour {
-    position: absolute;
     font-family: 'Abhaya Libre ExtraBold';
     color: #21336C;
     font-size: 36px;
     font-weight: 800;
-    left: 370px;
-    top: 15px;
+    white-space: nowrap;
+    text-decoration: none;
 }
 
-.nav-excursions {
-    position: absolute;
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-left: auto;
+}
+
+.nav-excursions,
+.nav-tour-agent-register,
+.nav-tour-agent-list,
+.nav-tour-agent-excursions,
+.nav-tour-create-excursions {
     font-family: 'Roboto', sans-serif;
     color: #21336C;
     font-size: 28px;
     font-weight: 700;
-    right: 465px;
-    top: 24px;
+    white-space: nowrap;
+    text-decoration: none;
 }
 
 .nav-profile {
-    position: absolute;
     width: 35px;
     height: 35px;
-    right: 363px;
-    top: 24px;
     cursor: pointer;
 }
-.nav-tour-agent-register {
-    position: absolute;
-    font-family: 'Roboto', sans-serif;
-    color: #21336C;
-    font-size: 28px;
-    font-weight: 700;
-    right: 800px;
-    top:24px;
+
+/* Стили для переключателя языка */
+.language-selector {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
 }
-.nav-tour-agent-list {
-    position: absolute;
-    font-family: 'Roboto', sans-serif;
+
+.language-selector select {
+    background-color: transparent;
+    border: 1px solid #21336C;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 16px;
     color: #21336C;
-    font-size: 28px;
-    font-weight: 700;
-    right: 630px;
-    top:24px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
-.nav-tour-agent-excursions {
-    position: absolute;
-    font-family: 'Roboto', sans-serif;
-    color: #21336C;
-    font-size: 28px;
-    font-weight: 700;
-    right: 630px;
-    top:24px;
+
+.language-selector select:hover {
+    border-color: #007bff;
 }
-.nav-tour-create-excursions {
-    position: absolute;
-    font-family: 'Roboto', sans-serif;
-    color: #21336C;
-    font-size: 28px;
-    font-weight: 700;
-    left: 780px;
-    top:24px;
+
+.language-selector select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 3px rgba(0, 123, 255, 0.3);
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 1600px) {
+    .navbar {
+        padding: 0 200px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .navbar {
+        padding: 0 100px;
+    }
+    
+    .nav-excursions,
+    .nav-tour-agent-register,
+    .nav-tour-agent-list,
+    .nav-tour-agent-excursions,
+    .nav-tour-create-excursions {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar {
+        padding: 0 50px;
+    }
+    
+    .nav-links {
+        gap: 20px;
+    }
+    
+    .nav-excursions,
+    .nav-tour-agent-register,
+    .nav-tour-agent-list,
+    .nav-tour-agent-excursions,
+    .nav-tour-create-excursions {
+        font-size: 20px;
+    }
 }

@@ -94,6 +94,7 @@ DATABASES = {
         'PORT': POSTGRES_PORT,
     }
 }
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -123,6 +124,17 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+# Доступные языки
+LANGUAGES = [
+    ('ru', 'Русский'),
+    ('kk', 'Қазақша'),
+]
+
+# Пути к файлам локализации
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
 
 AUTH_USER_MODEL = 'excursionapp.CustomUser'
 
