@@ -139,6 +139,10 @@ function handleRegister(event) {
     fetch(registerUrl, {
         method: 'POST',
         body: formData,
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+        }
     })
     .then(response => response.json())
     .then(data => {

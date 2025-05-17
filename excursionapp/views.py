@@ -51,6 +51,15 @@ def registerPage(request):
                 first_name = form.cleaned_data.get('first_name', '').strip()
                 last_name = form.cleaned_data.get('last_name', '').strip()
                 user.username = f"{first_name} {last_name}".strip()
+                if not user.username:
+                    # Если имя и фамилия пустые, username будет пустым.
+                    # Это может быть проблемой, если username обязателен.
+                    # Возвращаем ошибку, чтобы пользователь указал имя или фамилию.
+                    return JsonResponse({'status': 'error', 'errors': {
+                        'first_name': 'Имя или фамилия должны быть заполнены.',
+                        'last_name': 'Имя или фамилия должны быть заполнены.'
+                         }
+                    }, status=400)
                 user.save()
 
                 return JsonResponse({'status': 'success'})
