@@ -319,7 +319,7 @@ def create_tour_agent(request):
                 return JsonResponse({'status': 'error', 'message': 'Пароли не совпадают'})
             else:
                 form = TourAgentCreationForm()
-                return render(request,{'form': form, 'error': 'Пароли не совпадают'})
+                return render(request, 'create_tour_agent.html', {'form': form, 'error': 'Пароли не совпадают'})
         
         # Проверка уникальности username
         if CustomUser.objects.filter(username=username).exists():
@@ -327,7 +327,7 @@ def create_tour_agent(request):
                 return JsonResponse({'status': 'error', 'message': 'Пользователь с таким именем уже существует'})
             else:
                 form = TourAgentCreationForm()
-                return render(request,{'form': form, 'error': 'Пользователь с таким именем уже существует'})
+                return render(request, 'create_tour_agent.html', {'form': form, 'error': 'Пользователь с таким именем уже существует'})
         
         # Проверка уникальности email
         if CustomUser.objects.filter(email=email).exists():
@@ -335,7 +335,7 @@ def create_tour_agent(request):
                 return JsonResponse({'status': 'error', 'message': 'Пользователь с таким email уже существует'})
             else:
                 form = TourAgentCreationForm()
-                return render(request, {'form': form, 'error': 'Пользователь с таким email уже существует'})
+                return render(request, 'create_tour_agent.html', {'form': form, 'error': 'Пользователь с таким email уже существует'})
         
         # Проверка уникальности номера телефона
         if phone_number and CustomUser.objects.filter(phone_number=phone_number).exists():
@@ -343,7 +343,7 @@ def create_tour_agent(request):
                 return JsonResponse({'status': 'error', 'message': 'Пользователь с таким номером телефона уже существует'})
             else:
                 form = TourAgentCreationForm()
-                return render(request, {'form': form, 'error': 'Пользователь с таким номером телефона уже существует'})
+                return render(request, 'create_tour_agent.html', {'form': form, 'error': 'Пользователь с таким номером телефона уже существует'})
         
         try:
             # Создаем пользователя
@@ -365,10 +365,10 @@ def create_tour_agent(request):
                 return JsonResponse({'status': 'error', 'message': f'Ошибка при создании турагента: {str(e)}'})
             else:
                 form = TourAgentCreationForm()
-                return render(request, {'form': form, 'error': f'Ошибка при создании турагента: {str(e)}'})
+                return render(request, 'create_tour_agent.html', {'form': form, 'error': f'Ошибка при создании турагента: {str(e)}'})
     else:
         form = TourAgentCreationForm()
-        return render(request, {'form': form})
+        return render(request, 'create_tour_agent.html', {'form': form})
 
 
 @tour_agent_required

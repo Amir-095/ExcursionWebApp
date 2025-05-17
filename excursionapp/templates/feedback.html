@@ -44,5 +44,8 @@
         </div>
     </div>
     <script src="{% static 'js/floating-button.js' %}"></script>
+    <script>
+        const deleteCardUrl = "{% url 'delete_card' 0 %}"; // 0 будет заменен на ID карты в JavaScript
+    </script>
 </body>
 </html>

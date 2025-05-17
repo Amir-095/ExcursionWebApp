@@ -104,13 +104,23 @@ function confirmDeleteCard() {
     const cardId = cardToDelete;
     hideDeleteCardModal();
     
-    fetch(`/delete-card/${cardId}/`, {
+    fetch(deleteCardUrl.replace('0', cardId), {
         method: 'POST',
         headers: {
             'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest'
         },
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => {
+                let errorMsg = `Ошибка ${response.status}`;
+                try { errorMsg = JSON.parse(text).message || errorMsg; } catch(e) { /* использовать как есть */ }
+                throw new Error(errorMsg);
+            });
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.status === 'success') {
             showToast('success', 'Успешно', data.message);

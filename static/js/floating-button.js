@@ -42,11 +42,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const formData = new FormData(form);
         try {
-            const response = await fetch('/send_feedback/', {
+            const response = await fetch(sendFeedbackUrl, {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRFToken': getCookie('csrftoken')
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
             });
 

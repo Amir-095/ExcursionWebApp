@@ -188,13 +188,14 @@ function processPayment(excursionId) {
 
 // Функция для проверки существования карты через API
 function checkCardExists(cardNumber, expiryDate, cardholderName) {
-    const last4 = cardNumber.replace(/\s+/g, '').slice(-4); // Последние 4 цифры
+    const last4 = cardNumber.replace(/\s+/g, '').slice(-4); 
     
-    return fetch('/check-card/', {
+    return fetch(checkCardUrl, { // Используем переменную checkCardUrl
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
+            'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest' // Добавляем этот заголовок
         },
         body: JSON.stringify({
             last4: last4,
@@ -204,12 +205,17 @@ function checkCardExists(cardNumber, expiryDate, cardholderName) {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Ошибка при проверке карты');
+            // Попытка прочитать текст ошибки, если есть
+            return response.text().then(text => {
+                let errorMsg = `Ошибка при проверке карты: ${response.status}`;
+                try { errorMsg = JSON.parse(text).message || text; } catch (e) { /* оставляем как есть */ }
+                throw new Error(errorMsg);
+            });
         }
         return response.json();
     })
     .then(data => {
-        return data.exists; // true или false
+        return data.exists; 
     });
 }
 
@@ -231,21 +237,29 @@ function hideSaveCardModal() {
 
 // Функция для отправки запроса на оплату
 function submitPaymentRequest(formData, excursionId) {
-    // Добавляем анимацию загрузки на кнопку
     const paymentButton = document.querySelector('.payment-btn');
     if (paymentButton) {
         paymentButton.classList.add('loading');
     }
     
-    // Отправляем запрос на сервер
-    fetch('/process-payment/', {
+    fetch(processPaymentUrl, { // Используем переменную processPaymentUrl
         method: 'POST',
         body: formData,
         headers: {
-            'X-CSRFToken': getCookie('csrftoken')
+            'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest' // Добавляем этот заголовок
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => {
+                let errorMsg = `Ошибка при обработке платежа: ${response.status}`;
+                try { errorMsg = JSON.parse(text).message || text; } catch (e) { /* оставляем как есть */ }
+                throw new Error(errorMsg);
+            });
+        }
+        return response.json();
+    })
     .then(data => {
         // Убираем анимацию загрузки
         if (paymentButton) {

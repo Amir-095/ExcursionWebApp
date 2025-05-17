@@ -96,6 +96,11 @@
 </div>
 
 {% include 'modal.html' %}
+<script>
+    const checkCardUrl = "{% url 'check_card' %}";
+    const processPaymentUrl = "{% url 'process_payment' %}";
+    const updateAgentUrl = "{% url 'update_agent' 0 %}"; // 0 будет заменен на ID агента в JavaScript
+</script>
 <script src="{% static 'js/profile.js' %}"></script>
 </body>
 </html>

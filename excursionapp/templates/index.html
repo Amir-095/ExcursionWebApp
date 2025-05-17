@@ -57,5 +57,9 @@
     {% include 'modal.html' %}
     {% include 'feedback.html' %}
     <script src="{% static 'js/search.js' %}"></script>
+    <script>
+        const createAgentUrl = "{% url 'create_tour_agent' %}"; 
+        const checkAuthUrl = "{% url 'check_auth' %}";
+    </script>
 </body>
 </html>

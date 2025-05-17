@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 navigateToSearchResult(url);
             } else {
                 // Если нет результатов, перенаправляем на страницу всех экскурсий
-                window.location.href = `/excursions/?query=${encodeURIComponent(searchInput.value)}`;
+                window.location.href = `${excursionsUrl}?query=${encodeURIComponent(searchInput.value)}`;
             }
         }
     }
@@ -89,8 +89,17 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        fetch(`/search-api/?query=${encodeURIComponent(query)}`)
-        .then(response => response.json())
+        fetch(`${searchApiUrl}?query=${encodeURIComponent(query)}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Ошибка поиска: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.results && data.results.length > 0) {
                 renderSearchResults(data.results);

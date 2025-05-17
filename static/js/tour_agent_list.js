@@ -126,11 +126,12 @@
                     const formData = new FormData(this);
                     const agentId = document.getElementById('edit_agent_id').value;
                     
-                    fetch(`/update-agent/${agentId}/`, {
+                    fetch(updateAgentUrl.replace('0', agentId), {  // Используем переменную updateAgentUrl
                         method: 'POST',
                         body: formData,
                         headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': getCookie('csrftoken')  // Добавляем CSRF-токен
                         }
                     })
                     .then(response => response.json())
@@ -160,6 +161,20 @@
                 });
             }
 
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
             
             // Обработка отправки формы создания агента
             const createAgentForm = document.getElementById('createAgentForm');
@@ -176,37 +191,46 @@
                     }
                     
                     const formData = new FormData(this);
-                    
-                    fetch('/create-tour-agent/', {
+                    const csrftoken = getCookie('csrftoken');
+                    fetch(createAgentUrl, { // Используйте переменную createAgentUrl
                         method: 'POST',
                         body: formData,
                         headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
+                            'X-Requested-With': 'XMLHttpRequest', // Этот заголовок уже должен быть
+                            'X-CSRFToken': csrftoken // Добавьте этот CSRF-токен
                         }
                     })
-                    .then(response => response.json())
-                    .then(data => {
+                    // .then(response => response.json()) // Старый вариант
+                    .then(response => { // Улучшенная обработка ответа
+                        if (!response.ok) {
+                            return response.text().then(text => {
+                                let errorDetail = `Ошибка ${response.status}`;
+                                try {
+                                    const jsonError = JSON.parse(text);
+                                    errorDetail = jsonError.message || jsonError.detail || text || errorDetail;
+                                } catch (e) { errorDetail = text || errorDetail; }
+                                throw new Error(errorDetail);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => { // Обработка успешного JSON-ответа
                         if (data.status === 'success') {
-                            showToast('success', 'Успешно!', 'Турагент успешно создан');
-                            setTimeout(() => {
-                                window.location.reload();
-                            }, 2000);
+                            showToast('success', 'Успешно!', data.message || 'Турагент успешно создан');
+                            setTimeout(() => { window.location.reload(); }, 2000);
                         } else {
                             showToast('error', 'Ошибка!', data.message || 'Произошла ошибка при создании турагента');
-                            // Повторно активируем кнопку в случае ошибки
-                            if (submitButton) {
-                                submitButton.disabled = false;
-                            }
+                            const submitButton = event.target.querySelector('button[type="submit"]');
+                            if (submitButton) submitButton.disabled = false;
                         }
                         hideCreateAgentModal();
                     })
-                    .catch(error => {
-                        showToast('error', 'Ошибка!', 'Произошла ошибка при обработке запроса');
+                    .catch(error => { // Обработка ошибок fetch или ошибок от сервера
+                        console.error('Ошибка AJAX при создании турагента:', error);
+                        showToast('error', 'Ошибка!', error.message || 'Произошла ошибка при обработке запроса.');
                         hideCreateAgentModal();
-                        // Повторно активируем кнопку в случае ошибки
-                        if (submitButton) {
-                            submitButton.disabled = false;
-                        }
+                        const submitButton = event.target.querySelector('button[type="submit"]');
+                        if (submitButton) submitButton.disabled = false;
                     });
                 });
             }
@@ -228,7 +252,7 @@
 
         // Проверка авторизации перед выполнением действия
         function checkAuthAndProceed(action) {
-            fetch('/check-auth/', {
+            fetch(checkAuthUrl, {  // Используем переменную checkAuthUrl
                 method: 'GET',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
