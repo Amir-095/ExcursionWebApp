@@ -162,7 +162,7 @@ body {
     box-shadow: 0 10px 30px rgba(33, 51, 108, 0.2);
     border-radius: 8px;
     border: none;
-    font-family: 'Abhaya Libre', Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
 }
 
 .flatpickr-day.selected,

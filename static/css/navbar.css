@@ -22,7 +22,7 @@
 }
 
 .nav-kaztour {
-    font-family: 'Abhaya Libre ExtraBold';
+    font-family: 'Roboto';
     color: #21336C;
     font-size: 36px;
     font-weight: 800;
@@ -42,7 +42,7 @@
 .nav-tour-agent-list,
 .nav-tour-agent-excursions,
 .nav-tour-create-excursions {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto';
     color: #21336C;
     font-size: 28px;
     font-weight: 700;
@@ -71,7 +71,7 @@
     font-size: 16px;
     color: #21336C;
     cursor: pointer;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto';
     font-weight: 500;
     transition: all 0.3s ease;
 }

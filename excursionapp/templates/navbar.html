@@ -89,9 +89,8 @@
         </div>
     </div>
 
-    <script>
-        const createAgentUrl = "{% url 'create_tour_agent' %}";
-    </script>
+
+    {% include 'js_constants.html' %}
     <script src="{% static 'js/tour_agent_list.js' %}"></script>
 </body>
 </html>

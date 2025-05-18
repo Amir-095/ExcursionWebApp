@@ -18,6 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
+
+
+
+
+
 # Навигационная панель
 #: .\excursionapp\templates\excursions.html:6
 #: .\excursionapp\templates\excursions.html:20
@@ -105,6 +110,13 @@ msgid "Забронировать"
 msgstr "Брондау"
 
 
+
+
+
+
+
+
+
 # Главная страница
 #: .\excursionapp\templates\index.html:23
 msgid "Откройте для себя красоту Казахстана"
@@ -125,6 +137,15 @@ msgstr "Іздеу"
 #: .\excursionapp\templates\index.html:38
 msgid "Популярные экскурсии"
 msgstr "Танымал экскурсиялар"
+
+
+
+
+
+
+
+
+
 
 # Навигационная панель
 #: .\excursionapp\templates\navbar.html:18
@@ -164,9 +185,6 @@ msgstr "Пайдаланушы аты"
 msgid "Телефон"
 msgstr "Телефон"
 
-#: .\excursionapp\templates\navbar.html:74
-msgid "Пароль"
-msgstr "Құпия сөз"
 
 #: .\excursionapp\templates\navbar.html:79
 msgid "Подтверждение пароля"
@@ -199,40 +217,205 @@ msgstr "Профиль ақпараты"
 msgid "Вы ещё не сохранили данные карты."
 msgstr "Сіз карта деректерін әлі сақтаған жоқсыз."
 
-# Общие элементы UI
-#~ msgid "Войти"
-#~ msgstr "Кіру"
 
+
+
+
+
+
+
+#excursion_detail
+msgid "Продолжительность:"
+msgstr "Ұзақтығы:"
+
+msgid "Язык:"
+msgstr "Тіл:"
+
+msgid "Гид"
+msgstr "Гид"
+
+msgid "Что включено"
+msgstr "Экскурсияға не кіреді"
+
+msgid "Что не включено"
+msgstr "Экскурсияға не кірмейді"
+
+msgid "Программа"
+msgstr "Бағдарлама"
+
+msgid "Доступные даты"
+msgstr "Қолжетімді күндер"
+
+msgid "Выберите дату и время"
+msgstr "Күн мен уақытты таңдау"
+
+msgid "Завтра"
+msgstr "Ертең"
+
+msgid "Послезавтра"
+msgstr "Бүрсігүні"
+
+msgid "Выбрать дату"
+msgstr "Күнді таңдау"
+
+msgid "Стандартный билет"
+msgstr "Стандартты билет"
+
+msgid "Начать бронирование"
+msgstr "Брондауды бастау"
+
+msgid "Детали экскурсии"
+msgstr "Экскурсияның мәліметтері"
+
+msgid "Организатор"
+msgstr "Ұйымдастырушы"
+
+msgid "Тип экскурсии:"
+msgstr "Экскурсия типі:"
+
+msgid "Время начала:"
+msgstr "Басталу уақыты:"
+
+msgid "Длительность:"
+msgstr "Ұзақтығы:"
+
+msgid "Место встречи:"
+msgstr "Кездесу орны:"
+
+msgid "Место окончания:"
+msgstr "Аяқталу орны:"
+
+msgid "Услуги гида/водителя"
+msgstr "Гид/жүргізуші қызметтері"
+
+msgid "Трансфер на протяжении всего пути"
+msgstr "Бүкіл жол бойындағы трансфер"
+
+msgid "Групповая аптечка"
+msgstr "Топтық дәрі қобдишасы"
+
+msgid "Включенный обед"
+msgstr "Түскі ас қосылған"
+
+msgid "Питание"
+msgstr "Тамақтану"
+
+
+msgid "Доступная дата"
+msgstr "Қолжетімді күн"
+
+
+
+
+
+
+
+
+# Общие элементы UI
 msgid "Выйти"
 msgstr "Шығу"
 
-#~ msgid "Подробнее"
-#~ msgstr "Толығырақ"
 
-#~ msgid "Оплата"
-#~ msgstr "Төлем"
+#: .\excursionapp\templates\excursion_detail.html:62
+msgid "10-15 человек"
+msgstr "10-15 адам"
 
-#~ msgid "Сохранить"
-#~ msgstr "Сақтау"
+#: .\excursionapp\templates\excursion_detail.html:62
+msgid "1-4 человека"
+msgstr "1-4 адам"
 
-#~ msgid "Удалить"
-#~ msgstr "Жою"
+#: .\excursionapp\templates\excursion_detail.html:62
+msgid "5-8 человек"
+msgstr "5-8 адам"
 
-#~ msgid "Редактировать"
-#~ msgstr "Өңдеу"
+#: .\excursionapp\templates\excursion_detail.html:62
+msgid "Неизвестно"
+msgstr "Белгісіз"
 
-# Заголовки страниц
-#~ msgid "Главная"
-#~ msgstr "Басты бет"
+msgid "Оплата экскурсии"
+msgstr "Экскурсияны төлеу"
 
-#~ msgid "Список экскурсий"
-#~ msgstr "Экскурсиялар тізімі"
+msgid "Дата"
+msgstr "Күні"
 
-#~ msgid "Детали экскурсии"
-#~ msgstr "Экскурсия мәліметтері"
+msgid "Количество билетов"
+msgstr "Билет саны"
 
-#~ msgid "Страница профиля"
-#~ msgstr "Профиль беті"
+msgid "Итого к оплате"
+msgstr "Төлем сомасы"
 
-#~ msgid "Настройки"
-#~ msgstr "Параметрлер"
+msgid "Выберите сохранённую карту"
+msgstr "Сақталған картаны таңдаңыз"
+
+msgid "Новая карта"
+msgstr "Жаңа карта"
+
+msgid "Имя владельца"
+msgstr "Иесінің аты"
+
+msgid "ИМЯ ВЛАДЕЛЬЦА"
+msgstr "ИЕСІНІҢ АТЫ"
+
+msgid "Срок"
+msgstr "Мерзімі"
+
+msgid "ММ/ГГ"
+msgstr "АА/ЖЖ"
+
+msgid "Передняя сторона"
+msgstr "Алдыңғы жағы"
+
+msgid "Обратная сторона"
+msgstr "Артқы жағы"
+
+msgid "Оплатить"
+msgstr "Төлеу"
+
+msgid "Сохранить карту?"
+msgstr "Картаны сақтаймыз ба?"
+
+msgid "Хотите сохранить данные карты для будущих оплат? Это позволит вам быстрее оплачивать экскурсии в следующий раз."
+msgstr "Болашақ төлемдер үшін карта деректерін сақтағыңыз келе ме? Бұл сізге келесі рет экскурсияларды тезірек төлеуге мүмкіндік береді."
+
+msgid "Нет"
+msgstr "Жоқ"
+
+msgid "Да, сохранить"
+msgstr "Иә, сақтау"
+
+msgid "Вход"
+msgstr "Кіру"
+
+msgid "Email или номер телефона"
+msgstr "Email немесе телефон нөірі"
+
+msgid "Пароль"
+msgstr "Құпия сөз"
+
+msgid "Войти"
+msgstr "Кіру"
+
+msgid "Нет аккаунта?"
+msgstr "Тіркелгіңіз жоқ па?"
+
+msgid "Зарегистрироваться"
+msgstr "Тіркелу"
+
+msgid "Регистрация"
+msgstr "Тіркеу"
+
+
+msgid "Фамилия"
+msgstr "Тегі"
+
+msgid "Номер телефона"
+msgstr "Телефон нөмірі"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Подтвердите пароль"
+msgstr "Құпия сөзді растаңыз"
+
+msgid "Уже есть аккаунт?"
+msgstr "Тіркелгіңіз бар ма?"

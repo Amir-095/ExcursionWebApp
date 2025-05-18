@@ -81,11 +81,9 @@
             </div>
         </div>
     </div>
-   <script>
-       const updateAgentUrl = "{% url 'update_agent' 0 %}"; // 0 будет заменен на ID агента в JavaScript
-   </script>
-    {% include 'modal.html' %}
-    <script src="{% static 'js/tour_agent_list.js' %}"></script>
+   {% include 'modal.html' %}
+   {% include 'js_constants.html' %}
+   <script src="{% static 'js/tour_agent_list.js' %}"></script>
  
 </body>
 </html>

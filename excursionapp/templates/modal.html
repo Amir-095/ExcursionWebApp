@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+{% load i18n %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/modal.css' %}" />
     <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
-    <title>Title</title>
+    <title>{% trans "Вход" %}</title>
 </head>
 <body>
     <!-- Контейнер для toast-уведомлений -->
@@ -21,24 +22,24 @@
  <!-- Форма входа -->
 <div id="loginForm">
     <div class="modal-header">
-        <h2>Вход</h2>
+        <h2>{% trans "Вход" %}</h2>
     </div>
     <div class="modal-body">
         <form onsubmit="handleLogin(event)">
             {% csrf_token %}
             <div class="form-group">
-                <input type="text" name="username" data-field-name="username" placeholder="Email или номер телефона" required>
+                <input type="text" name="username" data-field-name="username" placeholder="{% trans 'Email или номер телефона' %}" required>
             </div>
             <div class="form-group">
-                <input type="password" name="password" data-field-name="password" placeholder="Пароль" required>
+                <input type="password" name="password" data-field-name="password" placeholder="{% trans 'Пароль' %}" required>
                 <div class="error-message" data-field-name="password"></div>
             </div>
             <div class="modal-footer">
-                <button type="submit">Войти</button>
+                <button type="submit">{% trans "Войти" %}</button>
             </div>
         </form>
         <div class="switch-form">
-            <p>Нет аккаунта? <a href="#" onclick="switchToRegister()">Зарегистрироваться</a></p>
+            <p>{% trans "Нет аккаунта?" %} <a href="#" onclick="switchToRegister()">{% trans "Зарегистрироваться" %}</a></p>
         </div>
     </div>
 </div>
@@ -47,53 +48,49 @@
 <!-- Форма регистрации -->
 <div id="registerForm" style="display: none;">
     <div class="modal-header">
-        <h2>Регистрация</h2>
+        <h2>{% trans "Регистрация" %}</h2>
     </div>
     <div class="modal-body">
         <form onsubmit="handleRegister(event)">
             {% csrf_token %}
             <div class="form-group">
-                <input type="text" name="first_name" data-field-name="first_name" placeholder="Имя" required>
+                <input type="text" name="first_name" data-field-name="first_name" placeholder="{% trans 'Имя' %}" required>
                 <div class="error-message" data-field-name="first_name"></div>
             </div>
             <div class="form-group">
-                <input type="text" name="last_name" data-field-name="last_name" placeholder="Фамилия" required>
+                <input type="text" name="last_name" data-field-name="last_name" placeholder="{% trans 'Фамилия' %}" required>
                 <div class="error-message" data-field-name="last_name"></div>
             </div>
             <div class="form-group">
-                <input type="tel" name="phone_number" data-field-name="phone_number" placeholder="Номер телефона" required>
+                <input type="tel" name="phone_number" data-field-name="phone_number" placeholder="{% trans 'Номер телефона' %}" required>
                 <div class="error-message" data-field-name="phone_number"></div>
             </div>
             <div class="form-group">
-                <input type="email" name="email" data-field-name="email" placeholder="Email" required>
+                <input type="email" name="email" data-field-name="email" placeholder="{% trans 'Email' %}" required>
                 <div class="error-message" data-field-name="email"></div>
             </div>
             <div class="form-group">
-                <input type="password" name="password1" data-field-name="password1" placeholder="Пароль" required>
+                <input type="password" name="password1" data-field-name="password1" placeholder="{% trans 'Пароль' %}" required>
                 <div class="error-message" data-field-name="password1"></div>
             </div>
             <div class="form-group">
-                <input type="password" name="password2" data-field-name="password2" placeholder="Подтвердите пароль" required>
+                <input type="password" name="password2" data-field-name="password2" placeholder="{% trans 'Подтвердите пароль' %}" required>
                 <div class="error-message" data-field-name="password2"></div>
             </div>
             <div id="error-message" style="color: red;"></div>
             <div class="modal-footer">
-                <button type="submit">Зарегистрироваться</button>
+                <button type="submit">{% trans "Зарегистрироваться" %}</button>
             </div>
         </form>
         <div class="switch-form">
-            <p>Уже есть аккаунт? <a href="#" onclick="switchToLogin()">Войти</a></p>
+            <p>{% trans "Уже есть аккаунт?" %} <a href="#" onclick="switchToLogin()">{% trans "Войти" %}</a></p>
         </div>
     </div>
 </div>
 
         </div>
     </div>
-    <script>
-        const loginUrl = "{% url 'login' %}";
-        const registerUrl = "{% url 'register' %}";
-        const checkAuthUrl = "{% url 'check_auth' %}";
-    </script>
-     <script src="{% static 'js/modal.js' %}"></script>
+    {% include 'js_constants.html' %}
+    <script src="{% static 'js/modal.js' %}"></script>
 </body>
 </html>

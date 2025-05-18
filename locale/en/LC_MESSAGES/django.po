@@ -1,0 +1,339 @@
+# English translation for excursion project.
+# Copyright (C) 2025
+# This file is distributed under the same license as the excursion package.
+# Your Name <your.email@example.com>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-18 03:23+0500\n"
+"PO-Revision-Date: 2025-05-15 14:00+0000\n"
+"Last-Translator: Your Name <your.email@example.com>\n"
+"Language-Team: English <en@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+# Navigation panel
+msgid "Все Экскурсии"
+msgstr "All Excursions"
+
+msgid "Введите название места или экскурсии"
+msgstr "Enter place or excursion name"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Тип экскурсии"
+msgstr "Excursion Type"
+
+msgid "Групповые"
+msgstr "Group"
+
+msgid "Индивидуальные"
+msgstr "Individual"
+
+msgid "Семейные"
+msgstr "Family"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Все экскурсии"
+msgstr "All Excursions"
+
+msgid "Длительность"
+msgstr "Duration"
+
+msgid "Несколько часов"
+msgstr "Several Hours"
+
+msgid "1 день"
+msgstr "1 Day"
+
+msgid "Несколько дней"
+msgstr "Several Days"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Язык"
+msgstr "Language"
+
+msgid "Казахский"
+msgstr "Kazakh"
+
+msgid "Русский"
+msgstr "Russian"
+
+msgid "Английский"
+msgstr "English"
+
+msgid "Забронировать"
+msgstr "Book Now"
+
+# Main page
+msgid "Откройте для себя красоту Казахстана"
+msgstr "Discover the Beauty of Kazakhstan"
+
+msgid "Исследуйте захватывающие дух пейзажи и богатое"
+msgstr "Explore breathtaking landscapes and rich"
+
+msgid "культурное наследие с нашими экскурсиями с гидом"
+msgstr "cultural heritage with our guided tours"
+
+msgid "Поиск"
+msgstr "Search"
+
+msgid "Популярные экскурсии"
+msgstr "Popular Excursions"
+
+# Navigation panel
+msgid "Экскурсии"
+msgstr "Excursions"
+
+msgid "Регистрация турагента"
+msgstr "Tour Agent Registration"
+
+msgid "Турагенты"
+msgstr "Tour Agents"
+
+msgid "Ваши экскурсии"
+msgstr "Your Excursions"
+
+msgid "Создать экскурсию"
+msgstr "Create Excursion"
+
+msgid "Профиль"
+msgstr "Profile"
+
+# Tour agent creation modal
+msgid "Создание турагента"
+msgstr "Create Tour Agent"
+
+msgid "Имя пользователя"
+msgstr "Username"
+
+msgid "Телефон"
+msgstr "Phone"
+
+msgid "Пароль"
+msgstr "Password"
+
+msgid "Подтверждение пароля"
+msgstr "Confirm Password"
+
+msgid "Создать"
+msgstr "Create"
+
+msgid "Отмена"
+msgstr "Cancel"
+
+# Profile page
+msgid "Имя"
+msgstr "Name"
+
+msgid "Забронированные экскурсии"
+msgstr "Booked Excursions"
+
+msgid "У вас пока нет забронированных экскурсий"
+msgstr "You don't have any booked excursions yet"
+
+msgid "Способы оплаты"
+msgstr "Payment Methods"
+
+msgid "Информация профиля"
+msgstr "Profile Information"
+
+msgid "Вы ещё не сохранили данные карты."
+msgstr "You haven't saved any card details yet."
+
+# Excursion detail
+msgid "Продолжительность:"
+msgstr "Duration:"
+
+msgid "Язык:"
+msgstr "Language:"
+
+msgid "Гид"
+msgstr "Guide"
+
+msgid "Что включено"
+msgstr "What's Included"
+
+msgid "Что не включено"
+msgstr "What's Not Included"
+
+msgid "Программа"
+msgstr "Program"
+
+msgid "Доступные даты"
+msgstr "Available Dates"
+
+msgid "Доступная дата"
+msgstr "Available Date"
+
+msgid "Выберите дату и время"
+msgstr "Select Date and Time"
+
+msgid "Завтра"
+msgstr "Tomorrow"
+
+msgid "Послезавтра"
+msgstr "Day After Tomorrow"
+
+msgid "Выбрать дату"
+msgstr "Select Date"
+
+msgid "Стандартный билет"
+msgstr "Standard Ticket"
+
+msgid "Начать бронирование"
+msgstr "Start Booking"
+
+msgid "Детали экскурсии"
+msgstr "Excursion Details"
+
+msgid "Организатор"
+msgstr "Organizer"
+
+msgid "Тип экскурсии:"
+msgstr "Excursion Type:"
+
+msgid "Время начала:"
+msgstr "Start Time:"
+
+msgid "Длительность:"
+msgstr "Duration:"
+
+msgid "Место встречи:"
+msgstr "Meeting Point:"
+
+msgid "Место окончания:"
+msgstr "End Point:"
+
+msgid "Услуги гида/водителя"
+msgstr "Guide/Driver Services"
+
+msgid "Трансфер на протяжении всего пути"
+msgstr "Transfer Throughout the Journey"
+
+msgid "Групповая аптечка"
+msgstr "Group First Aid Kit"
+
+msgid "Включенный обед"
+msgstr "Included Lunch"
+
+msgid "Питание"
+msgstr "Meals"
+
+# Common UI elements
+msgid "Выйти"
+msgstr "Log Out"
+
+# People count translations
+msgid "10-15 человек"
+msgstr "10-15 people"
+
+msgid "1-4 человека"
+msgstr "1-4 people"
+
+msgid "5-8 человек"
+msgstr "5-8 people"
+
+msgid "Неизвестно"
+msgstr "Unknown"
+
+msgid "Қазақша"
+msgstr "Kazakh"
+
+msgid "Оплата экскурсии"
+msgstr "Excursion Payment"
+
+msgid "Дата"
+msgstr "Date"
+
+msgid "Количество билетов"
+msgstr "Number of Tickets"
+
+msgid "Итого к оплате"
+msgstr "Total Amount"
+
+msgid "Выберите сохранённую карту"
+msgstr "Select Saved Card"
+
+msgid "Новая карта"
+msgstr "New Card"
+
+msgid "Имя владельца"
+msgstr "Cardholder Name"
+
+msgid "ИМЯ ВЛАДЕЛЬЦА"
+msgstr "CARDHOLDER NAME"
+
+msgid "Срок"
+msgstr "Expiry"
+
+msgid "ММ/ГГ"
+msgstr "MM/YY"
+
+msgid "Передняя сторона"
+msgstr "Front Side"
+
+msgid "Обратная сторона"
+msgstr "Back Side"
+
+msgid "Оплатить"
+msgstr "Pay"
+
+msgid "Сохранить карту?"
+msgstr "Save Card?"
+
+msgid "Хотите сохранить данные карты для будущих оплат? Это позволит вам быстрее оплачивать экскурсии в следующий раз."
+msgstr "Would you like to save your card details for future payments? This will allow you to pay for excursions faster next time."
+
+msgid "Нет"
+msgstr "No"
+
+msgid "Да, сохранить"
+msgstr "Yes, Save"
+
+msgid "Вход"
+msgstr "Login"
+
+msgid "Email или номер телефона"
+msgstr "Email or phone number"
+
+
+msgid "Войти"
+msgstr "Sign In"
+
+msgid "Нет аккаунта?"
+msgstr "Don't have an account?"
+
+msgid "Зарегистрироваться"
+msgstr "Sign Up"
+
+msgid "Регистрация"
+msgstr "Registration"
+
+msgid "Фамилия"
+msgstr "Last Name"
+
+msgid "Номер телефона"
+msgstr "Phone Number"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Подтвердите пароль"
+msgstr "Confirm Password"
+
+msgid "Уже есть аккаунт?"
+msgstr "Already have an account?"

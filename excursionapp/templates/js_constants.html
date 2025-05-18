@@ -1,0 +1,25 @@
+<!-- JavaScript константы для URL -->
+<script>
+    // Аутентификация и регистрация
+    const loginUrl = "{% url 'login' %}";
+    const registerUrl = "{% url 'register' %}";
+    const checkAuthUrl = "{% url 'check_auth' %}";
+
+    const excursionsUrl = "{% url 'search_api' %}";
+    const searchApiUrl = "{% url 'search_api' %}";
+    
+    // Турагенты
+    const createAgentUrl = "{% url 'create_tour_agent' %}";
+    const updateAgentUrl = "{% url 'update_agent' 0 %}"; // 0 будет заменен на ID агента в JavaScript
+    
+    // Экскурсии
+    const deleteExcursionUrl = "{% url 'delete_excursion' 0 %}"; // 0 будет заменен на ID экскурсии в JavaScript
+    
+    // Платежи и карты
+    const checkCardUrl = "{% url 'check_card' %}";
+    const processPaymentUrl = "{% url 'process_payment' %}";
+    const deleteCardUrl = "{% url 'delete_card' 0 %}"; // 0 будет заменен на ID карты в JavaScript
+    
+    // Обратная связь
+    const sendFeedbackUrl = "{% url 'send_feedback' %}";
+</script> 

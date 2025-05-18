@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .excursion-detail-container {
@@ -57,7 +57,6 @@ body {
     gap: 5px; /* Отступ между label и value */
 }
 .info-item .label {
-    font-family: 'Abhaya Libre';
     font-size: 16px;
     color: #666;
     display: block;
@@ -65,7 +64,6 @@ body {
 }
 
 .info-item .value {
-    font-family: 'Abhaya Libre ExtraBold';
     font-size: 18px;
     color: #21336C;
 }

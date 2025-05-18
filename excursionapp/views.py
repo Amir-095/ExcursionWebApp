@@ -12,7 +12,7 @@ import json
 from cryptography.fernet import Fernet
 from django.conf import settings
 import re
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from django.template.defaultfilters import register
 
 # Регистрируем кастомный фильтр для шаблонов
@@ -185,21 +185,31 @@ def all_excursions(request):
         print(f"Результаты не найдены для точного совпадения локации. Пробуем нечеткий поиск.")
         excursions = Excursion.objects.filter(location__icontains=location).order_by('location')
 
-    # Группируем экскурсии по локациям
+    # Получаем текущий язык
+    current_language = request.LANGUAGE_CODE if hasattr(request, 'LANGUAGE_CODE') else 'ru'
+
+    # Группируем экскурсии по переведенным локациям
     grouped_excursions = {}
     for excursion in excursions:
         if excursion.image:
             image_base64 = base64.b64encode(excursion.image).decode('utf-8')
             excursion.image_url = f"data:image/jpeg;base64,{image_base64}"
-        if excursion.location not in grouped_excursions:
-            grouped_excursions[excursion.location] = []
-        grouped_excursions[excursion.location].append(excursion)
+
+        # Получаем переведенное название локации
+        translated_location = excursion.get_translated_location(current_language)
+
+        if translated_location not in grouped_excursions:
+            grouped_excursions[translated_location] = []
+        grouped_excursions[translated_location].append(excursion)
 
     # Если после всех фильтров ничего не найдено
     if not grouped_excursions:
         print("Нет результатов после применения всех фильтров")
     
-    return render(request, "excursions.html", {'grouped_excursions': grouped_excursions})
+    return render(request, "excursions.html", {
+        'grouped_excursions': grouped_excursions,
+        'LANGUAGE_CODE': current_language # Все еще передаем на всякий случай
+    })
 
 
 @tour_agent_required
@@ -247,12 +257,48 @@ def excursion_detail(request, excursion_id):
     # Получение включённых и не включённых элементов
     included_items, not_included_items = excursion.get_inclusion_status()
 
+    # Получаем текущий язык из запроса
+    current_language = request.LANGUAGE_CODE if hasattr(request, 'LANGUAGE_CODE') else 'ru'
+    
+    # Предварительно переводим, чтобы не делать это в шаблоне многократно
+    translated_description = excursion.get_translated_description(current_language)
+    translated_program = excursion.get_translated_program(current_language)
+    dates = excursion.get_dates_list()
+    today = date.today().isoformat()
+    default_date = None
+    formatted_default_date = None
+    months_ru = [
+        'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+        'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+    ]
+    months_kk = [
+        'қаңтар', 'ақпан', 'наурыз', 'сәуір', 'мамыр', 'маусым',
+        'шілде', 'тамыз', 'қыркүйек', 'қазан', 'қараша', 'желтоқсан'
+    ]
+    months = months_kk if current_language == 'kk' else months_ru
+    for d in sorted(dates):
+        if d > today:
+            default_date = d
+            # Форматируем дату в "D месяц" на нужном языке
+            import datetime
+            try:
+                dt = datetime.datetime.strptime(d, '%Y-%m-%d')
+                formatted_default_date = f"{dt.day} {months[dt.month - 1]}"
+            except Exception:
+                formatted_default_date = d
+            break
+
     return render(request, 'excursion_detail.html',
-{'excursion': excursion,
+        {'excursion': excursion,
         'included_items': included_items,
         'not_included_items': not_included_items,
         'dates': excursion.get_dates_list(),
         'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
+        'current_language': current_language,
+        'translated_description': translated_description,
+        'translated_program': translated_program,
+        'default_date': default_date,
+        'formatted_default_date': formatted_default_date,
         })
 
 @login_required(login_url='home')
@@ -733,6 +779,7 @@ def send_feedback(request):
 # API для автокомплита и поиска
 def search_locations_excursions(request):
     query = request.GET.get('query', '').strip()
+    current_language = request.LANGUAGE_CODE if hasattr(request, 'LANGUAGE_CODE') else 'ru'
     
     if not query or len(query) < 2:
         return JsonResponse({'results': []})
@@ -762,7 +809,47 @@ def search_locations_excursions(request):
         'url': f"/excursion/{excursion['id']}/"
     } for excursion in excursions]
     
+    # Если язык не русский, добавляем результаты поиска по переведенным названиям и локациям
+    if current_language != 'ru':
+        # Поиск по переведенным локациям
+        for excursion in Excursion.objects.all():
+            translated_location = excursion.get_translated_location(current_language)
+            if query.lower() in translated_location.lower():
+                location_results.append({
+                    'id': f"location_translated_{excursion.id}",
+                    'title': translated_location,
+                    'type': 'location',
+                    'url': f"/excursions/?location={excursion.location}"
+                })
+        
+        # Поиск по переведенным названиям
+        for excursion in Excursion.objects.all():
+            translated_title = excursion.get_translated_title(current_language)
+            if query.lower() in translated_title.lower():
+                excursion_results.append({
+                    'id': f"excursion_translated_{excursion.id}",
+                    'title': translated_title,
+                    'location': excursion.get_translated_location(current_language),
+                    'type': 'excursion',
+                    'url': f"/excursion/{excursion.id}/"
+                })
+    
+    # Удаляем дубликаты из результатов
+    seen_locations = set()
+    unique_location_results = []
+    for result in location_results:
+        if result['title'] not in seen_locations:
+            seen_locations.add(result['title'])
+            unique_location_results.append(result)
+    
+    seen_excursions = set()
+    unique_excursion_results = []
+    for result in excursion_results:
+        if result['id'] not in seen_excursions:
+            seen_excursions.add(result['id'])
+            unique_excursion_results.append(result)
+    
     # Объединяем результаты, сначала локации, потом экскурсии
-    results = location_results + excursion_results
+    results = unique_location_results + unique_excursion_results
     
     return JsonResponse({'results': results})

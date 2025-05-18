@@ -66,7 +66,7 @@
 .toast-title {
     font-weight: bold;
     margin-bottom: 5px;
-    font-family: 'Abhaya Libre ExtraBold', 'Abhaya Libre', serif;
+    font-family: 'Roboto', serif;
     font-size: 16px;
 }
 
@@ -156,7 +156,7 @@
 }
 
 .confirm-modal-title {
-    font-family: 'Abhaya Libre ExtraBold', 'Abhaya Libre', serif;
+    font-family: 'Roboto', serif;
     color: #21336C;
     font-size: 22px;
     margin-bottom: 15px;

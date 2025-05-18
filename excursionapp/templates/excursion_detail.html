@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
 <html>
 <head>
     <title>{{ excursion.title }}</title>
@@ -30,7 +31,7 @@
                 <div class="info-item">
                     <img src="{% static 'images/Clock.png' %}" alt="Clock" class="info-icon">
                     <div class="info-text">
-                        <span class="label">Продолжительность:</span>
+                        <span class="label">{% trans "Продолжительность:" %}</span>
                     <span class="value">
                         {% if excursion.duration == 'Несколько дней' and excursion.number_of_days %}
                             {{ excursion.number_of_days }} {% if excursion.number_of_days == 1 %}день{% elif excursion.number_of_days < 5 %}дня{% else %}дней{% endif %} ({{ excursion.start_time|time:"H:i" }})
@@ -47,28 +48,48 @@
                 <div class="info-item">
                     <img src="{% static 'images/Two-user.png' %}" alt="Group" class="info-icon">
                     <div class="info-text">
-                        <span class="label">{{ excursion.group_type }}</span>
-                        <span class="value">{{ excursion.people_count_range }}</span>
+                        <span class="label">                                    
+                                    {% if excursion.group_type == 'Групповые' %}
+                                        {% trans "Групповые" %}
+                                    {% elif excursion.group_type == 'Индивидуальные' %}
+                                        {% trans "Индивидуальные" %}
+                                    {% elif excursion.group_type == 'Семейные' %}
+                                        {% trans "Семейные" %}
+                                    {% else %}
+                                        {{ excursion.group_type }}  {# Если значение не соответствует ни одному из вариантов #}
+                                    {% endif %}
+                        </span>
+                        <span class="value">{% trans excursion.people_count_range %}</span>
                     </div>
                 </div>
                 <div class="info-item">
                     <img src="{% static 'images/ic_language_48px.png' %}" alt="Language" class="info-icon">
                     <div class="info-text">
-                        <span class="label">Язык:</span>
-                        <span class="value price">{{ excursion.language }}</span>
+                        <span class="label">{% trans "Язык:" %}</span>
+                                <span class="value price">
+                                    {% if excursion.language == 'Казахский' %}
+                                        {% trans "Казахский" %}
+                                    {% elif excursion.language == 'Русский' %}
+                                        {% trans "Русский" %}
+                                    {% elif excursion.language == 'Английский' %}
+                                        {% trans "Английский" %}
+                                    {% else %}
+                                        {{ excursion.language }}
+                                    {% endif %}
+                                </span>
                     </div>
                 </div>
             </div>
             <hr>
             <div class="description-guide-container">
                 <div class="excursion-description">
-                    <p>{{ excursion.description }}</p>
+                    <p>{{ translated_description|default:excursion.description }}</p>
                 </div>
 
                 <div class="guide-info">
                     <div class="guide-header">
                         <div class="guide-details">
-                            <h3>Гид</h3>
+                            <h3>{% trans "Гид" %}</h3>
                             <img src="{% static 'images/guideprofile.png' %}" alt="Гид" class="guide-avatar">
                             <p class="guide-name">{{ excursion.guide_name }}</p>
                         </div>
@@ -79,12 +100,24 @@
             <div class="lists-container">
                 {% if included_items %}
                     <div class="list-column">
-                        <h3>Что включено</h3>
+                        <h3>{% trans "Что включено" %}</h3>
                         <ul class="included-list">
                             {% for item in included_items %}
                                 <li>
                                     <img src="{% static 'images/check-circle.png' %}" alt="✔" class="list-icon">
-                                    {{ item }}
+                                    {% if item == 'Услуги гида/водителя' %}
+                                        {% trans "Услуги гида/водителя" %}
+                                    {% elif item == 'Трансфер на протяжении всего пути' %}
+                                        {% trans "Трансфер на протяжении всего пути" %}
+                                    {% elif item == 'Групповая аптечка' %}
+                                        {% trans "Групповая аптечка" %}
+                                    {% elif item == 'Включенный обед' %}
+                                        {% trans "Включенный обед" %}
+                                    {% elif item == 'Питание' %}
+                                        {% trans "Питание" %}
+                                    {% else %}
+                                        {{ item }}
+                                    {% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
@@ -93,12 +126,24 @@
 
                 {% if not_included_items %}
                     <div class="list-column">
-                        <h3>Что не включено</h3>
+                        <h3>{% trans "Что не включено" %}</h3>
                         <ul class="not-included-list">
                             {% for item in not_included_items %}
                                 <li>
                                     <img src="{% static 'images/close-circle.png' %}" alt="✘" class="list-icon">
-                                    {{ item }}
+                                    {% if item == 'Услуги гида/водителя' %}
+                                        {% trans "Услуги гида/водителя" %}
+                                    {% elif item == 'Трансфер на протяжении всего пути' %}
+                                        {% trans "Трансфер на протяжении всего пути" %}
+                                    {% elif item == 'Групповая аптечка' %}
+                                        {% trans "Групповая аптечка" %}
+                                    {% elif item == 'Включенный обед' %}
+                                        {% trans "Включенный обед" %}
+                                    {% elif item == 'Питание' %}
+                                        {% trans "Питание" %}
+                                    {% else %}
+                                        {{ item }}
+                                    {% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
@@ -108,28 +153,28 @@
             <hr>
             {% if excursion.program %}
             <div class="program-container">
-                <h3>Программа</h3>
+                <h3>{% trans "Программа" %}</h3>
                 <div class="program-content">
-                    {{ excursion.program|linebreaks }}
+                    {{ translated_program|default:excursion.program|linebreaks }}
                 </div>
             </div>
             <hr>
             {% endif %}
-            <h3>Доступные даты</h3>
+            <h3>{% trans "Доступные даты" %}</h3>
             
             <!-- Новый контейнер для двух колонок -->
             <div class="booking-details-container">
                 <!-- Левая колонка с бронированием -->
                 <div class="booking-column">
                     <div class="booking-card">
-                        <h2 class="booking-title">Выберите дату и время</h2>
+                        <h2 class="booking-title">{% trans "Выберите дату и время" %}</h2>
                         
                         <div class="date-selector">
                             {% if dates %}
                                 <!-- Показываем только две первые даты -->
                                 {% for date in dates|slice:":2" %}
                                     <div class="date-option {% if forloop.first %}active{% endif %}" onclick="selectDate('{{ date }}')">
-                                        <div class="date-label">{% if forloop.first %}Завтра{% elif forloop.counter == 2 %}Послезавтра{% endif %}</div>
+                                        <div class="date-label">{% if forloop.first %}{% trans "Завтра" %}{% elif forloop.counter == 2 %}{% trans "Послезавтра"%}{% endif %}</div>
                                         <div class="date-value">{{ date }}</div>
                                     </div>
                                 {% endfor %}
@@ -137,7 +182,7 @@
                                 <!-- Кнопка для открытия календаря с остальными датами -->
                                 <div class="date-option date-picker" id="datepicker-btn">
                                     <img src="{% static 'images/calendar-search.png' %}" alt="Календарь" class="calendar-icon">
-                                    <div class="date-value">Выбрать дату</div>
+                                    <div class="date-value">{% trans "Выбрать дату" %}</div>
                                 </div>
                             {% endif %}
                         </div>
@@ -149,7 +194,7 @@
                         
                         <div class="ticket-row">
                             <div class="ticket-info">
-                                <div class="ticket-type">Стандартный билет</div>
+                                <div class="ticket-type">{% trans "Стандартный билет" %}</div>
                             </div>
                             <div class="ticket-price" data-price="{{ excursion.price }}">₸ {{ excursion.price }}</div>
                             <div class="ticket-counter">
@@ -160,7 +205,7 @@
                         </div>
                         
                         <button class="booking-btn" onclick="checkAuthAndProceed(() => redirectToPayment({{ excursion.id }}))">
-                            Начать бронирование
+                            {% trans "Начать бронирование" %}
                         </button>
                     </div>
                 </div>
@@ -168,7 +213,7 @@
                 <!-- Правая колонка с деталями экскурсии -->
                 <div class="details-column">
                     <div class="details-card">
-                        <h2 class="details-title">Детали экскурсии</h2>
+                        <h2 class="details-title">{% trans "Детали экскурсии" %}</h2>
                         
                         <div class="organizer-info">
                             <div class="organizer-avatar">
@@ -176,33 +221,38 @@
                             </div>
                             <div class="organizer-details">
                                 <div class="organizer-name">{{ excursion.guide_name }}</div>
-                                <div class="organizer-role">Организатор</div>
+                                <div class="organizer-role">{% trans "Организатор" %}</div>
                             </div>
                         </div>
                         
                         <div class="excursion-details-list">
                             <div class="detail-item">
-                                <div class="detail-label">Тип экскурсии:</div>
-                                <div class="detail-value">{{ excursion.group_type }}</div>
-                            </div>
-                            
-                            <div class="detail-item">
-                                <div class="detail-label">Время начала:</div>
+                                <div class="detail-label">{% trans "Тип экскурсии:" %}</div>
                                 <div class="detail-value">
-                                    {% if dates.0 %}
-                                        {% if excursion.duration == 'Несколько дней' %}
-                                            {{ dates.0 }} в {{ excursion.start_time|time:"H:i" }}
-                                        {% else %}
-                                            {{ dates.0 }} в {{ excursion.start_time|time:"H:i" }}
-                                        {% endif %}
+                                    {% if excursion.group_type == 'Групповые' %}
+                                        {% trans "Групповые" %}
+                                    {% elif excursion.group_type == 'Индивидуальные' %}
+                                        {% trans "Индивидуальные" %}
+                                    {% elif excursion.group_type == 'Семейные' %}
+                                        {% trans "Семейные" %}
                                     {% else %}
-                                        По выбранной дате
+                                        {{ excursion.group_type }}  {# Если значение не соответствует ни одному из вариантов #}
                                     {% endif %}
                                 </div>
                             </div>
                             
                             <div class="detail-item">
-                                <div class="detail-label">Длительность:</div>
+                                <div class="detail-label">{% trans "Время начала:" %}</div>
+                                <div class="detail-value" id="excursion-start-date" 
+                                     data-start-time="{{ excursion.start_time|time:'H:i' }}"
+                                     data-iso-date="{{ default_date|default:dates.0 }}">
+                                    {{ default_date|default:dates.0 }} в {{ excursion.start_time|time:"H:i" }}
+                                </div>
+                                <input type="hidden" id="selectedDate" name="selectedDate" value="{{ default_date|default:dates.0 }}" />
+                            </div>
+                            
+                            <div class="detail-item">
+                                <div class="detail-label">{% trans "Длительность:" %}</div>
                                 <div class="detail-value">
                                     {% if excursion.duration == 'Несколько дней' and excursion.number_of_days %}
                                         {{ excursion.number_of_days }} {% if excursion.number_of_days == 1 %}день{% elif excursion.number_of_days < 5 %}дня{% else %}дней{% endif %} ({{ excursion.start_time|time:"H:i" }})
@@ -216,13 +266,13 @@
                             
                             <div class="detail-item">
                             {% if excursion.meeting_address %}
-                                <div class="detail-label">Место встречи:</div>
+                                <div class="detail-label">{% trans "Место встречи:" %}</div>
                                 <div class="detail-value">{{ excursion.meeting_address }}</div>
                             {% endif %}
                             </div>
                             
                             <div class="detail-item">
-                                <div class="detail-label">Место окончания:</div>
+                                <div class="detail-label">{% trans "Место окончания:" %}</div>
                                 <div class="detail-value">
                                     {% if excursion.end_location %}
                                         {{ excursion.end_location }}
@@ -258,10 +308,18 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
     <script src="{% static 'js/excursion_detail.js' %}"></script>
-    
+    {% include 'js_constants.html' %}
     <!-- Скрытое поле с доступными датами -->
     <div id="availableDatesData" style="display: none;" 
          data-dates="{% for date in dates %}{{ date }}{% if not forloop.last %},{% endif %}{% endfor %}">
     </div>
+    <script>
+        window.CURRENT_LANG = "{{ current_language }}";
+        window.LABELS = {
+            tomorrow: "{% trans 'Завтра' %}",
+            dayAfterTomorrow: "{% trans 'Послезавтра' %}",
+            availableDate: "{% trans 'Доступная дата' %}"
+        };
+    </script>
 </body>
 </html> 

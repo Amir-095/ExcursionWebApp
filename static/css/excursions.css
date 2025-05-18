@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
 }
 .content-wrapper {
     display: flex;
@@ -59,7 +59,7 @@ body {
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 16px;
-    font-family: 'Abhaya Libre', Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     box-sizing: border-box;
 }
 
@@ -181,7 +181,7 @@ body {
 }
 
 .excursion-cards-container h3{
-    font-family: Abhaya Libre ExtraBold;
+    font-family: 'Roboto';
     font-weight: 800;
     font-size: 26px;
     letter-spacing: 0%;
@@ -199,14 +199,14 @@ body {
 }
 
 .card-content h3 {
-    font-family: 'Abhaya Libre ExtraBold';
+    font-family: 'Roboto';
     font-size: 20px;
     color: white;
     margin: 0 0 5px 0;
 }
 
 .tour-type {
-    font-family: 'Abhaya Libre';
+    font-family: 'Roboto';
     font-size: 16px;
     color: rgba(255, 255, 255, 0.8);
     margin: 0 0 15px 0;
@@ -219,7 +219,7 @@ body {
 }
 
 .price {
-    font-family: 'Abhaya Libre';
+    font-family: 'Roboto';
     font-size: 18px;
     font-weight: bold;
     color: white;

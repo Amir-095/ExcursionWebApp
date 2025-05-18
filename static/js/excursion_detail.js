@@ -82,6 +82,34 @@ function formatDateToRussian(dateString) {
     return `${day} ${month}`;
 }
 
+// Функция для преобразования формата даты из ISO (YYYY-MM-DD) в формат "DD айы" на казахском
+function formatDateToKazakh(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    
+    const months = [
+        'қаңтар', 'ақпан', 'наурыз', 'сәуір', 'мамыр', 'маусым',
+        'шілде', 'тамыз', 'қыркүйек', 'қазан', 'қараша', 'желтоқсан'
+    ];
+    
+    const month = months[date.getMonth()];
+    return `${day} ${month}`;
+}
+
+// Функция для преобразования формата даты из ISO (YYYY-MM-DD) в формат "Month DD" на английском
+function formatDateToEnglish(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    
+    const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    
+    const month = months[date.getMonth()];
+    return `${month} ${day}`;
+}
+
 // Функция для получения доступных дат относительно текущего дня
 function updateAvailableDates() {
     // Получаем доступные даты из скрытого поля
@@ -103,7 +131,7 @@ function updateAvailableDates() {
     
     // Отфильтровываем даты, которые уже прошли
     const futureDates = availableDates.filter(dateStr => {
-        return dateStr >= today;
+        return dateStr > today;
     }).sort(); // Сортируем по возрастанию
     
     // Если есть доступные даты в будущем
@@ -145,12 +173,12 @@ function updateAvailableDates() {
             
             // Определяем, является ли дата "Завтра" или "Послезавтра"
             if (futureDates[i] === tomorrowISO) {
-                dateLabel.textContent = 'Завтра';
+                dateLabel.textContent = window.LABELS ? window.LABELS.tomorrow : 'Завтра';
             } else if (futureDates[i] === dayAfterTomorrowISO) {
-                dateLabel.textContent = 'Послезавтра';
+                dateLabel.textContent = window.LABELS ? window.LABELS.dayAfterTomorrow : 'Послезавтра';
             } else {
                 // Если не завтра и не послезавтра, просто показываем формат даты
-                dateLabel.textContent = 'Доступная дата';
+                dateLabel.textContent = window.LABELS ? window.LABELS.availableDate : 'Доступная дата';
             }
             
             const dateValue = document.createElement('div');
@@ -193,7 +221,23 @@ function updateAvailableDates() {
     }
 }
 
-// Обновляем функцию selectDate для работы с новым форматом дат
+function getMonthName(monthIndex) {
+    // Получаем язык из глобальной переменной, которую передали из Django
+    const lang = window.CURRENT_LANG || 'ru';
+    const months_ru = [
+        'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+        'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+    ];
+    const months_kk = [
+        'қаңтар', 'ақпан', 'наурыз', 'сәуір', 'мамыр', 'маусым',
+        'шілде', 'тамыз', 'қыркүйек', 'қазан', 'қараша', 'желтоқсан'
+    ];
+    if (lang === 'kk') {
+        return months_kk[monthIndex];
+    }
+    return months_ru[monthIndex];
+}
+
 function selectDate(date) {
     // Обновляем скрытое поле с выбранной датой (в ISO формате)
     document.getElementById('selectedDate').value = date;
@@ -204,7 +248,6 @@ function selectDate(date) {
         const dateValueElement = option.querySelector('.date-value');
         if (dateValueElement) {
             const isoDate = dateValueElement.getAttribute('data-iso-date') || dateValueElement.textContent;
-            
             if (isoDate === date) {
                 option.classList.add('active');
             } else if (!option.classList.contains('date-picker')) {
@@ -214,6 +257,30 @@ function selectDate(date) {
             option.classList.remove('active');
         }
     });
+
+    // Обновляем отображение даты в блоке "Время начала"
+    const startDateBlock = document.getElementById('excursion-start-date');
+    if (startDateBlock) {
+        const startTime = startDateBlock.getAttribute('data-start-time') || '12:00';
+        const currentLang = window.CURRENT_LANG || 'ru';
+        
+        let formattedDate;
+        let timePreposition;
+        
+        if (currentLang === 'kk') {
+            formattedDate = formatDateToKazakh(date);
+            timePreposition = '';
+        } else if (currentLang === 'en') {
+            formattedDate = formatDateToEnglish(date);
+            timePreposition = 'at';
+        } else {
+            formattedDate = formatDateToRussian(date);
+            timePreposition = 'в';
+        }
+        
+        startDateBlock.textContent = `${formattedDate} ${timePreposition} ${startTime}`;
+        startDateBlock.setAttribute('data-iso-date', date);
+    }
 }
 
 // Функция для отображения всплывающего уведомления
@@ -326,6 +393,48 @@ function adjustTimeDisplay() {
     }
 }
 
+// Функция для обновления форматирования дат на странице
+function updateDatesFormatting() {
+    const currentLang = window.CURRENT_LANG || 'ru';
+    const dateValues = document.querySelectorAll('.date-value[data-iso-date]');
+    
+    dateValues.forEach(element => {
+        const isoDate = element.getAttribute('data-iso-date');
+        if (isoDate) {
+            if (currentLang === 'kk') {
+                element.textContent = formatDateToKazakh(isoDate);
+            } else if (currentLang === 'en') {
+                element.textContent = formatDateToEnglish(isoDate);
+            } else {
+                element.textContent = formatDateToRussian(isoDate);
+            }
+        }
+    });
+
+    // Обновляем дату и время в блоке "Время начала"
+    const startDateBlock = document.getElementById('excursion-start-date');
+    if (startDateBlock) {
+        const isoDate = startDateBlock.getAttribute('data-iso-date');
+        const startTime = startDateBlock.getAttribute('data-start-time');
+        if (isoDate) {
+            let formattedDate;
+            let timePreposition;
+            
+            if (currentLang === 'kk') {
+                formattedDate = formatDateToKazakh(isoDate);
+                timePreposition = '';
+            } else if (currentLang === 'en') {
+                formattedDate = formatDateToEnglish(isoDate);
+                timePreposition = 'at';
+            } else {
+                formattedDate = formatDateToRussian(isoDate);
+                timePreposition = 'в';
+            }
+            startDateBlock.textContent = `${formattedDate} ${timePreposition} ${startTime}`;
+        }
+    }
+}
+
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
     // Инициализируем общую цену
@@ -345,6 +454,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Устанавливаем таймер для обновления дат при смене дня
     scheduleNextDayUpdate();
+
+    // Обновляем форматирование дат в соответствии с текущим языком
+    updateDatesFormatting();
 });
 
 // Инициализация flatpickr с обработкой форматов дат
@@ -367,7 +479,7 @@ function initFlatpickr() {
     
     // Отфильтровываем даты, которые уже прошли
     const futureDates = availableDates.filter(dateStr => {
-        return dateStr >= today;
+        return dateStr > today;
     }).sort(); // Сортируем по возрастанию
     
     // Если нет доступных дат, не инициализируем datepicker
@@ -376,12 +488,43 @@ function initFlatpickr() {
     // Инициализируем flatpickr
     const datePickerBtn = document.getElementById('datepicker-btn');
     if (datePickerBtn) {
-        flatpickr.localize(flatpickr.l10ns.ru); // Устанавливаем русскую локализацию глобально
+        // Определяем язык из глобальной переменной
+        const currentLang = window.CURRENT_LANG || 'ru';
+        
+        // Создаем казахскую локализацию для flatpickr, если её ещё нет
+        if (!flatpickr.l10ns.kk) {
+            flatpickr.l10ns.kk = {
+                weekdays: {
+                    shorthand: ["Жк", "Дс", "Сс", "Ср", "Бс", "Жм", "Сб"],
+                    longhand: ["Жексенбі", "Дүйсенбі", "Сейсенбі", "Сәрсенбі", "Бейсенбі", "Жұма", "Сенбі"]
+                },
+                months: {
+                    shorthand: ["Қаң", "Ақп", "Нау", "Сәу", "Мам", "Мау", "Шіл", "Там", "Қыр", "Қаз", "Қар", "Жел"],
+                    longhand: ["Қаңтар", "Ақпан", "Наурыз", "Сәуір", "Мамыр", "Маусым", "Шілде", "Тамыз", "Қыркүйек", "Қазан", "Қараша", "Желтоқсан"]
+                },
+                firstDayOfWeek: 1,
+                rangeSeparator: " — ",
+                weekAbbreviation: "Апта",
+                scrollTitle: "Үлкейту үшін айналдырыңыз",
+                toggleTitle: "Ауыстыру үшін басыңыз",
+                amPM: ["ТД", "ТК"],
+                yearAriaLabel: "Жыл",
+                time_24hr: true
+            };
+        }
+        
+        // Устанавливаем локализацию в зависимости от выбранного языка
+        if (currentLang === 'kk') {
+            flatpickr.localize(flatpickr.l10ns.kk);
+        } else {
+            flatpickr.localize(flatpickr.l10ns.ru);
+        }
+        
         flatpickr(datePickerBtn, {
             inline: false,
             enable: futureDates,
             dateFormat: "Y-m-d",
-            locale: 'ru',
+            locale: currentLang, // Используем текущий язык
             monthSelectorType: 'static',
             onChange: function(selectedDates, dateStr) {
                 selectDate(dateStr);
@@ -394,7 +537,12 @@ function initFlatpickr() {
                 // Обновляем текст кнопки
                 const dateValueEl = datePickerBtn.querySelector('.date-value');
                 if (dateValueEl) {
-                    dateValueEl.textContent = formatDateToRussian(dateStr);
+                    const formattedDate = currentLang === 'kk' ? 
+                        formatDateToKazakh(dateStr) : 
+                        currentLang === 'en' ? 
+                            formatDateToEnglish(dateStr) : 
+                            formatDateToRussian(dateStr);
+                    dateValueEl.textContent = formattedDate;
                     dateValueEl.setAttribute('data-iso-date', dateStr);
                 }
             }

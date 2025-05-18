@@ -55,9 +55,7 @@
         </div>
     </div>
     
-    <script>
-        const deleteExcursionUrl = "{% url 'delete_excursion' 0 %}"; // 0 будет заменен на ID экскурсии в JavaScript
-    </script>
+    {% include 'js_constants.html' %}   
     <script src="{% static 'js/tour_agent_excursion.js' %}"></script>
     {% include 'modal.html' %}
 </body>

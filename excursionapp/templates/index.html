@@ -42,7 +42,7 @@
                     <img src="{{ excursion.image_url }}" alt="{{ excursion.title }}">
                     <div class="card-content">
                         <h3>{{ excursion.title }}</h3>
-                        <p class="tour-type">{{ excursion.duration }}</p>
+                        <p class="tour-type">{% trans excursion.duration %}</p>
                         <div class="price-book">
                             <span class="price">{{ excursion.price }} ₸</span>
                             <button class="book-button" onclick="window.location.href='{% url 'excursion_detail' excursion.id %}'">{% trans "Забронировать" %}</button>
@@ -57,9 +57,7 @@
     {% include 'modal.html' %}
     {% include 'feedback.html' %}
     <script src="{% static 'js/search.js' %}"></script>
-    <script>
-        const createAgentUrl = "{% url 'create_tour_agent' %}"; 
-        const checkAuthUrl = "{% url 'check_auth' %}";
-    </script>
+    {% include 'js_constants.html' %}
+    
 </body>
 </html>

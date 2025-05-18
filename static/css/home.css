@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto';
 }
 
 .image-container {
@@ -39,7 +39,7 @@ body {
 }
 
 .overlay h1 {
-    font-family: Abhaya Libre ExtraBold;
+    font-family: 'Roboto';
     font-weight: 800;
     font-size: 40px;
     line-height: 47.19px;
@@ -47,7 +47,7 @@ body {
 }
 
 .overlay p {
-    font-family: Abhaya Libre;
+    font-family: 'Roboto';
     font-weight: 400;
     font-size: 20px;
     line-height: 23.59px;
@@ -76,7 +76,7 @@ body {
     border: none;
     border-radius: 10px;
     font-size: 16px;
-    font-family: 'Abhaya Libre', Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     position: relative;
     right: 45px;
 }
@@ -116,7 +116,7 @@ body {
     font-weight: bold;
     cursor: pointer;
     border-radius: 0 30px 30px 0;
-    font-family: 'Abhaya Libre', Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     font-size: 16px;
 }
 
@@ -184,7 +184,7 @@ body {
     margin-top: 2px;
 }
 
-.content-container {    width: 100%;    display: flex;    flex-direction: column;    align-items: center;    margin-top: 20px;}.popular-excursions {    width: 100%;    max-width: 1200px;    padding: 0 20px;    margin: 0 auto;    box-sizing: border-box;}.popular-excursions h2 {    font-family: 'Abhaya Libre ExtraBold';    font-size: 32px;    color: #000;    margin-bottom: 30px;    text-align: left;    width: 100%;}.home-excursion-container {    display: flex;    flex-wrap: wrap;    gap: 20px;    justify-content: flex-start;    width: 100%;    overflow: hidden;}/* Медиа-запросы для адаптивности */@media (max-width: 1600px) {    .popular-excursions {        max-width: 1000px;    }}@media (max-width: 1200px) {    .popular-excursions {        max-width: 800px;    }}@media (max-width: 992px) {    .popular-excursions {        max-width: 600px;        padding: 0 15px;    }}
+.content-container {    width: 100%;    display: flex;    flex-direction: column;    align-items: center;    margin-top: 20px;}.popular-excursions {    width: 100%;    max-width: 1200px;    padding: 0 20px;    margin: 0 auto;    box-sizing: border-box;}.popular-excursions h2 {    font-family: 'Roboto';    font-size: 32px;    color: #000;    margin-bottom: 30px;    text-align: left;    width: 100%;}.home-excursion-container {    display: flex;    flex-wrap: wrap;    gap: 20px;    justify-content: flex-start;    width: 100%;    overflow: hidden;}/* Медиа-запросы для адаптивности */@media (max-width: 1600px) {    .popular-excursions {        max-width: 1000px;    }}@media (max-width: 1200px) {    .popular-excursions {        max-width: 800px;    }}@media (max-width: 992px) {    .popular-excursions {        max-width: 600px;        padding: 0 15px;    }}
 
 .home-excursion-card {
     width: 375px;
@@ -215,14 +215,14 @@ body {
 }
 
 .home-excursion-card .card-content h3 {
-    font-family: 'Abhaya Libre ExtraBold';
+    font-family: 'Roboto';
     font-size: 20px;
     color: white;
     margin: 0 0 5px 0;
 }
 
 .home-excursion-card .tour-type {
-    font-family: 'Abhaya Libre';
+    font-family: 'Roboto';
     font-size: 16px;
     color: rgba(255, 255, 255, 0.8);
     margin: 0 0 15px 0;
@@ -235,7 +235,7 @@ body {
 }
 
 .home-excursion-card .price {
-    font-family: 'Abhaya Libre';
+    font-family: 'Roboto';
     font-size: 18px;
     font-weight: bold;
     color: white;

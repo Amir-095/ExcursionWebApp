@@ -1,12 +1,13 @@
 <!doctype html>
 {% load static %}
-<html lang="en">
+{% load i18n %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Оплата экскурсии</title>
+    <title>{% trans "Оплата экскурсии" %}</title>
     <link rel="stylesheet" href="{% static 'css/payment.css' %}">
     <link rel="stylesheet" href="{% static 'css/notifications.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -19,18 +20,18 @@
 
 <div class="container">
     <form id="paymentForm">
-        <h2>Оплата экскурсии: {{ excursion.title }}</h2>
-        <p>Дата: {{ selected_date }}</p>
-        <p>Количество билетов: {{ ticket_count }}</p>
-        <p>Итого к оплате: <strong id="totalPriceDisplay">{{ total_price }} KZT</strong></p>
+        <h2>{% trans "Оплата экскурсии" %}: {{ excursion.title }}</h2>
+        <p>{% trans "Дата" %}: {{ selected_date }}</p>
+        <p>{% trans "Количество билетов" %}: {{ ticket_count }}</p>
+        <p>{% trans "Итого к оплате" %}: <strong id="totalPriceDisplay">{{ total_price }} KZT</strong></p>
 
         <!-- Скрытое поле для передачи общей стоимости на сервер -->
         <input type="hidden" id="totalPrice" name="total_price" value="{{ total_price }}" />
 
         <!-- Выпадающий список сохранённых карт -->
-        <label>Выберите сохранённую карту:</label>
+        <label>{% trans "Выберите сохранённую карту" %}:</label>
         <select id="savedCardSelect" name="saved_card">
-            <option value="">Новая карта</option>
+            <option value="">{% trans "Новая карта" %}</option>
             {% for card in saved_cards %}
             <option value="{{ card.id }}">**** **** **** {{ card.decrypt_four_card_number }} ({{ card.expiry_date }})</option>
             {% endfor %}
@@ -53,14 +54,14 @@
                         <div class="card-details">
                             <!-- Поле для ввода имени владельца -->
                             <div class="card-holder-field">
-                                <label for="cardholderName">Имя владельца</label>
-                                <input type="text" id="cardholderName" name="cardholder_name" placeholder="ИМЯ ВЛАДЕЛЬЦА" autocomplete="off" />
+                                <label for="cardholderName">{% trans "Имя владельца" %}</label>
+                                <input type="text" id="cardholderName" name="cardholder_name" placeholder="{% trans 'ИМЯ ВЛАДЕЛЬЦА' %}" autocomplete="off" />
                             </div>
                             
                             <!-- Поле для ввода срока действия -->
                             <div class="card-expiry-field">
-                                <label for="expiryDate">Срок</label>
-                                <input type="text" id="expiryDate" name="expiry_date" placeholder="ММ/ГГ" 
+                                <label for="expiryDate">{% trans "Срок" %}</label>
+                                <input type="text" id="expiryDate" name="expiry_date" placeholder="{% trans 'ММ/ГГ' %}" 
                                       maxlength="5" autocomplete="off"
                                       oninput="this.value = this.value.replace(/[^0-9\/]/g, '').replace(/^(\d{2})(\d)/, '$1/$2').slice(0, 5);" />
                             </div>
@@ -83,8 +84,8 @@
 
             <!-- Кнопки для переворота карты -->
             <div class="card-flip-buttons">
-                <button type="button" class="flip-btn" id="flipToFront">Передняя сторона</button>
-                <button type="button" class="flip-btn" id="flipToBack">Обратная сторона</button>
+                <button type="button" class="flip-btn" id="flipToFront">{% trans "Передняя сторона" %}</button>
+                <button type="button" class="flip-btn" id="flipToBack">{% trans "Обратная сторона" %}</button>
             </div>
 
         </div>
@@ -95,25 +96,24 @@
         <input type="hidden" id="ticketCount" name="ticket_count" value="{{ ticket_count }}" />
         <input type="hidden" id="saveCardInput" name="save_card" value="false" />
 
-        <button type="button" class="payment-btn" onclick="processPayment({{ excursion.id }})">Оплатить</button>
+        <button type="button" class="payment-btn" onclick="processPayment({{ excursion.id }})">{% trans "Оплатить" %}</button>
     </form>
 </div>
 
 <!-- Модальное окно для подтверждения сохранения карты -->
 <div class="modal-overlay" id="saveCardModal">
     <div class="confirm-modal">
-        <div class="confirm-modal-title">Сохранить карту?</div>
-        <div class="confirm-modal-message">Хотите сохранить данные карты для будущих оплат? Это позволит вам быстрее оплачивать экскурсии в следующий раз.</div>
+        <div class="confirm-modal-title">{% trans "Сохранить карту?" %}</div>
+        <div class="confirm-modal-message">{% trans "Хотите сохранить данные карты для будущих оплат? Это позволит вам быстрее оплачивать экскурсии в следующий раз." %}</div>
         <div class="confirm-modal-buttons">
-            <button class="modal-btn modal-btn-cancel" id="cancelSaveCard">Нет</button>
-            <button class="modal-btn modal-btn-confirm" id="confirmSaveCard">Да, сохранить</button>
+            <button class="modal-btn modal-btn-cancel" id="cancelSaveCard">{% trans "Нет" %}</button>
+            <button class="modal-btn modal-btn-confirm" id="confirmSaveCard">{% trans "Да, сохранить" %}</button>
         </div>
     </div>
 </div>
-<script>
-            const checkCardUrl = "{% url 'check_card' %}";
-            const processPaymentUrl = "{% url 'process_payment' %}";
-</script>
+
+{% include 'js_constants.html' %}
+
 <script src="{% static 'js/payment.js' %}"></script>
 
 </body>

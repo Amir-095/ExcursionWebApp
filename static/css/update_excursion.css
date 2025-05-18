@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    font-family: 'Abhaya Libre', Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     background-color: #f8f9fa;
     color: #333;
 }
@@ -15,7 +15,7 @@ body {
 }
 
 .page-title {
-    font-family: 'Abhaya Libre ExtraBold', 'Abhaya Libre', serif;
+    font-family: 'Roboto ExtraBold', 'Roboto', serif;
     color: #21336C;
     font-size: 36px;
     margin-bottom: 30px;
@@ -59,7 +59,7 @@ body {
     font-size: 16px;
     transition: all 0.3s ease;
     box-sizing: border-box;
-    font-family: 'Abhaya Libre', Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
 }
 
 .form-input:focus,
@@ -393,7 +393,7 @@ body {
 
 .error-message {
     color: #ff4444;
-    font-family: 'Abhaya Libre', Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     font-size: 18px;
     margin-bottom: 20px;
 }
@@ -537,7 +537,7 @@ body {
     font-size: 16px;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-family: 'Abhaya Libre', Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
 }
 
 .btn-secondary {

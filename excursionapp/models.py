@@ -5,6 +5,8 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from cryptography.fernet import Fernet
 from django.contrib.auth import get_user_model
+from deep_translator import GoogleTranslator
+from django.utils.translation import get_language
 
 # Create your models here.
 
@@ -73,6 +75,74 @@ class Excursion(models.Model):
             self.dates.remove(date)
             self.save()
 
+    def translate_text(self, text, target_lang='kk'):
+        """Переводит текст на указанный язык с помощью deep-translator"""
+        if not text:
+            return ""
+        
+        try:
+            # Определяем язык перевода
+            if target_lang == 'en':
+                translator = GoogleTranslator(source='ru', target='en')
+            else:
+                translator = GoogleTranslator(source='ru', target=target_lang)
+            
+            # Разделяем текст на части для соблюдения лимитов API
+            max_chunk_size = 4999  # Google Translate API ограничение
+            
+            if len(text) <= max_chunk_size:
+                return translator.translate(text)
+            else:
+                # Разбиваем текст на абзацы
+                paragraphs = text.split('\n')
+                translated_paragraphs = []
+                
+                current_chunk = ""
+                for paragraph in paragraphs:
+                    if len(current_chunk) + len(paragraph) + 1 <= max_chunk_size:
+                        if current_chunk:
+                            current_chunk += '\n' + paragraph
+                        else:
+                            current_chunk = paragraph
+                    else:
+                        # Переводим накопленный чанк
+                        if current_chunk:
+                            translated_paragraphs.append(translator.translate(current_chunk))
+                        current_chunk = paragraph
+                
+                # Переводим оставшийся текст
+                if current_chunk:
+                    translated_paragraphs.append(translator.translate(current_chunk))
+                
+                return '\n'.join(translated_paragraphs)
+        except Exception as e:
+            # В случае ошибки возвращаем исходный текст
+            print(f"Translation error: {e}")
+            return text
+
+    def get_translated_description(self, lang_code):
+        """Возвращает переведенное описание экскурсии"""
+        if lang_code == 'ru' or not self.description:
+            return self.description
+        return self.translate_text(self.description, lang_code)
+    
+    def get_translated_program(self, lang_code):
+        """Возвращает переведенную программу экскурсии"""
+        if lang_code == 'ru' or not self.program:
+            return self.program
+        return self.translate_text(self.program, lang_code)
+
+    def get_translated_title(self, lang_code):
+        """Возвращает переведенное название экскурсии"""
+        if lang_code == 'ru' or not self.title:
+            return self.title
+        return self.translate_text(self.title, lang_code)
+
+    def get_translated_location(self, lang_code):
+        """Возвращает переведенную локацию экскурсии"""
+        if lang_code == 'ru' or not self.location:
+            return self.location
+        return self.translate_text(self.location, lang_code)
 
     def get_inclusion_status(self):
         included = []
