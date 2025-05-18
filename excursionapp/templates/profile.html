@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
 <html>
 <head>
     <title>Профиль</title>
@@ -18,9 +19,9 @@
     <div class="profile-container">
         <div class="profile-section">
             <div class="profile-info">
-            <h2>Информация профиля</h2>
+            <h2>{% trans "Информация профиля" %}</h2>
                 <div class="info-item">
-                    <span class="label">Имя:</span>
+                    <span class="label">{% trans "Имя" %}:</span>
                     <span class="value">{{ user.username }}</span>
                 </div>
                 <div class="info-item">
@@ -32,14 +33,14 @@
                     <span class="value">{{ user.phone_number }}</span>
                 </div>
                 <div class="profile-actions">
-                    <a href="{% url 'logout' %}" class="logout-btn">Выйти</a>
+                    <a href="{% url 'logout' %}" class="logout-btn">{% trans "Выйти" %}</a>
                 </div>
             </div>
         </div>
 
         <div class="payment-section">
             <div class="payment-info">
-            <h2 style="margin-bottom: 0px;">Способы оплаты</h2 >
+            <h2 style="margin-bottom: 0px;">{% trans "Способы оплаты" %}</h2 >
                 {% if saved_cards %}
                     <div class="card-info">
                         {% for card in saved_cards %}
@@ -51,14 +52,14 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    <p class="no-cards">Вы ещё не сохранили данные карты.</p>
+                    <p class="no-cards">{% trans "Вы ещё не сохранили данные карты." %}</p>
                 {% endif %}
             </div>
         </div>
     </div>
 
     <div class="excursions-container">
-        <h2>Забронированные экскурсии</h2>
+        <h2>{% trans "Забронированные экскурсии" %}</h2>
         {% if booked_excursions %}
             <div class="excursion-grid">
                 {% for booking in booked_excursions %}
@@ -78,7 +79,7 @@
                 {% endfor %}
             </div>
         {% else %}
-            <p>У вас пока нет забронированных экскурсий</p>
+            <p>{% trans "У вас пока нет забронированных экскурсий" %}</p>
         {% endif %}
     </div>
 {% include 'feedback.html' %}

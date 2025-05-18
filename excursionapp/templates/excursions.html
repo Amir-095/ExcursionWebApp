@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
 <html>
 <head>
     <title>Все Экскурсии</title>
@@ -16,10 +17,10 @@
         {% include 'navbar.html' %}
     
     <div class="header-search-container">
-        <h2 class="excursions-title">Все Экскурсии</h2>
+        <h2 class="excursions-title">{% trans "Все экскурсии" %}</h2>
         <div class="search-container">
             <div class="search-input-wrapper">
-                <input type="text" placeholder="Введите название места или экскурсии" class="search-input" id="searchInput">
+                <input type="text" placeholder="{% trans 'Введите название места или экскурсии' %}" class="search-input" id="searchInput">
                 <img class="search-icon" src="{% static 'images/ic_search_48px.png' %}" alt="Search">
                 <button class="search-clear" id="searchClear" style="display: none;">×</button>
             </div>
@@ -32,29 +33,29 @@
             <div class="filter-category">
                 <div class="filter-header">
                     <img src="{% static 'images/excurse type.png' %}" alt="Type" class="filter-icon">
-                    <h4>Тип экскурсии</h4>
+                    <h4>{% trans "Тип экскурсии" %}</h4>
                 </div>
-                <label><input type="checkbox" name="group_type" value="Групповые" onchange="handleFilterChange(event)"> Групповые</label>
-                <label><input type="checkbox" name="group_type" value="Индивидуальные" onchange="handleFilterChange(event)"> Индивидуальные</label>
-                <label><input type="checkbox" name="group_type" value="Семейные" onchange="handleFilterChange(event)"> Семейные</label>
+                <label><input type="checkbox" name="group_type" value="Групповые" onchange="handleFilterChange(event)"> {% trans "Групповые" %} </label>
+                <label><input type="checkbox" name="group_type" value="Индивидуальные" onchange="handleFilterChange(event)"> {% trans "Индивидуальные" %} </label>
+                <label><input type="checkbox" name="group_type" value="Семейные" onchange="handleFilterChange(event)"> {% trans "Семейные" %} </label>
             </div>
             <div class="filter-category">
                 <div class="filter-header">
                     <img src="{% static 'images/access_time.png' %}" alt="Duration" class="filter-icon">
-                    <h4>Длительность</h4>
+                    <h4>{% trans "Длительность" %}</h4>
                 </div>
-                <label><input type="checkbox" name="duration" value="Несколько часов" onchange="handleFilterChange(event)"> Несколько часов</label>
-                <label><input type="checkbox" name="duration" value="1 день" onchange="handleFilterChange(event)"> 1 день</label>
-                <label><input type="checkbox" name="duration" value="Несколько дней" onchange="handleFilterChange(event)"> Несколько дней</label>
+                <label><input type="checkbox" name="duration" value="Несколько часов" onchange="handleFilterChange(event)"> {% trans "Несколько часов" %} </label>
+                <label><input type="checkbox" name="duration" value="1 день" onchange="handleFilterChange(event)"> {% trans "1 день" %} </label>
+                <label><input type="checkbox" name="duration" value="Несколько дней" onchange="handleFilterChange(event)"> {% trans "Несколько дней" %} </label>
             </div>
             <div class="filter-category">
                 <div class="filter-header">
                     <img src="{% static 'images/language.png' %}" alt="Language" class="filter-icon">
-                    <h4>Язык</h4>
+                    <h4>{% trans "Язык" %}</h4>
                 </div>
-                <label><input type="checkbox" name="language" value="Казахский" onchange="handleFilterChange(event)"> Казахский</label>
-                <label><input type="checkbox" name="language" value="Русский" onchange="handleFilterChange(event)"> Русский</label>
-                <label><input type="checkbox" name="language" value="Английский" onchange="handleFilterChange(event)"> Английский</label>
+                <label><input type="checkbox" name="language" value="Казахский" onchange="handleFilterChange(event)">{% trans "Казахский" %} </label>
+                <label><input type="checkbox" name="language" value="Русский" onchange="handleFilterChange(event)"> {% trans "Русский" %} </label>
+                <label><input type="checkbox" name="language" value="Английский" onchange="handleFilterChange(event)"> {% trans "Английский" %} </label>
             </div>
         </form>
 
@@ -78,7 +79,7 @@
                                     <p class="tour-type">{{ excursion.duration }}</p>
                                     <div class="price-book">
                                         <span class="price">{{ excursion.price }} ₸</span>
-                                        <button class="book-button" onclick="window.location.href='{% url 'excursion_detail' excursion.id %}'">Забронировать</button>
+                                        <button class="book-button" onclick="window.location.href='{% url 'excursion_detail' excursion.id %}'">{% trans "Забронировать" %}</button>
                                     </div>
                                 </div>
                             </div>

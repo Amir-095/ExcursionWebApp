@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-15 14:00+0000\n"
+"POT-Creation-Date: 2025-05-18 03:23+0500\n"
 "PO-Revision-Date: 2025-05-15 14:00+0000\n"
 "Last-Translator: Your Name <your.email@example.com>\n"
 "Language-Team: Kazakh <kk@li.org>\n"
@@ -19,102 +19,220 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 # Навигационная панель
+#: .\excursionapp\templates\excursions.html:6
+#: .\excursionapp\templates\excursions.html:20
+msgid "Все Экскурсии"
+msgstr "Экскурсиялар"
+
+#: .\excursionapp\templates\excursions.html:23
+#: .\excursionapp\templates\index.html:27
+msgid "Введите название места или экскурсии"
+msgstr "Орын немесе экскурсия атауын енгізіңіз"
+
+#: .\excursionapp\templates\excursions.html:24
+msgid "Search"
+msgstr ""
+
+#: .\excursionapp\templates\excursions.html:35
+msgid "Type"
+msgstr ""
+
+#: .\excursionapp\templates\excursions.html:36
+msgid "Тип экскурсии"
+msgstr "Экскурсиянын типі"
+
+#: .\excursionapp\templates\excursions.html:38
+msgid "Групповые"
+msgstr "Топтық"
+
+#: .\excursionapp\templates\excursions.html:39
+msgid "Индивидуальные"
+msgstr "Жеке"
+
+#: .\excursionapp\templates\excursions.html:40
+msgid "Семейные"
+msgstr "Отбасылық"
+
+#: .\excursionapp\templates\excursions.html:44
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1863
+msgid "Duration"
+msgstr ""
+
+#: .\excursionapp\templates\excursions.html:20
+msgid "Все экскурсии"
+msgstr "Барлық экскурсиялар"
+
+#: .\excursionapp\templates\excursions.html:45
+msgid "Длительность"
+msgstr "Ұзақтығы"
+
+#: .\excursionapp\templates\excursions.html:47
+msgid "Несколько часов"
+msgstr "Бірнеше сағат"
+
+#: .\excursionapp\templates\excursions.html:48
+msgid "1 день"
+msgstr "1 күн"
+
+#: .\excursionapp\templates\excursions.html:49
+msgid "Несколько дней"
+msgstr "Бірнеше күн"
+
+#: .\excursionapp\templates\excursions.html:53
+msgid "Language"
+msgstr ""
+
+#: .\excursionapp\templates\excursions.html:54
+msgid "Язык"
+msgstr "Тіл"
+
+#: .\excursionapp\templates\excursions.html:56
+msgid "Казахский"
+msgstr "Қазақша"
+
+#: .\excursionapp\templates\excursions.html:57
+msgid "Русский"
+msgstr "Орысша"
+
+#: .\excursionapp\templates\excursions.html:58
+msgid "Английский"
+msgstr "Ағылшын"
+
+
+#: .\excursionapp\templates\excursions.html:82
+#: .\excursionapp\templates\index.html:48
+msgid "Забронировать"
+msgstr "Брондау"
+
+
+# Главная страница
+#: .\excursionapp\templates\index.html:23
+msgid "Откройте для себя красоту Казахстана"
+msgstr "Қазақстанның әсемдігін ашыңыз"
+
+#: .\excursionapp\templates\index.html:24
+msgid "Исследуйте захватывающие дух пейзажи и богатое"
+msgstr "Тыныс тарылтатын көріністер мен бай"
+
+#: .\excursionapp\templates\index.html:24
+msgid "культурное наследие с нашими экскурсиями с гидом"
+msgstr "мәдени мұраны біздің гид жетекшілігімен зерттеңіз"
+
+#: .\excursionapp\templates\index.html:28
+msgid "Поиск"
+msgstr "Іздеу"
+
+#: .\excursionapp\templates\index.html:38
+msgid "Популярные экскурсии"
+msgstr "Танымал экскурсиялар"
+
+# Навигационная панель
+#: .\excursionapp\templates\navbar.html:18
 msgid "Экскурсии"
 msgstr "Экскурсиялар"
 
+#: .\excursionapp\templates\navbar.html:20
 msgid "Регистрация турагента"
 msgstr "Турагент тіркеу"
 
+#: .\excursionapp\templates\navbar.html:21
 msgid "Турагенты"
 msgstr "Турагенттер"
 
+#: .\excursionapp\templates\navbar.html:24
 msgid "Ваши экскурсии"
 msgstr "Сіздің экскурсиялар"
 
+#: .\excursionapp\templates\navbar.html:25
 msgid "Создать экскурсию"
 msgstr "Экскурсия жасау"
 
+#: .\excursionapp\templates\navbar.html:28
+msgid "Профиль"
+msgstr "Профиль"
+
 # Модальное окно создания турагента
+#: .\excursionapp\templates\navbar.html:53
 msgid "Создание турагента"
 msgstr "Турагентті құру"
 
+#: .\excursionapp\templates\navbar.html:59
 msgid "Имя пользователя"
 msgstr "Пайдаланушы аты"
 
+#: .\excursionapp\templates\navbar.html:69
 msgid "Телефон"
 msgstr "Телефон"
 
+#: .\excursionapp\templates\navbar.html:74
 msgid "Пароль"
 msgstr "Құпия сөз"
 
+#: .\excursionapp\templates\navbar.html:79
 msgid "Подтверждение пароля"
 msgstr "Құпия сөзді растау"
 
+#: .\excursionapp\templates\navbar.html:84
 msgid "Создать"
 msgstr "Жасау"
 
+#: .\excursionapp\templates\navbar.html:85
+msgid "Отмена"
+msgstr "Бас тарту"
+
+#Страница профиля
+msgid "Имя"
+msgstr "Аты-жөні"
+
+msgid "Забронированные экскурсии"
+msgstr "Брондалған экскурсиялар"
+
+msgid "У вас пока нет забронированных экскурсий"
+msgstr "Сізде әлі брондалған экскурсиялар жоқ"
+
+msgid "Способы оплаты"
+msgstr "Төлем әдістері"
+
+msgid "Информация профиля"
+msgstr "Профиль ақпараты"
+
+msgid "Вы ещё не сохранили данные карты."
+msgstr "Сіз карта деректерін әлі сақтаған жоқсыз."
+
 # Общие элементы UI
-msgid "Войти"
-msgstr "Кіру"
+#~ msgid "Войти"
+#~ msgstr "Кіру"
 
 msgid "Выйти"
 msgstr "Шығу"
 
-msgid "Профиль"
-msgstr "Профиль"
+#~ msgid "Подробнее"
+#~ msgstr "Толығырақ"
 
-msgid "Поиск"
-msgstr "Іздеу"
+#~ msgid "Оплата"
+#~ msgstr "Төлем"
 
-msgid "Подробнее"
-msgstr "Толығырақ"
+#~ msgid "Сохранить"
+#~ msgstr "Сақтау"
 
-msgid "Забронировать"
-msgstr "Брондау"
+#~ msgid "Удалить"
+#~ msgstr "Жою"
 
-msgid "Оплата"
-msgstr "Төлем"
-
-msgid "Отмена"
-msgstr "Бас тарту"
-
-msgid "Сохранить"
-msgstr "Сақтау"
-
-msgid "Удалить"
-msgstr "Жою"
-
-msgid "Редактировать"
-msgstr "Өңдеу"
+#~ msgid "Редактировать"
+#~ msgstr "Өңдеу"
 
 # Заголовки страниц
-msgid "Главная"
-msgstr "Басты бет"
+#~ msgid "Главная"
+#~ msgstr "Басты бет"
 
-msgid "Список экскурсий"
-msgstr "Экскурсиялар тізімі"
+#~ msgid "Список экскурсий"
+#~ msgstr "Экскурсиялар тізімі"
 
-msgid "Детали экскурсии"
-msgstr "Экскурсия мәліметтері"
+#~ msgid "Детали экскурсии"
+#~ msgstr "Экскурсия мәліметтері"
 
-msgid "Страница профиля"
-msgstr "Профиль беті"
+#~ msgid "Страница профиля"
+#~ msgstr "Профиль беті"
 
-msgid "Настройки"
-msgstr "Параметрлер"
-
-# Главная страница
-msgid "Откройте для себя красоту Казахстана"
-msgstr "Қазақстанның әсемдігін ашыңыз"
-
-msgid "Исследуйте захватывающие дух пейзажи и богатое"
-msgstr "Тыныс тарылтатын көріністер мен бай"
-
-msgid "культурное наследие с нашими экскурсиями с гидом"
-msgstr "мәдени мұраны біздің гид жетекшілігімен зерттеңіз"
-
-msgid "Введите название места или экскурсии"
-msgstr "Орын немесе экскурсия атауын енгізіңіз"
-
-msgid "Популярные экскурсии"
-msgstr "Танымал экскурсиялар" 
+#~ msgid "Настройки"
+#~ msgstr "Параметрлер"
