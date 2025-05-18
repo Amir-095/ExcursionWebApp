@@ -315,6 +315,11 @@ msgstr "Қолжетімді күн"
 msgid "Выйти"
 msgstr "Шығу"
 
+msgid "дня"
+msgstr "күн"
+
+msgid "дней"
+msgstr "күн"
 
 #: .\excursionapp\templates\excursion_detail.html:62
 msgid "10-15 человек"
@@ -419,3 +424,4 @@ msgstr "Құпия сөзді растаңыз"
 
 msgid "Уже есть аккаунт?"
 msgstr "Тіркелгіңіз бар ма?"
+

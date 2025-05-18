@@ -120,6 +120,20 @@
             </div>
             
             <div class="form-group">
+                <label class="form-label">Аватар гида</label>
+                <div class="file-input-container">
+                    <label for="id_guide_avatar" class="file-input-label">
+                        <i class="fas fa-upload"></i> Выберите аватарку
+                    </label>
+                    <input type="file" name="guide_avatar" id="id_guide_avatar" accept="image/*" class="file-input">
+                    <div class="file-input-name" id="guide-avatar-name">Файл не выбран</div>
+                </div>
+                <div class="image-preview" id="guide-avatar-preview">
+                    <span>Предпросмотр аватарки</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
                 <label class="form-label">Услуги</label>
                 <div class="services-container">
                     <p class="services-help-text">Отметьте услуги, которые включены в стоимость экскурсии</p>
@@ -171,7 +185,7 @@
                 <label for="date_picker" class="form-label">Доступные даты</label>
                 <input type="text" id="date_picker" name="selected_dates" class="form-input" placeholder="Выберите даты" required>
                 <div class="form-help-text">Выберите несколько дат, когда экскурсия будет доступна</div>
-        </div>
+            </div>
             
             <button type="submit" class="submit-button">Создать экскурсию</button>
     </form>
@@ -183,6 +197,31 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{% static 'js/create_excursion.js' %}"></script>
+    <script>
+        // Добавляем обработчик для поля avatar
+        const guideAvatarInput = document.getElementById('id_guide_avatar');
+        const guideAvatarName = document.getElementById('guide-avatar-name');
+        const guideAvatarPreview = document.getElementById('guide-avatar-preview');
+
+        if (guideAvatarInput) {
+            guideAvatarInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    guideAvatarName.textContent = file.name;
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        guideAvatarPreview.innerHTML = `<img src="${e.target.result}" alt="Предпросмотр аватарки">`;
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    guideAvatarName.textContent = 'Файл не выбран';
+                    guideAvatarPreview.innerHTML = '<span>Предпросмотр аватарки</span>';
+                }
+            });
+        }
+
+        // ... остальной код для flatpickr и других скриптов
+    </script>
     {% include 'js_constants.html' %}
     {% include 'modal.html' %}
 </body>

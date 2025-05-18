@@ -34,11 +34,11 @@
                         <span class="label">{% trans "Продолжительность:" %}</span>
                     <span class="value">
                         {% if excursion.duration == 'Несколько дней' and excursion.number_of_days %}
-                            {{ excursion.number_of_days }} {% if excursion.number_of_days == 1 %}день{% elif excursion.number_of_days < 5 %}дня{% else %}дней{% endif %} ({{ excursion.start_time|time:"H:i" }})
+                            {{ excursion.number_of_days }} {% if excursion.number_of_days == 1 %}{% trans "день" %}{% elif excursion.number_of_days < 5 %}{% trans "дня" %}{% else %}{% trans "дней" %}{% endif %} ({{ excursion.start_time|time:"H:i" }})
                         {% elif excursion.duration == '1 день' %}
-                            1 день ({{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }})
+                            {% trans "1 день" %} ({{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }})
                         {% elif excursion.duration == 'Несколько часов' %}
-                            {{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }}
+                            {% trans "Несколько часов" %} ({{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }})
                         {% else %}
                             {{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }} {# Fallback на всякий случай #}
                         {% endif %}
@@ -90,7 +90,11 @@
                     <div class="guide-header">
                         <div class="guide-details">
                             <h3>{% trans "Гид" %}</h3>
-                            <img src="{% static 'images/guideprofile.png' %}" alt="Гид" class="guide-avatar">
+                            {% if excursion.guide_avatar %}
+                                <img src="data:image/jpeg;base64,{{ excursion.guide_avatar|to_base64 }}" alt="Гид" class="guide-avatar">
+                            {% else %}
+                                <img src="{% static 'images/guideprofile.png' %}" alt="Гид" class="guide-avatar">
+                            {% endif %}
                             <p class="guide-name">{{ excursion.guide_name }}</p>
                         </div>
                     </div>
@@ -217,7 +221,11 @@
                         
                         <div class="organizer-info">
                             <div class="organizer-avatar">
-                                <img src="{% static 'images/guideprofile.png' %}" alt="Организатор" class="avatar-img">
+                                {% if excursion.guide_avatar %}
+                                    <img src="data:image/jpeg;base64,{{ excursion.guide_avatar|to_base64 }}" alt="Организатор" class="avatar-img">
+                                {% else %}
+                                    <img src="{% static 'images/guideprofile.png' %}" alt="Организатор" class="avatar-img">
+                                {% endif %}
                             </div>
                             <div class="organizer-details">
                                 <div class="organizer-name">{{ excursion.guide_name }}</div>
@@ -255,9 +263,9 @@
                                 <div class="detail-label">{% trans "Длительность:" %}</div>
                                 <div class="detail-value">
                                     {% if excursion.duration == 'Несколько дней' and excursion.number_of_days %}
-                                        {{ excursion.number_of_days }} {% if excursion.number_of_days == 1 %}день{% elif excursion.number_of_days < 5 %}дня{% else %}дней{% endif %} ({{ excursion.start_time|time:"H:i" }})
+                                        {{ excursion.number_of_days }} {% if excursion.number_of_days == 1 %}{% trans "день" %}{% elif excursion.number_of_days < 5 %}{% trans "дня" %}{% else %}{% trans "дней" %}{% endif %} ({{ excursion.start_time|time:"H:i" }})
                                     {% elif excursion.duration == '1 день' %}
-                                        1 день ({{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }})
+                                        {% trans "1 день" %} ({{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }})
                                     {% else %}
                                         {{ excursion.start_time|time:"H:i" }} - {{ excursion.end_time|time:"H:i" }}
                                     {% endif %}

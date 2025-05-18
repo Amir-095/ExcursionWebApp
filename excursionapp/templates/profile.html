@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
 {% load i18n %}
+{% load date_filters %}
 <html>
 <head>
     <title>Профиль</title>
@@ -67,9 +68,9 @@
                     <img src="{{ booking.excursion.image_url }}" alt="{{ booking.excursion.title }}">
                     <div class="card-content">
                         <h4>{{ booking.excursion.title }}</h4>
-                        <p>{{ booking.booking_date}}</p>
+                        <p>{{ booking.booking_date|localized_date }}</p>
                         <p class="booking-date">
-                            <span class="booking-label">Целый день</span>
+                            <span class="booking-label">{% trans booking.excursion.duration %}</span>
                         </p>
                         <div class="booking-price">
                             <span>{{ booking.total_price }} ₸</span>
@@ -87,11 +88,11 @@
 <!-- Модальное окно для подтверждения удаления карты -->
 <div class="modal-overlay" id="deleteCardModal">
     <div class="confirm-modal">
-        <div class="confirm-modal-title">Подтверждение удаления</div>
-        <div class="confirm-modal-message">Вы уверены, что хотите удалить эту карту? Это действие нельзя будет отменить.</div>
+        <div class="confirm-modal-title">{% trans "Подтверждение удаления" %}</div>
+        <div class="confirm-modal-message">{% trans "Вы уверены, что хотите удалить эту карту? Это действие нельзя будет отменить." %}</div>
         <div class="confirm-modal-buttons">
-            <button class="modal-btn modal-btn-cancel" id="cancelDeleteCard">Отмена</button>
-            <button class="modal-btn modal-btn-confirm" id="confirmDeleteCard">Удалить</button>
+            <button class="modal-btn modal-btn-cancel" id="cancelDeleteCard">{% trans "Отмена" %}</button>
+            <button class="modal-btn modal-btn-confirm" id="confirmDeleteCard">{% trans "Удалить" %}</button>
         </div>
     </div>
 </div>

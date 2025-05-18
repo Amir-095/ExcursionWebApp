@@ -57,6 +57,12 @@ msgstr "Several Hours"
 msgid "1 день"
 msgstr "1 Day"
 
+msgid "дня"
+msgstr "Day"
+
+msgid "дней"
+msgstr "Day"
+
 msgid "Несколько дней"
 msgstr "Several Days"
 
@@ -337,3 +343,4 @@ msgstr "Confirm Password"
 
 msgid "Уже есть аккаунт?"
 msgstr "Already have an account?"
+
