@@ -166,13 +166,14 @@ body {
 }
 
 .excursion-card {
-    min-width: 308px;
+    width: 308px;
     height: 173px;
     border-radius: 10px;
     overflow: hidden;
     position: relative;
     flex-shrink: 0;
 }
+
 
 .excursion-card img {
     width: 100%;
@@ -203,7 +204,11 @@ body {
     font-size: 20px;
     color: white;
     margin: 0 0 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
 
 .tour-type {
     font-family: 'Roboto';
