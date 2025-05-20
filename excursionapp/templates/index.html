@@ -53,6 +53,27 @@
             </div>
         </section>
     </div>
+        <!-- Новый блок различий экскурсий -->
+    <div class="excursion-difference-container">
+        <h2>Чем различаются экскурсии?</h2>
+        <div class="excursion-difference-list">
+            <div class="excursion-difference-item">
+                <img class="excursion-difference-icon" src="{% static 'images/ic_person_48px.png' %}" alt="Индивидуальные">
+                <div class="excursion-difference-title">Индивидуальные экскурсии</div>
+                <div class="excursion-difference-desc desc-individual">Гид проведёт экскурсию только для вас и ваших друзей.</div>
+            </div>
+            <div class="excursion-difference-item">
+                <img class="excursion-difference-icon" src="{% static 'images/Two-user.png' %}" alt="Групповые">
+                <div class="excursion-difference-title">Групповые</div>
+                <div class="excursion-difference-desc desc-group">Гид формирует группу. Вместе с вами узнавать новое будут другие туристы.</div>
+            </div>
+            <div class="excursion-difference-item">
+                <img class="excursion-difference-icon" src="{% static 'images/child_care.png' %}" alt="Семейные">
+                <div class="excursion-difference-title">Семейные</div>
+                <div class="excursion-difference-desc desc-family">Безопасный и увлекательный тур с простым маршрутом, играми и развлечениями для детей.</div>
+            </div>
+        </div>
+    </div>
 
     {% include 'modal.html' %}
     {% include 'feedback.html' %}

@@ -40,7 +40,7 @@ body {
 }
 
 .excursion-card {
-    min-width: 308px;
+    width: 308px;
     height: 173px;
     border-radius: 10px;
     overflow: hidden;
@@ -73,10 +73,13 @@ body {
 }
 
 .card-content h3 {
-    font-family: Roboto;
+    font-family: 'Roboto';
     font-size: 20px;
     color: white;
     margin: 0 0 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .tour-type {
@@ -111,6 +114,7 @@ body {
 
 .delete-button {
     background-color: red;
+    margin-left: 5px;
     color: white;
     border: none;
     border-radius: 5px;
