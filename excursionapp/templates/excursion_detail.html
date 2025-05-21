@@ -68,7 +68,22 @@
                         <span class="label">{% trans "Язык:" %}</span>
                         <span class="value price">
                             {% if excursion.languages %}
-                                {{ excursion.languages|join:', ' }}
+                                {% if excursion.languages %}
+                                    {% for lang in excursion.languages %}
+                                        {% if lang == 'Русский' %}
+                                            {% trans 'Русский' %}
+                                        {% elif lang == 'Английский' %}
+                                            {% trans 'Английский' %}
+                                        {% elif lang == 'Казахский' %}
+                                            {% trans 'Казахский' %}
+                                        {% else %}
+                                            {{ lang }}
+                                        {% endif %}
+                                        {% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    —
+                                {% endif %}
                             {% else %}
                                 —
                             {% endif %}
