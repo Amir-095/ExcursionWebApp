@@ -100,13 +100,22 @@
             
             
             <div class="form-group">
-                <label for="id_language" class="form-label">Язык проведения</label>
-                <select name="language" id="id_language" class="form-select" required>
-                    <option value="">Выберите язык</option>
-                    <option value="Казахский">Казахский</option>
-                    <option value="Русский">Русский</option>
-                    <option value="Английский">Английский</option>
-                </select>
+                <label class="form-label">Языки проведения</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="languages" id="lang_kz" value="Казахский" class="form-checkbox">
+                        <label for="lang_kz" class="checkbox-label">Казахский</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="languages" id="lang_ru" value="Русский" class="form-checkbox">
+                        <label for="lang_ru" class="checkbox-label">Русский</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="languages" id="lang_en" value="Английский" class="form-checkbox">
+                        <label for="lang_en" class="checkbox-label">Английский</label>
+                    </div>
+                </div>
+                <div class="form-help-text">Можно выбрать несколько языков</div>
             </div>
             
             <div class="form-group">
@@ -138,7 +147,7 @@
                 <div class="services-container">
                     <p class="services-help-text">Отметьте услуги, которые включены в стоимость экскурсии</p>
                     
-                    <div class="checkbox-group">
+                    <div class="checkbox-group2">
                         <div class="checkbox-item" style="width: 50%;">
                             <input type="checkbox" name="guide_services" id="id_guide_services" class="form-checkbox">
                             <label for="id_guide_services" class="checkbox-label">Услуги гида/водителя</label>

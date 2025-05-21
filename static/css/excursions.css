@@ -13,7 +13,7 @@ body {
     padding: 0;
     margin: 0;
     flex: 1;
-    max-width: 700px;
+    max-width: 1010px;
 }
 
 /* Стили для контейнера заголовка и поиска */
@@ -160,7 +160,6 @@ body {
     display: flex;
     gap: 20px;
     overflow: hidden;
-    width: 636px;
     scroll-behavior: smooth;
     margin: 0 20px;
 }

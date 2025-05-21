@@ -53,6 +53,10 @@
 .nav-profile {
     width: 35px;
     height: 35px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #21336C;
+    background: #f5f5f5;
     cursor: pointer;
 }
 

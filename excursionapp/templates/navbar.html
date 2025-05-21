@@ -25,7 +25,11 @@
             <a href="{% url 'create_excursion'%}" class="nav-tour-create-excursions">{% trans "Создать экскурсию" %}</a>
             {% endif %}
             <a href="#" onclick="checkAuthAndProceed(() => window.location.href = '{% url 'profile' %}')">
-                <img class="nav-profile" src="{% static 'images/ic_account_circle_48px.png' %}" alt="{% trans 'Профиль' %}">
+                {% if request.user.avatar %}
+                    <img class="nav-profile" src="data:image/jpeg;base64,{{ request.user.avatar|to_base64 }}" alt="Профиль" style="object-fit: cover; border-radius: 50%; width: 48px; height: 48px;" />
+                {% else %}
+                    <img class="nav-profile" src="{% static 'images/ic_account_circle_48px.png' %}" alt="Профиль" />
+                {% endif %}
             </a>
             <div class="language-selector">
                 <form action="{% url 'set_language' %}" method="post">

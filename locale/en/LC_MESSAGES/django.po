@@ -344,3 +344,5 @@ msgstr "Confirm Password"
 msgid "Уже есть аккаунт?"
 msgstr "Already have an account?"
 
+msgid "Истекает"
+msgstr "Expires"

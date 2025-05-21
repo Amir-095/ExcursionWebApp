@@ -30,7 +30,7 @@ h2 {
     border-radius: 10px;
     border: 1px solid #E2E2E2;
     width: 324px;
-    height: 351px;
+    height: 500px;
 }
 
 .payment-info{
@@ -38,7 +38,7 @@ h2 {
     border-radius: 10px;
     border: 1px solid #E2E2E2;
     width: 810px;
-    height: 351px;
+    height: 500px;
     display: flex;
     flex-direction: column;
 }
@@ -238,4 +238,51 @@ h2 {
 
 .book-btn:hover {
     background-color: #1a2a5a;
+}
+
+.profile-avatar-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #21336C;
+    margin-bottom: 10px;
+    background: #f5f5f5;
+}
+
+.avatar-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.avatar-label {
+    cursor: pointer;
+}
+
+.avatar-input {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.avatar-upload-btn {
+    background-color: #21336C;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.avatar-upload-btn:hover {
+    background-color: #1a2a5a;
+}
+
+.avatar-success {
+    color: #27ae60;
+    font-size: 14px;
+    margin-top: 5px;
 }

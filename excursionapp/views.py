@@ -14,6 +14,7 @@ from django.conf import settings
 import re
 from datetime import datetime, date, timedelta
 from django.template.defaultfilters import register
+from random import sample
 
 # Регистрируем кастомный фильтр для шаблонов
 @register.filter(name='to_base64')
@@ -52,9 +53,6 @@ def registerPage(request):
                 last_name = form.cleaned_data.get('last_name', '').strip()
                 user.username = f"{first_name} {last_name}".strip()
                 if not user.username:
-                    # Если имя и фамилия пустые, username будет пустым.
-                    # Это может быть проблемой, если username обязателен.
-                    # Возвращаем ошибку, чтобы пользователь указал имя или фамилию.
                     return JsonResponse({'status': 'error', 'errors': {
                         'first_name': 'Имя или фамилия должны быть заполнены.',
                         'last_name': 'Имя или фамилия должны быть заполнены.'
@@ -129,11 +127,22 @@ def profile_view(request):
     # Сохранённые карты пользователя
     saved_cards = request.user.cards.all()
 
-    # Передача данных в контекст
+    # Обработка формы загрузки аватара
+    avatar_form = ProfileAvatarForm(request.POST or None, request.FILES or None, instance=request.user)
+    avatar_success = False
+    if request.method == 'POST' and 'avatar' in request.FILES:
+        if avatar_form.is_valid():
+            avatar_file = request.FILES['avatar']
+            request.user.avatar = avatar_file.read()
+            request.user.save()
+            avatar_success = True
+
     return render(request, "profile.html", {
         'user': request.user,
         'booked_excursions': booked_excursions,
         'saved_cards': saved_cards,  # Все карты пользователя
+        'avatar_form': avatar_form,
+        'avatar_success': avatar_success,
     })
 
 def check_auth(request):
@@ -150,7 +159,31 @@ def index(request):
             # Конвертируем бинарные данные в base64 для отображения в HTML
             image_base64 = base64.b64encode(excursion.image).decode('utf-8')
             excursion.image_url = f"data:image/jpeg;base64,{image_base64}"
-    return render(request, "index.html", {'excursions': excursions})
+
+    # Получаем 3 случайных отзыва
+    all_reviews = list(SimpleReview.objects.all())
+    random_reviews = sample(all_reviews, min(3, len(all_reviews))) if all_reviews else []
+    reviews_for_main = []
+    for review in random_reviews:
+        author_avatar = None
+        if review.author_id:
+            try:
+                user = CustomUser.objects.get(id=review.author_id)
+                if user.avatar:
+                    author_avatar = base64.b64encode(user.avatar).decode('utf-8')
+            except CustomUser.DoesNotExist:
+                pass
+        reviews_for_main.append({
+            'author': review.author,
+            'author_avatar': author_avatar,
+            'text': review.text,
+            'rating': review.rating,
+        })
+
+    return render(request, "index.html", {
+        'excursions': excursions,
+        'reviews_for_main': reviews_for_main,
+    })
 #pages
 
 
@@ -171,7 +204,7 @@ def all_excursions(request):
     if duration:
         excursions = excursions.filter(duration__in=duration)
     if language:
-        excursions = excursions.filter(language__in=language)
+        excursions = excursions.filter(languages__overlap=language)
     if location:  # Фильтрация по локации
         excursions = excursions.filter(location__iexact=location)
 
@@ -288,6 +321,50 @@ def excursion_detail(request, excursion_id):
                 formatted_default_date = d
             break
 
+    # Простые отзывы
+    if request.method == 'POST' and 'review_text' in request.POST:
+        if request.user.is_authenticated:
+            author = request.user.username
+        else:
+            author = 'Аноним'
+        text = request.POST.get('review_text', '').strip()
+        try:
+            rating = int(request.POST.get('review_rating', 5))
+            if rating < 1 or rating > 5:
+                rating = 5
+        except (TypeError, ValueError):
+            rating = 5
+        if text:
+            SimpleReview.objects.create(
+                excursion=excursion,
+                author=author,
+                author_id=request.user.id if request.user.is_authenticated else None,
+                text=text,
+                rating=rating
+            )
+            return redirect('excursion_detail', excursion_id=excursion.id)
+    # Формируем список отзывов с аватарками
+    reviews_qs = excursion.simple_reviews.order_by('-created_at')
+    reviews = []
+    for review in reviews_qs:
+        author_avatar = None
+        if review.author_id:
+            try:
+                user = CustomUser.objects.get(id=review.author_id)
+                if user.avatar:
+                    author_avatar = base64.b64encode(user.avatar).decode('utf-8')
+            except CustomUser.DoesNotExist:
+                pass
+        reviews.append({
+            'id': review.id,
+            'author': review.author,
+            'author_id': review.author_id,
+            'author_avatar': author_avatar,
+            'text': review.text,
+            'created_at': review.created_at,
+            'rating': review.rating,
+        })
+
     return render(request, 'excursion_detail.html',
         {'excursion': excursion,
         'included_items': included_items,
@@ -299,6 +376,8 @@ def excursion_detail(request, excursion_id):
         'translated_program': translated_program,
         'default_date': default_date,
         'formatted_default_date': formatted_default_date,
+        'reviews': reviews,
+        'user_id': request.user.id if request.user.is_authenticated else None,
         })
 
 @login_required(login_url='home')
@@ -853,3 +932,33 @@ def search_locations_excursions(request):
     results = unique_location_results + unique_excursion_results
     
     return JsonResponse({'results': results})
+
+@login_required(login_url='home')
+@require_POST
+def delete_review(request, review_id):
+    try:
+        review = get_object_or_404(SimpleReview, id=review_id)
+        if review.author_id != request.user.id:
+            return JsonResponse({'status': 'error', 'message': 'Нет прав на удаление этого отзыва.'}, status=403)
+        review.delete()
+        return JsonResponse({'status': 'success', 'message': 'Отзыв успешно удалён'})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+@login_required(login_url='home')
+@require_POST
+def edit_review(request, review_id):
+    review = get_object_or_404(SimpleReview, id=review_id)
+    if review.author_id != request.user.id:
+        return JsonResponse({'status': 'error', 'message': 'Нет прав на редактирование этого отзыва.'}, status=403)
+    data = json.loads(request.body)
+    text = data.get('text', '').strip()
+    rating = int(data.get('rating', 5))
+    if not (1 <= rating <= 5):
+        rating = 5
+    if not text:
+        return JsonResponse({'status': 'error', 'message': 'Текст отзыва не может быть пустым.'}, status=400)
+    review.text = text
+    review.rating = rating
+    review.save()
+    return JsonResponse({'status': 'success', 'message': 'Отзыв обновлён.'})

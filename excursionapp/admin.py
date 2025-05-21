@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Excursion,BookedExcursion,CustomUser,Card
+from .models import Excursion,BookedExcursion,CustomUser,Card,SimpleReview
 from .forms import ExcursionAdminForm
 
 # Register your models here.
@@ -17,3 +17,4 @@ admin.site.register(Excursion, ExcursionAdmin)
 admin.site.register(BookedExcursion)
 admin.site.register(CustomUser)
 admin.site.register(Card)
+admin.site.register(SimpleReview)

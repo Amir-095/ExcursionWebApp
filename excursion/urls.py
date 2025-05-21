@@ -24,6 +24,8 @@ from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
+    path('delete-review/<int:review_id>/', views.delete_review, name='delete_review'),
+    path('edit-review/<int:review_id>/', views.edit_review, name='edit_review'),
 ]
 
 urlpatterns += i18n_patterns(

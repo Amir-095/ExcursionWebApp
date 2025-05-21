@@ -20,7 +20,22 @@
     <div class="profile-container">
         <div class="profile-section">
             <div class="profile-info">
-            <h2>{% trans "Информация профиля" %}</h2>
+                <div class="avatar-upload-container">
+                    <form method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column; align-items: center;">
+                        {% csrf_token %}
+                        <label for="id_avatar" class="avatar-label">
+                            {% if user.avatar %}
+                                <img src="data:image/jpeg;base64,{{ user.avatar|to_base64 }}" alt="Аватар" class="profile-avatar-img" />
+                            {% else %}
+                                <img src="{% static 'images/ic_account_circle_48px.png' %}" alt="Аватар" class="profile-avatar-img" />
+                            {% endif %}
+                        </label>
+                        {{ avatar_form.avatar|add_class:"avatar-input" }}
+                        <button type="submit" class="avatar-upload-btn">Загрузить аватар</button>
+                        {% if avatar_success %}<div class="avatar-success">Аватар успешно обновлён!</div>{% endif %}
+                    </form>
+                </div>
+                <h2>{% trans "Информация профиля" %}</h2>
                 <div class="info-item">
                     <span class="label">{% trans "Имя" %}:</span>
                     <span class="value">{{ user.username }}</span>
@@ -47,7 +62,7 @@
                         {% for card in saved_cards %}
                             <div class="saved-card">
                                 <div class="card-number">**** **** **** {{ card.decrypt_four_card_number }}</div>
-                                <div class="card-expiry">Истекает {{ card.expiry_date }}</div>
+                                <div class="card-expiry">{% trans "Истекает" %} {{ card.expiry_date }}</div>
                                 <button type="button" class="delete-card-btn" onclick="deleteCard({{ card.id }})"><span>Удалить карту</span></button>
                             </div>
                         {% endfor %}

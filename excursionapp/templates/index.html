@@ -74,6 +74,40 @@
             </div>
         </div>
     </div>
+    <!-- Блок случайных отзывов -->
+    {% if reviews_for_main %}
+    <div class="mainpage-reviews-section">
+        <h2 class="mainpage-reviews-title">Отзывы покупателей</h2>
+        <ul class="mainpage-reviews-list">
+            {% for review in reviews_for_main %}
+            <li class="mainpage-review-card">
+                <div class="mainpage-review-header">
+                    <div class="mainpage-review-avatar">
+                        {% if review.author_avatar %}
+                            <img src="data:image/jpeg;base64,{{ review.author_avatar }}" alt="avatar">
+                        {% else %}
+                            <img src="{% static 'images/user_avatar.png' %}" alt="avatar">
+                        {% endif %}
+                    </div>
+                    <div class="mainpage-review-meta">
+                        <span class="mainpage-review-author">{{ review.author }}</span>
+                        <span class="mainpage-review-rating">
+                            {% for i in '12345' %}
+                                {% if forloop.counter <= review.rating %}
+                                    <span class="star filled">★</span>
+                                {% else %}
+                                    <span class="star">★</span>
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                    </div>
+                </div>
+                <div class="mainpage-review-text">{{ review.text|linebreaksbr }}</div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
 
     {% include 'modal.html' %}
     {% include 'feedback.html' %}

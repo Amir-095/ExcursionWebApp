@@ -7,6 +7,7 @@ from cryptography.fernet import Fernet
 from django.contrib.auth import get_user_model
 from deep_translator import GoogleTranslator
 from django.utils.translation import get_language
+from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 
@@ -46,7 +47,12 @@ class Excursion(models.Model):
     group_type = models.CharField(max_length=50, choices=GROUP_TYPE_CHOICES, default='Group')
     duration = models.CharField(max_length=50, choices=DURATION_CHOICES, default='1 day')
     number_of_days = models.PositiveIntegerField(null=True, blank=True, verbose_name="Количество дней")
-    language = models.CharField(max_length=50, choices=LANGUAGE_CHOICES, default='English')
+    languages = ArrayField(
+        models.CharField(max_length=50, choices=LANGUAGE_CHOICES),
+        default=list,
+        blank=True,
+        verbose_name='Языки проведения'
+    )
     start_time = models.TimeField()  # Время начала экскурсии
     end_time = models.TimeField(null=True, blank=True)  # Время окончания экскурсии (может быть пустым для многодневных экскурсий)
     description = models.TextField()  # Описание экскурсии
@@ -212,6 +218,7 @@ class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=15, unique=True, blank=True, null=True)
     email = models.EmailField(unique=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='user')
+    avatar = models.BinaryField(null=True, blank=True, verbose_name='Аватар пользователя', editable=True)
 
     def __str__(self):
         return self.username
@@ -237,3 +244,14 @@ class Card(models.Model):
     def save_card_number(self, card_number):
         cipher = Fernet(settings.FERNET_KEY)
         self.encrypted_card_number = cipher.encrypt(card_number.encode())
+
+class SimpleReview(models.Model):
+    excursion = models.ForeignKey(Excursion, on_delete=models.CASCADE, related_name='simple_reviews')
+    author = models.CharField(max_length=100)
+    author_id = models.IntegerField(null=True, blank=True)  # id пользователя-автора
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    rating = models.PositiveSmallIntegerField(default=5, choices=[(i, str(i)) for i in range(1, 6)])
+
+    def __str__(self):
+        return f"{self.author}: {self.text[:30]}..."

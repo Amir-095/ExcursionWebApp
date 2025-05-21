@@ -97,8 +97,22 @@
             </div>
             
             <div class="form-group">
-                <label for="{{ form.language.id_for_label }}" class="form-label">Язык проведения</label>
-                {{ form.language|add_class:"form-select" }}
+                <label class="form-label">Языки проведения</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="languages" id="lang_kz" value="Казахский" class="form-checkbox" {% if 'Казахский' in form.languages.value %}checked{% endif %}>
+                        <label for="lang_kz" class="checkbox-label">Казахский</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="languages" id="lang_ru" value="Русский" class="form-checkbox" {% if 'Русский' in form.languages.value %}checked{% endif %}>
+                        <label for="lang_ru" class="checkbox-label">Русский</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="languages" id="lang_en" value="Английский" class="form-checkbox" {% if 'Английский' in form.languages.value %}checked{% endif %}>
+                        <label for="lang_en" class="checkbox-label">Английский</label>
+                    </div>
+                </div>
+                <div class="form-help-text">Можно выбрать несколько языков</div>
             </div>
             
             <div class="form-group">
@@ -134,7 +148,7 @@
                 <div class="services-container">
                     <p class="services-help-text">Отметьте услуги, которые включены в стоимость экскурсии</p>
                     
-                    <div class="checkbox-group"">
+                    <div class="checkbox-group2"">
                         <div class="checkbox-item" style="width: 50%;">
                             {{ form.guide_services|add_class:"form-checkbox" }}
                             <label for="{{ form.guide_services.id_for_label }}" class="checkbox-label">Услуги гида/водителя</label>

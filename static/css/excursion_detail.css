@@ -599,3 +599,206 @@ body {
         width: 100%;
     }
 }
+
+.review-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: 12px;
+}
+.review-actions button {
+    background: #f4f6fa;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(33,51,108,0.07);
+    transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+}
+.review-actions button:hover {
+    background: #e3e7f0;
+    transform: scale(1.08);
+    box-shadow: 0 2px 8px rgba(33,51,108,0.13);
+}
+.review-actions img {
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+}
+
+.review-actions button.delete-review-btn {
+    background: #ffeaea;
+}
+.review-actions button.delete-review-btn:hover {
+    background: #ffbdbd;
+}
+.review-actions button.delete-review-btn img {
+    filter: invert(32%) sepia(98%) saturate(7492%) hue-rotate(349deg) brightness(97%) contrast(101%);
+}
+
+/* --- СТИЛИ ДЛЯ ОТЗЫВОВ --- */
+.reviews-section {
+    max-width: 1100px;
+    margin: 40px auto 0;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(33,51,108,0.07);
+    padding: 32px 24px 24px 24px;
+}
+.reviews-title {
+    font-size: 2rem;
+    font-family: 'Abhaya Libre', serif;
+    color: #21336C;
+    margin-bottom: 24px;
+    text-align: left;
+}
+.reviews-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 32px 0;
+}
+.review-card {
+    background: #f7f8fa;
+    border-radius: 12px;
+    padding: 18px 20px 16px 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 6px rgba(33,51,108,0.04);
+    position: relative;
+    transition: box-shadow 0.2s;
+}
+.review-card:hover {
+    box-shadow: 0 4px 16px rgba(33,51,108,0.10);
+}
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+.review-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #e3e7f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.review-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.review-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.review-author {
+    font-weight: bold;
+    color: #21336C;
+    font-size: 1.1rem;
+}
+.review-date {
+    color: #8a8fa7;
+    font-size: 0.95rem;
+}
+.review-rating {
+    margin-top: 2px;
+}
+.star {
+    font-size: 18px;
+    color: #ccc;
+    margin-right: 1px;
+    transition: color 0.2s;
+}
+.star.filled {
+    color: #FFD700;
+}
+.review-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: 12px;
+}
+.review-text {
+    font-size: 1.08rem;
+    color: #2d2d2d;
+    margin-top: 6px;
+    line-height: 1.6;
+    word-break: break-word;
+}
+.no-reviews {
+    color: #8a8fa7;
+    text-align: center;
+    margin: 32px 0;
+}
+.leave-review-title {
+    font-size: 1.3rem;
+    color: #21336C;
+    margin: 24px 0 12px 0;
+}
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #f7f8fa;
+    border-radius: 10px;
+    padding: 18px 20px 14px 20px;
+    box-shadow: 0 1px 6px rgba(33,51,108,0.04);
+}
+.review-form-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.review-form-label {
+    font-size: 1.08rem;
+    color: #21336C;
+}
+.review-form-stars {
+    display: flex;
+    gap: 2px;
+}
+.star-label {
+    color: #FFD700;
+    font-size: 22px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.review-form-textarea {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1.05rem;
+    resize: vertical;
+}
+.review-form-submit {
+    align-self: flex-end;
+    padding: 8px 20px;
+    background: #21336C;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.08rem;
+    transition: background 0.2s;
+}
+.review-form-submit:hover {
+    background: #2d4ba0;
+}
+.review-login-message {
+    color: #21336C;
+    font-weight: bold;
+    text-align: center;
+    margin: 18px 0 0 0;
+}
+.review-login-message a {
+    color: #21336C;
+    text-decoration: underline;
+}

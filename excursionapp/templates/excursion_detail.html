@@ -66,17 +66,13 @@
                     <img src="{% static 'images/ic_language_48px.png' %}" alt="Language" class="info-icon">
                     <div class="info-text">
                         <span class="label">{% trans "Язык:" %}</span>
-                                <span class="value price">
-                                    {% if excursion.language == 'Казахский' %}
-                                        {% trans "Казахский" %}
-                                    {% elif excursion.language == 'Русский' %}
-                                        {% trans "Русский" %}
-                                    {% elif excursion.language == 'Английский' %}
-                                        {% trans "Английский" %}
-                                    {% else %}
-                                        {{ excursion.language }}
-                                    {% endif %}
-                                </span>
+                        <span class="value price">
+                            {% if excursion.languages %}
+                                {{ excursion.languages|join:', ' }}
+                            {% else %}
+                                —
+                            {% endif %}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -313,6 +309,17 @@
 
     {% include 'modal.html' %}
     {% include 'feedback.html' %}
+    <!-- Модальное окно для подтверждения удаления отзыва -->
+    <div class="modal-overlay" id="deleteReviewModal">
+        <div class="confirm-modal">
+            <div class="confirm-modal-title">{% trans "Подтверждение удаления" %}</div>
+            <div class="confirm-modal-message">{% trans "Вы уверены, что хотите удалить этот отзыв? Это действие нельзя будет отменить." %}</div>
+            <div class="confirm-modal-buttons">
+                <button class="modal-btn modal-btn-cancel" id="cancelDeleteReview">{% trans "Отмена" %}</button>
+                <button class="modal-btn modal-btn-confirm" id="confirmDeleteReview">{% trans "Удалить" %}</button>
+            </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
     <script src="{% static 'js/excursion_detail.js' %}"></script>
@@ -328,6 +335,84 @@
             dayAfterTomorrow: "{% trans 'Послезавтра' %}",
             availableDate: "{% trans 'Доступная дата' %}"
         };
+    </script>
+    <!-- Отзывы об экскурсии -->
+    <div id="reviews-section" class="reviews-section">
+        <h3 class="leave-review-title">Оставить отзыв</h3>
+        {% if user.is_authenticated %}
+        <form method="post" class="review-form">
+            {% csrf_token %}
+            <div class="review-form-row">
+                <span class="review-form-label">Ваша оценка:</span>
+                <span id="star-rating" class="review-form-stars">
+                    {% for i in "12345" %}
+                        <input type="radio" id="star{{ forloop.counter }}" name="review_rating" value="{{ forloop.counter }}" style="display:none;">
+                        <label for="star{{ forloop.counter }}" class="star-label">★</label>
+                    {% endfor %}
+                </span>
+            </div>
+            <textarea name="review_text" required rows="3" maxlength="1000" placeholder="Ваш отзыв..." class="review-form-textarea"></textarea>
+            <button type="submit" class="review-form-submit">Отправить</button>
+        </form>
+        {% else %}
+        <p class="review-login-message">Чтобы оставить отзыв, <a href="#" onclick="showLoginModal();return false;">войдите в аккаунт</a>.</p>
+        {% endif %}
+        <hr>
+        <h2 class="reviews-title">Отзывы</h2>
+        <ul class="reviews-list">
+            {% for review in reviews %}
+                <li class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">
+                            {% if review.author_avatar %}
+                                <img src="data:image/jpeg;base64,{{ review.author_avatar }}" alt="avatar">
+                            {% else %}
+                                <img src="{% static 'images/ic_account_circle_48px.png' %}" alt="avatar">
+                            {% endif %}
+                        </div>
+                        <div class="review-meta">
+                            <span class="review-author">{{ review.author }}</span>
+                            <span class="review-date">{{ review.created_at|date:"d.m.Y H:i" }}</span>
+                            <span class="review-rating">
+                                {% for i in '12345' %}
+                                    {% if forloop.counter <= review.rating %}
+                                        <span class="star filled">★</span>
+                                    {% else %}
+                                        <span class="star">★</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                        </div>
+                        {% if user_id and review.author_id == user_id %}
+                        <div class="review-actions">
+                            <button class="edit-review-btn" data-review-id="{{ review.id }}" title="Редактировать">
+                                <img src="{% static 'images/edit_icon.png' %}" alt="Edit">
+                            </button>
+                            <button class="delete-review-btn" data-review-id="{{ review.id }}" title="Удалить">
+                                <img src="{% static 'images/trash_icon.png' %}" alt="Delete">
+                            </button>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="review-text">{{ review.text|linebreaksbr }}</div>
+                </li>
+            {% empty %}
+                <li class="no-reviews">Пока нет отзывов.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script>
+    // JS для выделения выбранных звёзд
+    const stars = document.querySelectorAll('#star-rating label');
+    const radios = document.querySelectorAll('#star-rating input[type=radio]');
+    stars.forEach((star, idx) => {
+        star.addEventListener('click', () => {
+            radios[idx].checked = true;
+            stars.forEach((s, i) => {
+                s.style.color = i <= idx ? '#FFD700' : '#ccc';
+            });
+        });
+    });
     </script>
 </body>
 </html> 

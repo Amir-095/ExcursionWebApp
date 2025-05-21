@@ -435,8 +435,211 @@ function updateDatesFormatting() {
     }
 }
 
+// Переменная для хранения ID отзыва для удаления
+let reviewToDelete = null;
+
+// Функция для показа модального окна подтверждения удаления
+function showDeleteReviewModal(reviewId) {
+    reviewToDelete = reviewId;
+    const modal = document.getElementById('deleteReviewModal');
+    if (modal) {
+        modal.classList.add('active');
+    }
+}
+
+// Функция для скрытия модального окна
+function hideDeleteReviewModal() {
+    const modal = document.getElementById('deleteReviewModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+// Функция для подтверждения удаления отзыва
+function confirmDeleteReview() {
+    if (!reviewToDelete) return;
+    
+    const reviewId = reviewToDelete;
+    hideDeleteReviewModal();
+    
+    fetch(`/delete-review/${reviewId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => {
+                let errorMsg = `Ошибка ${response.status}`;
+                try { errorMsg = JSON.parse(text).message || errorMsg; } catch(e) { /* использовать как есть */ }
+                throw new Error(errorMsg);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.status === 'success') {
+            showToast('success', 'Успешно', data.message);
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
+        } else {
+            showToast('error', 'Ошибка', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        showToast('error', 'Ошибка', 'Не удалось удалить отзыв. Попробуйте ещё раз.');
+    });
+}
+
+// Функция для инициализации обработчиков кнопок отзывов
+function initReviewButtons() {
+    // Обработчики для кнопок удаления
+    document.querySelectorAll('.delete-review-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const reviewId = btn.getAttribute('data-review-id');
+            showDeleteReviewModal(reviewId);
+        });
+    });
+
+    // Обработчики для кнопок редактирования
+    document.querySelectorAll('.edit-review-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const reviewId = btn.getAttribute('data-review-id');
+            const reviewLi = btn.closest('li');
+            const textEl = reviewLi.querySelector('.review-text');
+            const starsEl = reviewLi.querySelector('span[style*="font-size:18px"]');
+            const oldText = textEl ? textEl.textContent.trim() : '';
+            const oldRating = starsEl ? starsEl.querySelectorAll('span[style*="#FFD700"]').length : 5;
+            
+            // Создаём форму редактирования
+            const form = document.createElement('form');
+            form.style.display = 'flex';
+            form.style.flexDirection = 'column';
+            form.style.gap = '8px';
+            form.innerHTML = `
+                <div style='display:flex;align-items:center;gap:8px;'>
+                    <span style='font-size:16px;'>Оценка:</span>
+                    <div class='edit-star-rating' style='display:flex;gap:4px;'>
+                        ${[1,2,3,4,5].map(i => `
+                            <label style='cursor:pointer;font-size:24px;color:${i<=oldRating?'#FFD700':'#ccc'};'>
+                                <input type='radio' name='edit_rating' value='${i}' style='display:none;' ${i===oldRating?'checked':''}>
+                                ★
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+                <textarea name='edit_text' required rows='3' maxlength='1000' style='padding:8px;border-radius:5px;border:1px solid #ccc;'>${oldText}</textarea>
+                <div style='display:flex;gap:8px;justify-content:flex-end;'>
+                    <button type='button' class='cancel-edit-btn' style='padding:6px 16px;background:#ccc;color:#21336C;border:none;border-radius:5px;cursor:pointer;'>Отмена</button>
+                    <button type='submit' style='padding:6px 16px;background:#21336C;color:#fff;border:none;border-radius:5px;cursor:pointer;'>Сохранить</button>
+                </div>
+            `;
+            
+            // Заменяем содержимое отзыва на форму
+            reviewLi._oldHtml = reviewLi.innerHTML;
+            reviewLi.innerHTML = '';
+            reviewLi.appendChild(form);
+            
+            // JS для звёзд
+            const starLabels = form.querySelectorAll('.edit-star-rating label');
+            starLabels.forEach((label, idx) => {
+                label.addEventListener('mouseover', () => {
+                    starLabels.forEach((l, i) => {
+                        l.style.color = i <= idx ? '#FFD700' : '#ccc';
+                    });
+                });
+                
+                label.addEventListener('mouseout', () => {
+                    const selectedRating = form.querySelector('input[name=edit_rating]:checked').value;
+                    starLabels.forEach((l, i) => {
+                        l.style.color = i < selectedRating ? '#FFD700' : '#ccc';
+                    });
+                });
+                
+                label.addEventListener('click', () => {
+                    const radio = label.querySelector('input[type=radio]');
+                    radio.checked = true;
+                    starLabels.forEach((l, i) => {
+                        l.style.color = i <= idx ? '#FFD700' : '#ccc';
+                    });
+                });
+            });
+            
+            // Отмена
+            form.querySelector('.cancel-edit-btn').onclick = function() {
+                reviewLi.innerHTML = reviewLi._oldHtml;
+                // Повторно инициализируем обработчики после отмены
+                initReviewButtons();
+            };
+            
+            // Сохранить
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                const newText = form.edit_text.value.trim();
+                const newRating = +form.querySelector('input[name=edit_rating]:checked').value;
+                
+                fetch(`/edit-review/${reviewId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        text: newText,
+                        rating: newRating
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            let errorMsg = `Ошибка ${response.status}`;
+                            try { errorMsg = JSON.parse(text).message || errorMsg; } catch(e) { /* использовать как есть */ }
+                            throw new Error(errorMsg);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.status === 'success') {
+                        showToast('success', 'Успешно', data.message);
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        showToast('error', 'Ошибка', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    showToast('error', 'Ошибка', 'Не удалось обновить отзыв. Попробуйте ещё раз.');
+                });
+            };
+        });
+    });
+}
+
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
+    // Инициализируем обработчики кнопок отзывов
+    initReviewButtons();
+    
+    // Обработчики для кнопок в модальном окне подтверждения удаления
+    const confirmDeleteBtn = document.getElementById('confirmDeleteReview');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteReview');
+    
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', confirmDeleteReview);
+    }
+    
+    if (cancelDeleteBtn) {
+        cancelDeleteBtn.addEventListener('click', hideDeleteReviewModal);
+    }
+    
     // Инициализируем общую цену
     if (document.getElementById('ticketCount')) {
         updateTotalPrice();
