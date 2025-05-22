@@ -121,9 +121,12 @@ def profile_view(request):
     booked_excursions = BookedExcursion.objects.filter(user=request.user).select_related('excursion')
     current_language = request.LANGUAGE_CODE if hasattr(request, 'LANGUAGE_CODE') else 'ru'
     for booking in booked_excursions:
-        if booking.excursion.image:
-            image_base64 = base64.b64encode(booking.excursion.image).decode('utf-8')
+        if booking.excursion.images.first():
+            first_image = booking.excursion.images.first()
+            image_base64 = base64.b64encode(first_image.image).decode('utf-8')
             booking.excursion.image_url = f"data:image/jpeg;base64,{image_base64}"
+        else:
+            booking.excursion.image_url = "" # Or a placeholder image URL
         booking.excursion.translated_title = booking.excursion.get_translated_title(current_language)
     # Сохранённые карты пользователя
     saved_cards = request.user.cards.all()
@@ -157,10 +160,12 @@ def index(request):
     excursions = Excursion.objects.all().order_by('?')[:4]  # Получаем 4 случайные экскурсии
     current_language = request.LANGUAGE_CODE if hasattr(request, 'LANGUAGE_CODE') else 'ru'
     for excursion in excursions:
-        if excursion.image:
-            # Конвертируем бинарные данные в base64 для отображения в HTML
-            image_base64 = base64.b64encode(excursion.image).decode('utf-8')
+        if excursion.images.first():
+            first_image = excursion.images.first()
+            image_base64 = base64.b64encode(first_image.image).decode('utf-8')
             excursion.image_url = f"data:image/jpeg;base64,{image_base64}"
+        else:
+            excursion.image_url = "" # Or a placeholder image URL
         excursion.translated_title = excursion.get_translated_title(current_language)
 
     # Получаем 3 случайных отзыва
@@ -227,10 +232,12 @@ def all_excursions(request):
     # Группируем экскурсии по переведенным локациям
     grouped_excursions = {}
     for excursion in excursions:
-        if excursion.image:
-            image_base64 = base64.b64encode(excursion.image).decode('utf-8')
+        if excursion.images.first():
+            first_image = excursion.images.first()
+            image_base64 = base64.b64encode(first_image.image).decode('utf-8')
             excursion.image_url = f"data:image/jpeg;base64,{image_base64}"
-
+        else:
+            excursion.image_url = "" # Or a placeholder image URL
         # Получаем переведенное название локации
         translated_location = excursion.get_translated_location(current_language)
 
@@ -253,28 +260,64 @@ def all_excursions(request):
 @tour_agent_required
 def create_excursion(request):
     if request.method == 'POST':
-        form = ExcursionAdminForm(request.POST, request.FILES)
+        # Don't pass request.FILES to the form if 'images_to_upload' is not a form field.
+        # Pass it only if 'guide_avatar' or other file fields are still on the form.
+        form = ExcursionAdminForm(request.POST, request.FILES) # Keep request.FILES for guide_avatar
+
         if form.is_valid():
             excursion = form.save(commit=False)
-            excursion.creator = request.user  # Сохраняем текущего пользователя как создателя
+            excursion.creator = request.user
             excursion.save()
-            return redirect('all_excursions')  # Перенаправление на страницу всех экскурсий
+
+            # MANUALLY HANDLE MULTIPLE IMAGE UPLOADS
+            # The name 'images_to_upload' must match the 'name' attribute in your HTML input
+            uploaded_images = request.FILES.getlist('images_to_upload') # Get all files with this name
+            if uploaded_images:
+                # Delete existing images for this excursion (if any)
+                excursion.images.all().delete() # Delete all related ExcursionImage objects
+
+                for uploaded_file in uploaded_images:
+                    # Create new ExcursionImage instances
+                    ExcursionImage.objects.create(
+                        excursion=excursion,
+                        image=uploaded_file.read(),  # Read content into bytes
+                        image_name=uploaded_file.name
+                    )
+            return redirect('all_excursions')
     else:
         form = ExcursionAdminForm()
     return render(request, 'create_excursion.html', {'form': form})
+
 
 @tour_agent_required
 def update_excursion(request, pk):
     excursion = get_object_or_404(Excursion, pk=pk)
 
-    # Проверяем, что текущий пользователь является создателем экскурсии
     if request.user != excursion.creator:
         return HttpResponseForbidden("Вы не можете редактировать эту экскурсию.")
 
-    form = ExcursionAdminForm(request.POST or None, request.FILES or None, instance=excursion)
-    if form.is_valid():
-        form.save()
-        return redirect('my_excursions')
+    if request.method == 'POST':
+        form = ExcursionAdminForm(request.POST, request.FILES, instance=excursion) # Keep request.FILES for guide_avatar
+        if form.is_valid():
+            form.save() # Saves the main excursion data
+
+            # MANUALLY HANDLE MULTIPLE IMAGE UPLOADS (replace existing)
+            uploaded_images = request.FILES.getlist('images_to_upload') # Get all files with this name
+            if uploaded_images:
+                # Delete all existing images for this excursion
+                excursion.images.all().delete()
+
+                # Save new images
+                for uploaded_file in uploaded_images:
+                    ExcursionImage.objects.create(
+                        excursion=excursion,
+                        image=uploaded_file.read(),
+                        image_name=uploaded_file.name
+                    )
+            return redirect('my_excursions')
+    else:
+        form = ExcursionAdminForm(instance=excursion)
+    # The template will display existing images by querying excursion.images.all()
     return render(request, 'update_excursion.html', {'form': form, 'excursion': excursion})
 
 @login_required(login_url='home')
@@ -289,8 +332,7 @@ def delete_excursion(request, pk):
 
 def excursion_detail(request, excursion_id):
     excursion = get_object_or_404(Excursion, id=excursion_id)
-    image_base64 = base64.b64encode(excursion.image).decode('utf-8')
-    excursion.image_url = f"data:image/jpeg;base64,{image_base64}"
+
 
     # Получение включённых и не включённых элементов
     included_items, not_included_items = excursion.get_inclusion_status()
@@ -370,9 +412,15 @@ def excursion_detail(request, excursion_id):
             'created_at': review.created_at,
             'rating': review.rating,
         })
-
+    excursion_images = []
+    for img in excursion.images.all():
+        if img.image:
+            image_base64 = base64.b64encode(img.image).decode('utf-8')
+            excursion_images.append(f"data:image/jpeg;base64,{image_base64}")
+    
     return render(request, 'excursion_detail.html',
         {'excursion': excursion,
+         'excursion_images': excursion_images,
         'included_items': included_items,
         'not_included_items': not_included_items,
         'dates': excursion.get_dates_list(),
@@ -512,10 +560,12 @@ def tour_agent_excursions(request):
     created_excursions = Excursion.objects.filter(creator=request.user)
     grouped_excursions = {}
     for excursion in created_excursions:
-        if excursion.image:
-            # Конвертируем бинарные данные в base64 для отображения в HTML
-            image_base64 = base64.b64encode(excursion.image).decode('utf-8')
+        if excursion.images.first():
+            first_image = excursion.images.first()
+            image_base64 = base64.b64encode(first_image.image).decode('utf-8')
             excursion.image_url = f"data:image/jpeg;base64,{image_base64}"
+        else:
+            excursion.image_url = "" # Or a placeholder image URL
         if excursion.location not in grouped_excursions:
             grouped_excursions[excursion.location] = []
         grouped_excursions[excursion.location].append(excursion)

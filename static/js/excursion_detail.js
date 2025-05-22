@@ -784,3 +784,81 @@ function scheduleNextDayUpdate() {
     const formattedNow = now.toLocaleDateString('ru-RU');
     console.log(`Следующее обновление дат запланировано через ${hours} ч ${remainingMinutes} мин (${formattedNow})`);
 }
+// Image Slider functionality
+const slider = document.querySelector('.slider');
+const prevBtn = document.querySelector('.prev-btn');
+const nextBtn = document.querySelector('.next-btn');
+const dotsContainer = document.querySelector('.slider-dots');
+const slides = document.querySelectorAll('.slide-image');
+let currentIndex = 0;
+let slideInterval; // Переменная для хранения интервала
+
+if (slides.length > 0) {
+    // Create dots
+    slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if (index === 0) {
+            dot.classList.add('active');
+        }
+        dot.addEventListener('click', () => {
+            goToSlide(index);
+            resetInterval(); // Сбросить интервал при ручном переключении
+        });
+        dotsContainer.appendChild(dot);
+    });
+
+    function goToSlide(index) {
+        currentIndex = index;
+        const offset = -currentIndex * 100;
+        slider.style.transform = `translateX(${offset}%)`;
+
+        // Update active dot
+        document.querySelectorAll('.dot').forEach((dot, i) => {
+            if (i === currentIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        goToSlide(currentIndex);
+    }
+
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        goToSlide(currentIndex);
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', nextSlide);
+    }
+    if (prevBtn) {
+        prevBtn.addEventListener('click', prevSlide);
+    }
+        // --- Добавляем автопрокрутку ---
+        function startAutoSlide() {
+            // Убедитесь, что слайдер есть и в нем больше одного изображения
+            if (slides.length > 1) {
+                slideInterval = setInterval(nextSlide, 3000); // Переключать слайд каждые 3 секунды (3000 мс)
+            }
+        }
+    
+        function resetInterval() {
+            clearInterval(slideInterval); // Очистить текущий интервал
+            startAutoSlide(); // Запустить новый интервал
+        }
+    
+        // Запустить автопрокрутку при загрузке страницы
+        startAutoSlide();
+
+} 
+else {
+    // Hide slider controls if no images
+    if (prevBtn) prevBtn.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';
+    if (dotsContainer) dotsContainer.style.display = 'none';
+}

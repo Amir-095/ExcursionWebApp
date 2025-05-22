@@ -12,8 +12,6 @@ body {
 }
 
 .excursion-detail-header img {
-    width: 100%;
-    height: 400px;
     object-fit: cover;
     border-radius: 15px;
 }
@@ -801,4 +799,92 @@ body {
 .review-login-message a {
     color: #21336C;
     text-decoration: underline;
+}
+/* Slider styles for excursion_detail.html */
+
+/* Новый контейнер-обертка для слайдера и кнопок */
+.slider-wrapper {
+    display: flex; /* Используем flexbox для расположения элементов в ряд */
+    align-items: center; /* Центрируем элементы по вертикали */
+    gap: 10px; /* Отступ между кнопками и слайдером */
+    max-width: 1200px; /* Или любая другая желаемая максимальная ширина */
+    margin: 0 auto; /* Центрирование обертки */
+    padding: 0 10px; /* Небольшой отступ от краев экрана */
+}
+
+/* Контейнер только для изображений слайдера */
+.slider-container {
+    flex-grow: 1; /* Позволяет слайдеру занимать все доступное пространство между кнопками */
+    height: 100%; /* Фиксированная высота для области изображений */
+    overflow: hidden; /* Скрывает части изображений, которые выходят за пределы */
+    border-radius: 15px; /* Закругленные углы для области изображений */
+    position: relative; /* Чтобы точки внутри могли позиционироваться абсолютно относительно него */
+}
+
+.slider {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.slider-btn {   
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Не сжимать кнопки */
+}
+
+.slider-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.slider-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 11; /* Точки должны быть выше кнопок */
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Адаптивность для маленьких экранов */
+@media (max-width: 768px) {
+    .slider-wrapper {
+        flex-direction: column; /* Кнопки сверху/снизу на мобильных */
+        gap: 5px;
+        padding: 0; /* Убрать горизонтальный padding */
+    }
+    .slider-btn {
+        margin: 5px 0; /* Отступ между кнопками и слайдером */
+    }
+    .slider-container {
+        width: 100%; /* Убедиться, что слайдер занимает всю ширину */
+        height: 250px; /* Меньшая высота на мобильных */
+    }
 }

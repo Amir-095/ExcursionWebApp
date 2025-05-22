@@ -39,8 +39,6 @@ class Excursion(models.Model):
     )
     title = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.BinaryField(null=True, blank=True)
-    image_name = models.CharField(max_length=100, null=True, blank=True)
     location = models.CharField(max_length=100, default='Unknown')
     meeting_address = models.CharField(max_length=200, blank=True, null=True, verbose_name="Адрес места встречи")
     end_location = models.CharField(max_length=200, blank=True, null=True, verbose_name="Место окончания экскурсии")
@@ -186,6 +184,16 @@ class Excursion(models.Model):
 
     def get_absolute_url(self):
         return reverse('excursion_detail', args=[str(self.id)])
+
+
+class ExcursionImage(models.Model):
+    excursion = models.ForeignKey(Excursion, on_delete=models.CASCADE, related_name='images')
+    image = models.BinaryField(editable=True) # Add editable=True here
+    image_name = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return f"Image for {self.excursion.title}"
+    
 
 class BookedExcursion(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

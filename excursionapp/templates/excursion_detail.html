@@ -22,8 +22,29 @@
     
     <div class="excursion-detail-container">
     <h1>{{ excursion.title }}</h1>
-        <div class="excursion-detail-header">
-                <img src="{{ excursion.image_url }}" alt="{{ excursion.title }}">
+        <div class="excursion-detail-header slider-wrapper"> {# Изменяем class на slider-wrapper для родительского контейнера #}
+            {% if excursion_images|length > 1 %}
+                <button class="slider-btn prev-btn">
+                    <img src="{% static 'images/arrow-left.png' %}" alt="Previous">
+                </button>
+            {% endif %}
+
+            <div class="slider-container"> {# Этот теперь только для самого слайдера изображений #}
+                <div class="slider">
+                    {% for image_url in excursion_images %}
+                        <img src="{{ image_url }}" alt="{{ excursion.title }}" class="slide-image">
+                    {% empty %}
+                        <img src="{% static 'images/placeholder.jpg' %}" alt="No Image" class="slide-image">
+                    {% endfor %}
+                </div>
+                <div class="slider-dots"></div> {# Точки могут быть внутри или вне, но чаще их держат рядом со слайдером #}
+            </div>
+
+            {% if excursion_images|length > 1 %}
+                <button class="slider-btn next-btn">
+                    <img src="{% static 'images/arrow-right.png' %}" alt="Next">
+                </button>
+            {% endif %}
         </div>
 
         <div class="excursion-detail-content">

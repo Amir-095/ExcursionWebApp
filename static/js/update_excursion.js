@@ -209,28 +209,64 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Обработчик для превью изображения
-    const fileInput = document.getElementById('id_image_file');
-    const fileNameDisplay = document.getElementById('file-name');
-    const imagePreview = document.getElementById('image-preview');
-    
-    if (fileInput) {
-        fileInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                const fileName = this.files[0].name;
-                fileNameDisplay.textContent = fileName;
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imagePreview.innerHTML = `<img src="${e.target.result}" alt="Превью">`;
-                };
-                reader.readAsDataURL(this.files[0]);
+    const multipleFileInput = document.getElementById('id_images_to_upload');
+    if (multipleFileInput && multipleFileInput.files.length > 0) {
+        const numFiles = multipleFileInput.files.length;
+        const fileNames = Array.from(multipleFileInput.files).map(file => file.name).join(', ');
+        let imageHTML = `
+            <div class="summary-item">
+                <div class="summary-title"><i class="fas fa-image"></i> Изображения экскурсии</div>
+                <div class="summary-content">
+                    Будет загружено новых изображений: ${numFiles}<br>
+                    Имена файлов: ${fileNames}
+                </div>
+            </div>
+        `;
+        summaryHTML += imageHTML;
+    }
+
+    // --- New logic for multiple image uploads in update_excursion.js ---
+    const multipleFileNameDisplay = document.getElementById('file-name-multiple');
+    const multipleImagePreviewContainer = document.getElementById('image-preview-multiple');
+
+    if (multipleFileInput) {
+        multipleFileInput.addEventListener('change', function() {
+            // Clear current previews (both existing from Django template and new ones)
+            multipleImagePreviewContainer.innerHTML = '<span>Предпросмотр изображений</span>';
+            multipleFileNameDisplay.textContent = 'Файлы не выбраны';
+
+            if (this.files.length > 0) {
+                let fileNames = [];
+                for (let i = 0; i < this.files.length; i++) {
+                    const file = this.files[i];
+                    fileNames.push(file.name);
+
+                    const reader = new FileReader();
+                    reader.onload = (function(file) {
+                        return function(e) {
+                            if (multipleImagePreviewContainer.querySelector('span')) {
+                                multipleImagePreviewContainer.innerHTML = ''; // Remove placeholder span
+                            }
+                            const imgWrapper = document.createElement('div');
+                            imgWrapper.className = 'image-preview-item';
+                            // Use ${} for variable interpolation
+                            imgWrapper.innerHTML = `<img src="<span class="math-inline">\{e\.target\.result\}" alt\="</span>{file.name}" style="max-width: 100%; max-height: 150px; object-fit: contain;">`;
+                            multipleImagePreviewContainer.appendChild(imgWrapper);
+                        };
+                    })(file);
+                    reader.readAsDataURL(file);
+                }
+                multipleFileNameDisplay.textContent = fileNames.join(', ');
             } else {
-                fileNameDisplay.textContent = 'Файл не выбран';
-                imagePreview.innerHTML = '<span>Предпросмотр изображения</span>';
+                // If no new files selected, and there were existing images, re-display them
+                // This would require fetching existing images from a data attribute or similar
+                // For simplicity, we'll just show the placeholder if no new files are selected
+                // after an initial selection. If you need to re-show existing images
+                // without page reload, that's more complex JS.
             }
         });
     }
+// --- End new logic for multiple image uploads ---
     
     // Функция для отображения уведомлений
     function showToast(type, title, message) {

@@ -40,27 +40,42 @@ document.addEventListener('DOMContentLoaded', function() {
         time_24hr: true,
         locale: Russian
     });
-    
-    // Обработчик для превью изображения
-    const fileInput = document.getElementById('id_image');
-    const fileNameDisplay = document.getElementById('file-name');
-    const imagePreview = document.getElementById('image-preview');
-    
-    fileInput.addEventListener('change', function() {
-        if (fileInput.files.length > 0) {
-            const fileName = fileInput.files[0].name;
-            fileNameDisplay.textContent = fileName;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                imagePreview.innerHTML = `<img src="${e.target.result}" alt="Предпросмотр" style="max-width: 100%; max-height: 200px;">`;
-            };
-            reader.readAsDataURL(fileInput.files[0]);
-        } else {
-            fileNameDisplay.textContent = 'Файл не выбран';
-            imagePreview.innerHTML = '<span>Предпросмотр изображения</span>';
-        }
-    });
+
+    // --- New logic for multiple image uploads ---
+    const multipleFileInput = document.getElementById('id_images_to_upload');
+    const multipleFileNameDisplay = document.getElementById('file-name-multiple');
+    const multipleImagePreviewContainer = document.getElementById('image-preview-multiple');
+
+    if (multipleFileInput) {
+        multipleFileInput.addEventListener('change', function() {
+            multipleImagePreviewContainer.innerHTML = '<span>Предпросмотр изображений</span>'; // Clear previous previews
+            multipleFileNameDisplay.textContent = 'Файлы не выбраны';
+
+            if (this.files.length > 0) {
+                let fileNames = [];
+                for (let i = 0; i < this.files.length; i++) {
+                    const file = this.files[i];
+                    fileNames.push(file.name);
+
+                    const reader = new FileReader();
+                    reader.onload = (function(file) {
+                        return function(e) {
+                            if (multipleImagePreviewContainer.querySelector('span')) {
+                                multipleImagePreviewContainer.innerHTML = ''; // Remove placeholder span
+                            }
+                            const imgWrapper = document.createElement('div');
+                            imgWrapper.className = 'image-preview-item';
+                            // FIX IS HERE: Use ${} for variable interpolation
+                            imgWrapper.innerHTML = `<img src="${e.target.result}" alt="${file.name}" style="max-width: 100%; max-height: 150px; object-fit: contain;">`;
+                            multipleImagePreviewContainer.appendChild(imgWrapper);
+                        };
+                    })(file);
+                    reader.readAsDataURL(file);
+                }
+                multipleFileNameDisplay.textContent = fileNames.join(', ');
+            }
+        });
+    }
     
     // Функция для отображения уведомлений
     function showToast(type, title, message) {

@@ -98,29 +98,6 @@ body {
     font-size: 16px;
 }
 
-.image-preview {
-    width: 100%;
-    height: 200px;
-    border: 2px dashed #ddd;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-    overflow: hidden;
-}
-
-.image-preview img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-}
-
-.image-preview span {
-    color: #aaa;
-    font-style: italic;
-}
-
 .form-help-text {
     font-size: 14px;
     color: #666;
@@ -345,3 +322,38 @@ body {
     font-weight: 500;
     color: #007bff;
 } 
+
+.image-preview-multiple {
+    width: 100%;
+    min-height: 200px; /* Adjust as needed */
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    display: flex; /* Changed to flex for multiple images */
+    flex-wrap: wrap; /* Allows images to wrap */
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Gap between images */
+    margin-top: 10px;
+    overflow: auto; /* Allow scrolling if many images */
+    padding: 10px;
+}
+
+.image-preview-multiple span {
+    color: #aaa;
+    font-style: italic;
+}
+
+.image-preview-item {
+    max-width: 150px; /* Max width for individual preview items */
+    max-height: 150px; /* Max height for individual preview items */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ensure images fit within their preview box */
+}

@@ -177,17 +177,18 @@
             </div>
             
             <div class="form-group">
-                <label class="form-label">Изображение экскурсии</label>
+                <label class="form-label">Изображения экскурсии</label>
                 <div class="file-input-container">
-                    <label for="id_image" class="file-input-label">
-                        <i class="fas fa-upload"></i> Выберите изображение
+                    <label for="id_images_to_upload" class="file-input-label">
+                        <i class="fas fa-upload"></i> Выберите несколько изображений
                     </label>
-                    <input type="file" name="image_file" id="id_image" accept="image/*" class="file-input" required>
-                    <div class="file-input-name" id="file-name">Файл не выбран</div>
+                    <input type="file" name="images_to_upload" id="id_images_to_upload" accept="image/*" multiple class="file-input">
+                    <div class="file-input-name" id="file-name-multiple">Файлы не выбраны</div>
                 </div>
-                <div class="image-preview" id="image-preview">
-                    <span>Предпросмотр изображения</span>
+                <div class="image-preview-multiple" id="image-preview-multiple">
+                    <span>Предпросмотр изображений</span>
                 </div>
+                <div class="form-help-text">Выберите одно или несколько изображений. При загрузке новых, старые будут удалены.</div>
             </div>
             
             <div class="form-group">

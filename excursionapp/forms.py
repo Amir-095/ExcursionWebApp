@@ -1,8 +1,8 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Excursion,CustomUser
+from .models import *
 
 class CreateUserForm(UserCreationForm):
     phone_number = forms.CharField(max_length=15, required=False, label="Номер телефона")
@@ -10,9 +10,8 @@ class CreateUserForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ['first_name','last_name', 'email', 'phone_number', 'password1', 'password2']
-        
+    
 class ExcursionAdminForm(forms.ModelForm):
-    image_file = forms.ImageField(required=False)
     selected_dates = forms.CharField(
         label="Выберите даты",  # Этот label будет скрыт
         required=False,
@@ -34,7 +33,7 @@ class ExcursionAdminForm(forms.ModelForm):
     class Meta:
         model = Excursion
         fields = [
-            'title', 'price', 'image_file', 'location', 'meeting_address', 'end_location', 'group_type',
+            'title', 'price', 'location', 'meeting_address', 'end_location', 'group_type',
             'duration', 'languages','start_time', 'end_time', 'description',
             'guide_name', 'program', 'guide_services', 'transfer_service','group_first_aid', 'included_lunch',
             'food_included', 'existing_dates', 'number_of_days'
@@ -53,13 +52,7 @@ class ExcursionAdminForm(forms.ModelForm):
         instance = super().save(commit=False)
         new_dates = self.cleaned_data.get('selected_dates')
         dates_to_remove = self.cleaned_data.get('existing_dates')
-        uploaded_image = self.cleaned_data.get('image_file')
         uploaded_avatar = self.cleaned_data.get('guide_avatar')
-        # Assign the uploaded image to the instance's image field
-        if uploaded_image:
-            instance.image = uploaded_image.read()
-            instance.image_name = uploaded_image.name  # Save the image name if needed
-        # Assign the uploaded avatar to the instance's guide_avatar field
         if uploaded_avatar:
             instance.guide_avatar = uploaded_avatar.read()
         # Обработка новых дат
