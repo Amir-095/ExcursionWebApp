@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             const imgWrapper = document.createElement('div');
                             imgWrapper.className = 'image-preview-item';
                             // Use ${} for variable interpolation
-                            imgWrapper.innerHTML = `<img src="<span class="math-inline">\{e\.target\.result\}" alt\="</span>{file.name}" style="max-width: 100%; max-height: 150px; object-fit: contain;">`;
+                            imgWrapper.innerHTML = `<img src="${e.target.result}" alt="${file.name}" style="max-width: 100%; max-height: 150px; object-fit: contain;">`;
                             multipleImagePreviewContainer.appendChild(imgWrapper);
                         };
                     })(file);
@@ -258,11 +258,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 multipleFileNameDisplay.textContent = fileNames.join(', ');
             } else {
-                // If no new files selected, and there were existing images, re-display them
-                // This would require fetching existing images from a data attribute or similar
-                // For simplicity, we'll just show the placeholder if no new files are selected
-                // after an initial selection. If you need to re-show existing images
-                // without page reload, that's more complex JS.
             }
         });
     }
