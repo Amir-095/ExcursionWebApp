@@ -82,7 +82,7 @@
                 <div class="excursion-card">
                     <img src="{{ booking.excursion.image_url }}" alt="{{ booking.excursion.title }}">
                     <div class="card-content">
-                        <h4>{{ booking.excursion.title }}</h4>
+                        <h4>{{ booking.excursion.translated_title }}</h4>
                         <p>{{ booking.booking_date|localized_date }}</p>
                         <p class="booking-date">
                             <span class="booking-label">{% trans booking.excursion.duration %}</span>

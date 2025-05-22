@@ -119,11 +119,12 @@ def logoutUser(request):
 def profile_view(request):
     # Забронированные экскурсии
     booked_excursions = BookedExcursion.objects.filter(user=request.user).select_related('excursion')
+    current_language = request.LANGUAGE_CODE if hasattr(request, 'LANGUAGE_CODE') else 'ru'
     for booking in booked_excursions:
         if booking.excursion.image:
             image_base64 = base64.b64encode(booking.excursion.image).decode('utf-8')
             booking.excursion.image_url = f"data:image/jpeg;base64,{image_base64}"
-
+        booking.excursion.translated_title = booking.excursion.get_translated_title(current_language)
     # Сохранённые карты пользователя
     saved_cards = request.user.cards.all()
 
@@ -154,11 +155,13 @@ def check_auth(request):
 #pages
 def index(request):
     excursions = Excursion.objects.all().order_by('?')[:4]  # Получаем 4 случайные экскурсии
+    current_language = request.LANGUAGE_CODE if hasattr(request, 'LANGUAGE_CODE') else 'ru'
     for excursion in excursions:
         if excursion.image:
             # Конвертируем бинарные данные в base64 для отображения в HTML
             image_base64 = base64.b64encode(excursion.image).decode('utf-8')
             excursion.image_url = f"data:image/jpeg;base64,{image_base64}"
+        excursion.translated_title = excursion.get_translated_title(current_language)
 
     # Получаем 3 случайных отзыва
     all_reviews = list(SimpleReview.objects.all())
@@ -173,10 +176,11 @@ def index(request):
                     author_avatar = base64.b64encode(user.avatar).decode('utf-8')
             except CustomUser.DoesNotExist:
                 pass
+        translated_text = review.get_translated_text(current_language)
         reviews_for_main.append({
             'author': review.author,
             'author_avatar': author_avatar,
-            'text': review.text,
+            'text': translated_text,
             'rating': review.rating,
         })
 
@@ -191,7 +195,6 @@ def index(request):
 #excursion
 def all_excursions(request):
     excursions = Excursion.objects.all().order_by('location')
-
     # Собираем все параметры фильтрации
     group_type = request.GET.getlist('group_type')
     duration = request.GET.getlist('duration')
@@ -234,6 +237,8 @@ def all_excursions(request):
         if translated_location not in grouped_excursions:
             grouped_excursions[translated_location] = []
         grouped_excursions[translated_location].append(excursion)
+        excursion.translated_title = excursion.get_translated_title(current_language)
+
 
     # Если после всех фильтров ничего не найдено
     if not grouped_excursions:
@@ -241,7 +246,7 @@ def all_excursions(request):
     
     return render(request, "excursions.html", {
         'grouped_excursions': grouped_excursions,
-        'LANGUAGE_CODE': current_language # Все еще передаем на всякий случай
+        'LANGUAGE_CODE': current_language,
     })
 
 
@@ -321,7 +326,7 @@ def excursion_detail(request, excursion_id):
                 formatted_default_date = d
             break
 
-    # Простые отзывы
+    
     if request.method == 'POST' and 'review_text' in request.POST:
         if request.user.is_authenticated:
             author = request.user.username
@@ -355,12 +360,13 @@ def excursion_detail(request, excursion_id):
                     author_avatar = base64.b64encode(user.avatar).decode('utf-8')
             except CustomUser.DoesNotExist:
                 pass
+        translated_text = review.get_translated_text(current_language)
         reviews.append({
             'id': review.id,
             'author': review.author,
             'author_id': review.author_id,
             'author_avatar': author_avatar,
-            'text': review.text,
+            'text': translated_text,
             'created_at': review.created_at,
             'rating': review.rating,
         })

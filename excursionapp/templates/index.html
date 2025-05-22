@@ -41,7 +41,7 @@
                 <div class="home-excursion-card">
                     <img src="{{ excursion.image_url }}" alt="{{ excursion.title }}">
                     <div class="card-content">
-                        <h3>{{ excursion.title }}</h3>
+                        <h3>{{ excursion.translated_title }}</h3>
                         <p class="tour-type">{% trans excursion.duration %}</p>
                         <div class="price-book">
                             <span class="price">{{ excursion.price }} ₸</span>
@@ -55,29 +55,29 @@
     </div>
         <!-- Новый блок различий экскурсий -->
     <div class="excursion-difference-container">
-        <h2>Чем различаются экскурсии?</h2>
+        <h2>{% trans "Чем различаются экскурсии?" %}</h2>
         <div class="excursion-difference-list">
             <div class="excursion-difference-item">
                 <img class="excursion-difference-icon" src="{% static 'images/ic_person_48px.png' %}" alt="Индивидуальные">
-                <div class="excursion-difference-title">Индивидуальные экскурсии</div>
-                <div class="excursion-difference-desc desc-individual">Гид проведёт экскурсию только для вас и ваших друзей.</div>
+                <div class="excursion-difference-title">{% trans "Индивидуальные экскурсии" %}</div>
+                <div class="excursion-difference-desc desc-individual">{% trans "Гид проведёт экскурсию только для вас и ваших друзей." %}</div>
             </div>
             <div class="excursion-difference-item">
                 <img class="excursion-difference-icon" src="{% static 'images/Two-user.png' %}" alt="Групповые">
-                <div class="excursion-difference-title">Групповые</div>
-                <div class="excursion-difference-desc desc-group">Гид формирует группу. Вместе с вами узнавать новое будут другие туристы.</div>
+                <div class="excursion-difference-title">{% trans "Групповые" %}</div>
+                <div class="excursion-difference-desc desc-group">{% trans "Гид формирует группу. Вместе с вами узнавать новое будут другие туристы." %}</div>
             </div>
             <div class="excursion-difference-item">
                 <img class="excursion-difference-icon" src="{% static 'images/child_care.png' %}" alt="Семейные">
-                <div class="excursion-difference-title">Семейные</div>
-                <div class="excursion-difference-desc desc-family">Безопасный и увлекательный тур с простым маршрутом, играми и развлечениями для детей.</div>
+                <div class="excursion-difference-title">{% trans "Семейные" %}</div>
+                <div class="excursion-difference-desc desc-family">{% trans "Безопасный и увлекательный тур с простым маршрутом, играми и развлечениями для детей." %}</div>
             </div>
         </div>
     </div>
     <!-- Блок случайных отзывов -->
     {% if reviews_for_main %}
     <div class="mainpage-reviews-section">
-        <h2 class="mainpage-reviews-title">Отзывы покупателей</h2>
+        <h2 class="mainpage-reviews-title">{% trans "Отзывы покупателей" %}</h2>
         <ul class="mainpage-reviews-list">
             {% for review in reviews_for_main %}
             <li class="mainpage-review-card">

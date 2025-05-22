@@ -353,12 +353,12 @@
     </script>
     <!-- Отзывы об экскурсии -->
     <div id="reviews-section" class="reviews-section">
-        <h3 class="leave-review-title">Оставить отзыв</h3>
+        <h3 class="leave-review-title">{% trans "Оставить отзыв" %}</h3>
         {% if user.is_authenticated %}
         <form method="post" class="review-form">
             {% csrf_token %}
             <div class="review-form-row">
-                <span class="review-form-label">Ваша оценка:</span>
+                <span class="review-form-label">{% trans "Ваша оценка:" %}</span>
                 <span id="star-rating" class="review-form-stars">
                     {% for i in "12345" %}
                         <input type="radio" id="star{{ forloop.counter }}" name="review_rating" value="{{ forloop.counter }}" style="display:none;">
@@ -366,14 +366,14 @@
                     {% endfor %}
                 </span>
             </div>
-            <textarea name="review_text" required rows="3" maxlength="1000" placeholder="Ваш отзыв..." class="review-form-textarea"></textarea>
-            <button type="submit" class="review-form-submit">Отправить</button>
+            <textarea name="review_text" required rows="3" maxlength="1000" placeholder="{% trans 'Ваш отзыв...' %}" class="review-form-textarea"></textarea>
+            <button type="submit" class="review-form-submit">{% trans "Отправить" %}</button>
         </form>
         {% else %}
-        <p class="review-login-message">Чтобы оставить отзыв, <a href="#" onclick="showLoginModal();return false;">войдите в аккаунт</a>.</p>
+        <p class="review-login-message">{% trans "Чтобы оставить отзыв, " %}<a href="#" onclick=showLoginModal();return false;>{% trans "войдите в аккаунт" %}</a>.</p>
         {% endif %}
         <hr>
-        <h2 class="reviews-title">Отзывы</h2>
+        <h2 class="reviews-title">{% trans "Отзывы" %}</h2>
         <ul class="reviews-list">
             {% for review in reviews %}
                 <li class="review-card">
@@ -412,7 +412,7 @@
                     <div class="review-text">{{ review.text|linebreaksbr }}</div>
                 </li>
             {% empty %}
-                <li class="no-reviews">Пока нет отзывов.</li>
+                <li class="no-reviews">{% trans "Пока нет отзывов." %}</li>
             {% endfor %}
         </ul>
     </div>

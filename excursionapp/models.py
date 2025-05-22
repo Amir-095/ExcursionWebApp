@@ -252,6 +252,53 @@ class SimpleReview(models.Model):
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     rating = models.PositiveSmallIntegerField(default=5, choices=[(i, str(i)) for i in range(1, 6)])
+    
+    @staticmethod
+    def translate_text(text, target_lang='kk'):
+        """Переводит текст на указанный язык с помощью deep-translator"""
+        if not text:
+            return ""
+        try:
+            if target_lang == 'en':
+                translator = GoogleTranslator(source='ru', target='en')
+            else:
+                translator = GoogleTranslator(source='ru', target=target_lang)
+
+            max_chunk_size = 4999
+
+            if len(text) <= max_chunk_size:
+                return translator.translate(text)
+            else:
+                paragraphs = text.split('\n')
+                translated_paragraphs = []
+                current_chunk = ""
+
+                for paragraph in paragraphs:
+                    if len(current_chunk) + len(paragraph) + 1 <= max_chunk_size:
+                        if current_chunk:
+                            current_chunk += '\n' + paragraph
+                        else:
+                            current_chunk = paragraph
+                    else:
+                        if current_chunk:
+                            translated_paragraphs.append(translator.translate(current_chunk))
+                        current_chunk = paragraph
+
+                if current_chunk:
+                    translated_paragraphs.append(translator.translate(current_chunk))
+
+                return '\n'.join(translated_paragraphs)
+        except Exception as e:
+            print(f"Translation error: {e}")
+            return text
 
     def __str__(self):
         return f"{self.author}: {self.text[:30]}..."
+    
+    def get_translated_text(self, lang_code):
+        """Возвращает переведённый текст отзыва"""
+        if lang_code == 'ru' or not self.text:
+            return self.text
+        return self.translate_text(self.text, lang_code)
+    
+    

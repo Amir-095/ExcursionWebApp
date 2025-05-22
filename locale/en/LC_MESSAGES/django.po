@@ -346,3 +346,36 @@ msgstr "Already have an account?"
 
 msgid "Истекает"
 msgstr "Expires"
+
+msgid "Отзывы"
+msgstr "Review"
+
+msgid "Оставить отзыв"
+msgstr "Leave a review"
+
+msgid "Чтобы оставить отзыв, "
+msgstr "To leave a review, "
+
+msgid "войдите в аккаунт"
+msgstr "log in to your account"
+
+msgid "Пока нет отзывов"
+msgstr "There are no reviews yet"
+
+msgid "Чем различаются экскурсии?"
+msgstr "How do excursions differ?"
+
+msgid "Индивидуальные экскурсии"
+msgstr "Individual"
+
+msgid "Гид проведёт экскурсию только для вас и ваших друзей."
+msgstr "The guide will conduct a guided tour just for you and your friends."
+
+msgid "Гид формирует группу. Вместе с вами узнавать новое будут другие туристы."
+msgstr "The guide forms a group. Other tourists will learn new things with you."
+
+msgid "Безопасный и увлекательный тур с простым маршрутом, играми и развлечениями для детей."
+msgstr "A safe and exciting tour with a simple route, games and entertainment for children."
+
+msgid "Отзывы покупателей"
+msgstr "Customer Reviews"
