@@ -151,6 +151,71 @@ def profile_view(request):
 
 def check_auth(request):
     return JsonResponse({'is_authenticated': request.user.is_authenticated})
+
+@login_required
+@require_POST # Ensures this view only accepts POST requests
+def update_user_profile(request):
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest': # Check if it's an AJAX request
+        try:
+            data = json.loads(request.body)
+            user = request.user
+
+            new_username = data.get('username', '').strip()
+            new_email = data.get('email', '').strip()
+            new_phone_number = data.get('phone_number', '').strip()
+
+            # --- Validation ---
+            errors = {}
+            if not new_username:
+                errors['username'] = 'Имя не может быть пустым.'
+            if not new_email: # You might want to add email format validation here
+                errors['email'] = 'Email не может быть пустым.'
+            # Add phone number format validation if needed (e.g., regex)
+
+            # Check for uniqueness if email changed
+            if new_email.lower() != user.email.lower() and CustomUser.objects.filter(email__iexact=new_email).exclude(pk=user.pk).exists():
+                errors['email'] = 'Этот email уже используется другим пользователем.'
+            
+            # Check for uniqueness if phone number changed (and is not empty)
+            if new_phone_number and new_phone_number != user.phone_number and CustomUser.objects.filter(phone_number=new_phone_number).exclude(pk=user.pk).exists():
+                errors['phone_number'] = 'Этот номер телефона уже используется другим пользователем.'
+
+            if errors:
+                return JsonResponse({'status': 'error', 'errors': errors, 'message': 'Пожалуйста, исправьте ошибки.'}, status=400)
+
+            # --- Update user data ---
+            user.username = new_username
+            user.email = new_email
+            user.phone_number = new_phone_number if new_phone_number else None # Save None if phone is empty
+            user.save()
+
+            # Important: If you use email for login and it changes,
+            # Django's session authentication usually handles this fine as long as the user ID doesn't change.
+            # If your custom authentication backend heavily relies on the email field value stored at login time,
+            # you might need to call login(request, user) again to refresh the session,
+            # or ensure your authenticate method fetches the user by ID and then checks credentials.
+            # For most standard setups, user.save() is sufficient.
+
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Профиль успешно обновлен.',
+                'user_data': {
+                    'username': user.username,
+                    'email': user.email,
+                    'phone_number': user.phone_number or '' # Return empty string for display if None
+                }
+            })
+        except json.JSONDecodeError:
+            return JsonResponse({'status': 'error', 'message': 'Неверный формат запроса.'}, status=400)
+        except Exception as e:
+            # Log the error for debugging:
+            # import logging
+            # logger = logging.getLogger(__name__)
+            # logger.error(f"Error updating profile: {e}", exc_info=True)
+            return JsonResponse({'status': 'error', 'message': f'Произошла ошибка на сервере.'}, status=500)
+    
+    return JsonResponse({'status': 'error', 'message': 'Допустимы только AJAX POST запросы.'}, status=405)
+
 #user
 
 

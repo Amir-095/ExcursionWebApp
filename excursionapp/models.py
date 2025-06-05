@@ -56,7 +56,7 @@ class Excursion(models.Model):
     description = models.TextField()  # Описание экскурсии
     guide_name = models.CharField(max_length=100)  # Имя гида
     program = models.TextField(blank=True, null=True, verbose_name="Программа экскурсии")  # Программа экскурсии
-    guide_avatar = models.BinaryField(null=True, blank=True, verbose_name="Аватар гида") # Аватар гида
+    guide_avatar = models.BinaryField(null=True, blank=True, verbose_name="Аватар гида",editable=True) # Аватар гида
 
     guide_services = models.BooleanField(default=False, verbose_name="Услуги гида/водителя")
     transfer_service = models.BooleanField(default=False, verbose_name="Трансфер на протяжении всего пути")

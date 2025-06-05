@@ -23,31 +23,74 @@
                 <div class="avatar-upload-container">
                     <form method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column; align-items: center;">
                         {% csrf_token %}
-                        <label for="id_avatar" class="avatar-label">
+    
+                        <label for="id_avatar_input_actual" class="avatar-label"> {# Изменили for на ID нового скрытого инпута #}
                             {% if user.avatar %}
                                 <img src="data:image/jpeg;base64,{{ user.avatar|to_base64 }}" alt="Аватар" class="profile-avatar-img" />
                             {% else %}
                                 <img src="{% static 'images/ic_account_circle_48px.png' %}" alt="Аватар" class="profile-avatar-img" />
                             {% endif %}
                         </label>
-                        {{ avatar_form.avatar|add_class:"avatar-input" }}
-                        <button type="submit" class="avatar-upload-btn">Загрузить аватар</button>
-                        {% if avatar_success %}<div class="avatar-success">Аватар успешно обновлён!</div>{% endif %}
+                        <input type="file" name="{{ avatar_form.avatar.name }}" id="id_avatar_input_actual" class="avatar-input-hidden" accept="image/*">
+
+                        <div class="custom-file-trigger">
+                            <label for="id_avatar_input_actual" class="custom-file-button">
+                                {% trans "Выберите файл" %}
+                            </label>
+                            <span id="file-chosen-text" class="file-chosen-status">
+                                {% trans "Файл не выбран" %}
+                            </span>
+                        </div>
+
+                        <button type="submit" class="avatar-upload-btn" style="margin-top: 10px;">
+                            {% trans "Сохранить аватар" %} {# Изменили текст кнопки #}
+                        </button>
+
+                        {% if avatar_success %}<div class="avatar-success">{% trans "Аватар успешно обновлён!" %}</div>{% endif %}
                     </form>
                 </div>
-                <h2>{% trans "Информация профиля" %}</h2>
-                <div class="info-item">
-                    <span class="label">{% trans "Имя" %}:</span>
-                    <span class="value">{{ user.username }}</span>
+                <div class="profile-header">
+                    <h2>{% trans "Информация профиля" %}</h2>
+                    <button type="button" class="edit-profile-btn" id="editProfileBtn">{% trans "Редактировать" %}</button>
                 </div>
-                <div class="info-item">
-                    <span class="label">Email:</span>
-                    <span class="value">{{ user.email }}</span>
+
+                <form id="profileEditForm" style="display: none;">
+                    <div class="info-item">
+                        <label class="label" for="profile_username_input">{% trans "Имя" %}:</label>
+                        <input type="text" id="profile_username_input" name="username" class="profile-edit-input" value="{{ user.username }}">
+                        <span class="error-message" id="error_username_msg"></span>
+                    </div>
+                    <div class="info-item">
+                        <label class="label" for="profile_email_input">Email:</label>
+                        <input type="email" id="profile_email_input" name="email" class="profile-edit-input" value="{{ user.email }}">
+                        <span class="error-message" id="error_email_msg"></span>
+                    </div>
+                    <div class="info-item">
+                        <label class="label" for="profile_phone_number_input">Телефон:</label>
+                        <input type="text" id="profile_phone_number_input" name="phone_number" class="profile-edit-input" value="{{ user.phone_number|default_if_none:'' }}">
+                        <span class="error-message" id="error_phone_number_msg"></span>
+                    </div>
+                    <div class="profile-edit-actions">
+                        <button type="button" id="saveProfileBtn" class="profile-action-btn save-btn">{% trans "Сохранить" %}</button>
+                        <button type="button" id="cancelEditProfileBtn" class="profile-action-btn cancel-btn">{% trans "Отмена" %}</button>
+                    </div>
+                </form>
+
+                <div id="profileDisplayInfo">
+                    <div class="info-item">
+                        <span class="label">{% trans "Имя" %}:</span>
+                        <span class="value" id="display_username">{{ user.username }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Email:</span>
+                        <span class="value" id="display_email">{{ user.email }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Телефон:</span>
+                        <span class="value" id="display_phone_number">{{ user.phone_number|default_if_none:'' }}</span>
+                    </div>
                 </div>
-                <div class="info-item">
-                    <span class="label">Телефон:</span>
-                    <span class="value">{{ user.phone_number }}</span>
-                </div>
+
                 <div class="profile-actions">
                     <a href="{% url 'logout' %}" class="logout-btn">{% trans "Выйти" %}</a>
                 </div>

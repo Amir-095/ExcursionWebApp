@@ -30,7 +30,7 @@ h2 {
     border-radius: 10px;
     border: 1px solid #E2E2E2;
     width: 324px;
-    height: 500px;
+    height: 610px;
 }
 
 .payment-info{
@@ -52,6 +52,12 @@ h2 {
     font-size: 16px;
 }
 
+#profileEditForm .info-item {
+    margin-bottom: 0px; /* Новое, уменьшенное значение для режима редактирования */
+}
+.profile-info.profile-content-editing .profile-header {
+    margin-bottom: 0px; /* Новое, уменьшенное значение, например 5px, или даже 0, если нужно */
+}
 .label {
     color: #666;
     display: block;
@@ -254,7 +260,7 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
 .avatar-label {
@@ -285,4 +291,128 @@ h2 {
     color: #27ae60;
     font-size: 14px;
     margin-top: 5px;
+}
+
+/* Add these to your profile.css */
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px; /* Or as needed */
+}
+
+.edit-profile-btn {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.edit-profile-btn:hover {
+    background-color: #e0e0e0;
+}
+
+/* Styling for input fields in edit mode */
+.profile-edit-input {
+    width: calc(100% - 22px); /* Adjust based on padding and border */
+    padding: 8px 10px;
+    margin-bottom: 3px; /* Smaller margin before error message */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 15px; /* Match .value or desired size */
+    box-sizing: border-box;
+}
+
+.profile-edit-input.is-invalid { /* Style for invalid input */
+    border-color: #dc3545; /* Red border for errors */
+}
+
+.profile-edit-actions {
+    margin-top: 0px;
+    display: flex;
+    gap: 10px; /* Space between save and cancel buttons */
+}
+
+.profile-action-btn {
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.save-btn {
+    background-color: #28a745; /* Green */
+}
+
+.save-btn:hover {
+    background-color: #218838;
+}
+
+.cancel-btn {
+    background-color: #6c757d; /* Grey */
+}
+
+.cancel-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Error message styling */
+.error-message {
+    display: block; /* Ensure it takes its own line */
+    color: #dc3545; /* Red color for error text */
+    font-size: 0.875em; /* Smaller font for error messages */
+    margin-top: 2px;
+    min-height: 1em; /* Reserve space to prevent layout jumps */
+}
+
+.avatar-input-hidden {
+    display: none; /* Скрываем стандартный input type="file" */
+}
+
+.custom-file-trigger {
+    display: flex; /* Располагаем кнопку и текст в ряд */
+    align-items: center; /* Выравниваем по центру по вертикали */
+    margin-bottom: 10px; /* Отступ под этим блоком */
+    /* Можно добавить ширину, если нужно ограничить */
+}
+
+.custom-file-button {
+    display: inline-block;
+    background-color: #f0f0f0; /* Цвет как у кнопки "Редактировать" или ваш фирменный */
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 6px 12px; /* Подберите размеры */
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    margin-right: 10px; /* Отступ справа от кнопки */
+}
+
+.custom-file-button:hover {
+    background-color: #e0e0e0;
+}
+
+.file-chosen-status {
+    font-size: 14px;
+    color: #555;
+    /* Предотвращение переноса длинных имен файлов, если нужно */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* Ограничьте ширину, если имена файлов могут быть очень длинными */
+}
+
+.avatar-upload-container form { /* Убедимся, что форма имеет нужные стили */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

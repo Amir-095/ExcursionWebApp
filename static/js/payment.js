@@ -322,15 +322,74 @@ function focusOnCVC() {
     }, 600); // Время анимации переворота
 }
 
-// Инициализация обработчиков событий для страницы оплаты
+
+const cryptoDataStore = {
+    'BTC': { network: 'Bitcoin', address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', iconClass: 'fab fa-bitcoin' },
+    'ETH': { network: 'Ethereum (ERC-20)', address: '0x0123456789abcdef0123456789abcdef01234567', iconClass: 'fab fa-ethereum' },
+    'USDT': { network: 'Tron (TRC-20)', address: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', iconClass: 'fas fa-dollar-sign' },
+    'SOL': { network: 'Solana', address: 'SoL1U2b9kU3yB8t1n9c4w8hY5g7xW3zP2jA6mQeK', iconClass: 'fas fa-atom' },
+    'BNB': { network: 'Binance Smart Chain (BEP-20)', address: '0x00112233445566778899aabbccddeeff00112233', iconClass: 'fas fa-cubes' }
+};
+
+// ... (handlePaymentMethodChange остается без изменений) ...
+function handlePaymentMethodChange() {
+    const cardPaymentSection = document.getElementById('cardPaymentSection');
+    const cashPaymentSection = document.getElementById('cashPaymentSection');
+    const cryptoPaymentSection = document.getElementById('cryptoPaymentSection');
+
+    if (document.getElementById('payByCardRadio').checked) {
+        cardPaymentSection.style.display = 'block';
+        cashPaymentSection.style.display = 'none';
+        cryptoPaymentSection.style.display = 'none';
+    } else if (document.getElementById('payByCashRadio').checked) {
+        cardPaymentSection.style.display = 'none';
+        cashPaymentSection.style.display = 'block';
+        cryptoPaymentSection.style.display = 'none';
+    } else if (document.getElementById('payByCryptoRadio').checked) {
+        cardPaymentSection.style.display = 'none';
+        cashPaymentSection.style.display = 'none';
+        cryptoPaymentSection.style.display = 'block';
+    }
+}
+
+
+// Обновленная функция для отображения деталей криптовалюты
+function updateCryptoDetails() {
+    const selectedCurrency = document.getElementById('selectedCryptoCurrency').value; // Читаем из hidden input
+    const networkDisplay = document.getElementById('cryptoNetworkDisplay');
+    const addressDisplay = document.getElementById('cryptoAddressDisplay');
+    const qrCodeWrapper = document.getElementById('cryptoQrCodeWrapper');
+    const iconDisplay = document.getElementById('cryptoIconDisplay');
+    const iconText = document.getElementById('cryptoIconText');
+
+    if (selectedCurrency && cryptoDataStore[selectedCurrency]) {
+        const data = cryptoDataStore[selectedCurrency];
+        networkDisplay.textContent = data.network;
+        addressDisplay.textContent = data.address;
+        
+        iconDisplay.className = data.iconClass; // Устанавливаем класс иконки
+        iconText.textContent = `${selectedCurrency} Icon/QR (Макет)`;
+        qrCodeWrapper.style.display = 'block';
+    } else {
+        // Этого состояния не должно быть, если всегда есть активная кнопка по умолчанию
+        networkDisplay.textContent = '{% trans "не выбрана" %}';
+        addressDisplay.textContent = '{% trans "не выбран" %}';
+        qrCodeWrapper.style.display = 'none';
+        iconDisplay.className = '';
+        iconText.textContent = '{% trans "(QR-код/Иконка валюты)" %}';
+    }
+}
+
+
+// Обновленная функция инициализации
 function initPaymentPage() {
-    // Обработчик для селекта сохраненных карт
+    // ... (существующие слушатели для savedCardSelect, flip кнопок, модального окна) ...
     const savedCardSelect = document.getElementById('savedCardSelect');
     if (savedCardSelect) {
         savedCardSelect.addEventListener('change', showHideNewCardFields);
+        showHideNewCardFields(); 
     }
 
-    // Обработчики для кнопок переворота карты
     const flipToBackBtn = document.getElementById('flipToBack');
     const flipToFrontBtn = document.getElementById('flipToFront');
 
@@ -349,13 +408,11 @@ function initPaymentPage() {
         });
     }
     
-    // Обработчики для модального окна сохранения карты
     const confirmSaveCardBtn = document.getElementById('confirmSaveCard');
     const cancelSaveCardBtn = document.getElementById('cancelSaveCard');
     
     if (confirmSaveCardBtn) {
         confirmSaveCardBtn.addEventListener('click', function() {
-            // Устанавливаем значение "true" для сохранения карты
             document.getElementById('saveCardInput').value = "true";
             if (tempFormData) {
                 tempFormData.set('save_card', "true");
@@ -367,7 +424,6 @@ function initPaymentPage() {
     
     if (cancelSaveCardBtn) {
         cancelSaveCardBtn.addEventListener('click', function() {
-            // Устанавливаем значение "false" для НЕ сохранения карты
             document.getElementById('saveCardInput').value = "false";
             if (tempFormData) {
                 tempFormData.set('save_card', "false");
@@ -376,6 +432,79 @@ function initPaymentPage() {
             hideSaveCardModal();
         });
     }
+    // --- Конец существующих слушателей ---
+
+
+    const paymentMethodButtons = document.querySelectorAll('.payment-method-btn');
+    paymentMethodButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            paymentMethodButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            const selectedMethod = this.dataset.method;
+            
+            document.getElementById('payByCardRadio').checked = (selectedMethod === 'card');
+            document.getElementById('payByCashRadio').checked = (selectedMethod === 'cash');
+            document.getElementById('payByCryptoRadio').checked = (selectedMethod === 'crypto');
+            
+            handlePaymentMethodChange();
+        });
+    });
+
+    // --- NEW: Слушатели для кнопок выбора криптовалюты ---
+    const cryptoCurrencyButtons = document.querySelectorAll('.crypto-currency-btn');
+    const selectedCryptoInput = document.getElementById('selectedCryptoCurrency');
+
+    cryptoCurrencyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            cryptoCurrencyButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            selectedCryptoInput.value = this.dataset.currency; // Обновляем hidden input
+            updateCryptoDetails();
+        });
+    });
+    
+    // Первоначальные вызовы для установки состояний
+    handlePaymentMethodChange();
+    updateCryptoDetails(); // Вызываем для установки деталей для BTC по умолчанию
+
+    const mockButtons = document.querySelectorAll('.mock-payment-btn');
+    mockButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const paymentButton = this;
+            const paymentDataType = paymentButton.dataset.paymentType; // Используем data-атрибут
+
+            // Для локализации этих строк в JS, вам понадобится механизм i18n для JavaScript.
+            // Например, Django `javascript_catalog` или передача переведенных строк через data-атрибуты.
+            // Ниже приведены строки как msgid для вашего .po файла.
+            let successTitle = "Заказ успешно оформлен!"; // msgid "Заказ успешно оформлен!"
+            let successMessage = "";
+
+            if (paymentDataType === "cash") {
+                successMessage = "Оплата наличными будет подтверждена гидом при встрече."; // msgid "Оплата наличными будет подтверждена гидом при встрече."
+            } else if (paymentDataType === "crypto") {
+                const selectedCryptoCode = selectedCryptoInput ? selectedCryptoInput.value : "Криптовалютой"; // msgid "Криптовалютой" (как запасной вариант)
+                let baseCryptoMessage = "Ваш заказ на оплату %s принят к обработке. (Это демонстрация)"; // msgid "Ваш заказ на оплату %s принят к обработке. (Это демонстрация)"
+                successMessage = baseCryptoMessage.replace("%s", selectedCryptoCode);
+            } else {
+                // Этот блок не должен вызываться, если у всех mock-кнопок есть data-payment-type
+                successMessage = "Ваш заказ принят к обработке."; // msgid "Ваш заказ принят к обработке."
+            }
+
+            paymentButton.classList.add('loading');
+            paymentButton.disabled = true;
+
+            setTimeout(() => {
+                // paymentButton.classList.remove('loading'); // Не обязательно, если идет редирект
+                // paymentButton.disabled = false;
+
+                showToast('success', successTitle, successMessage);
+                setTimeout(() => {
+                    window.location.href = typeof excursionsListUrl !== 'undefined' ? excursionsListUrl : "/excursions";
+                }, 2000);
+            }, 1500);
+        });
+    });
 }
 
 // Функция для отображения всплывающего уведомления

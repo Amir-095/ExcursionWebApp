@@ -44,6 +44,7 @@ urlpatterns += i18n_patterns(
     path('update/<int:pk>/', views.update_excursion, name='update_excursion'),
     path('payment/<int:excursion_id>/', views.payment_page, name='payment_page'),
     path('process-payment/', views.process_payment, name='process_payment'),
+    path('profile/update/', views.update_user_profile, name='update_user_profile'),
     path('delete-card/<int:card_id>/', views.delete_card, name='delete_card'),
     path('create-tour-agent/', views.create_tour_agent, name='create_tour_agent'),
     path('check-card/', views.check_card, name='check_card'),

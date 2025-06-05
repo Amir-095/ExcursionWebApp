@@ -356,6 +356,60 @@ msgstr "Leave a review"
 msgid "Чтобы оставить отзыв, "
 msgstr "To leave a review, "
 
+msgid "Редактировать"
+msgstr "Edit"
+
+msgid "Сохранить"
+msgstr "Save"
+
+msgid "Файл не выбран"
+msgstr "File not selected"
+
+msgid "Выберите файл"
+msgstr "Select file"
+
+msgid "Пожалуйста, подготовьте точную сумму для оплаты гиду при встрече."
+msgstr "Please prepare the exact amount to pay the guide at the meeting."
+
+msgid "Гид свяжется с вами для подтверждения деталей и возможности оплаты наличными."
+msgstr "The guide will contact you to confirm the details and the possibility of cash payment."
+
+msgid "Подтвердить (Наличные)"
+msgstr "Confirm (Cash)"
+
+msgid "Выберите способ оплаты:"
+msgstr "Choose a payment method:"
+
+msgid "Наличные"
+msgstr "Cash"
+
+msgid "Подтвердить (Криптовалюта)"
+msgstr "Confirm (Cryptocurrency)"
+
+msgid "После совершения перевода (это макет), пожалуйста, свяжитесь с нашей поддержкой для подтверждения платежа. Этот способ оплаты является демонстрационным."
+msgstr "After making the transfer (this is a mockup), please contact our support team to confirm the payment. This payment method is for demonstration purposes only."
+
+msgid "Крипто"
+msgstr "Crypto"
+
+msgid "Сеть"
+msgstr "Network"
+
+msgid "Адрес"
+msgstr "Address"
+
+msgid "Карта"
+msgstr "Card"
+
+msgid "Выберите валюту для оплаты:"
+msgstr "Select a currency for payment:"
+
+msgid "Аватар успешно обновлён!"
+msgstr "Avatar successfully updated!"
+
+msgid "Сохранить аватар"
+msgstr "Upload avatar"
+
 msgid "войдите в аккаунт"
 msgstr "log in to your account"
 

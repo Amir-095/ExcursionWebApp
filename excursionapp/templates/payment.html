@@ -15,7 +15,6 @@
 </head>
 <body>
 
-<!-- Контейнер для всплывающих уведомлений -->
 <div class="toast-container" id="toastContainer"></div>
 
 <div class="container">
@@ -25,82 +24,128 @@
         <p>{% trans "Количество билетов" %}: {{ ticket_count }}</p>
         <p>{% trans "Итого к оплате" %}: <strong id="totalPriceDisplay">{{ total_price }} KZT</strong></p>
 
-        <!-- Скрытое поле для передачи общей стоимости на сервер -->
         <input type="hidden" id="totalPrice" name="total_price" value="{{ total_price }}" />
 
-        <!-- Выпадающий список сохранённых карт -->
-        <label>{% trans "Выберите сохранённую карту" %}:</label>
-        <select id="savedCardSelect" name="saved_card">
-            <option value="">{% trans "Новая карта" %}</option>
-            {% for card in saved_cards %}
-            <option value="{{ card.id }}">**** **** **** {{ card.decrypt_four_card_number }} ({{ card.expiry_date }})</option>
-            {% endfor %}
-        </select>
+        <div class="payment-method-selection">
+            <label class="section-label">{% trans "Выберите способ оплаты" %}:</label>
+            <div class="payment-method-buttons">
+                <button type="button" class="payment-method-btn active" data-method="card" title="{% trans 'Банковской картой' %}">
+                    <i class="fas fa-credit-card"></i>
+                    <span>{% trans "Карта" %}</span>
+                </button>
+                <button type="button" class="payment-method-btn" data-method="cash" title="{% trans 'Наличными' %}">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>{% trans "Наличные" %}</span>
+                </button>
+                <button type="button" class="payment-method-btn" data-method="crypto" title="{% trans 'Криптовалютой' %}">
+                    <i class="fab fa-bitcoin"></i>
+                    <span>{% trans "Крипто" %}</span>
+                </button>
+            </div>
+            <input type="radio" id="payByCardRadio" name="payment_method_radio" value="card" checked style="display:none;">
+            <input type="radio" id="payByCashRadio" name="payment_method_radio" value="cash" style="display:none;">
+            <input type="radio" id="payByCryptoRadio" name="payment_method_radio" value="crypto" style="display:none;">
+        </div>
 
-        <div id="newCardFields">
-            <!-- Интерактивное визуальное представление карты с полями ввода -->
-            <div class="card-container">
-                <div class="credit-card" id="creditCard">
-                    <div class="card-front">
-                        <div class="card-logo">KazTour</div>
-                        
-                        <!-- Поле для ввода номера карты -->
-                        <div class="card-number-field">
-                            <input type="text" id="cardNumber" name="card_number" placeholder="**** **** **** ****" 
-                                  maxlength="19" autocomplete="off"
-                                  oninput="this.value = this.value.replace(/\s+/g, '').replace(/(\d{4})/g, '$1 ').trim();" />
-                        </div>
-                        
-                        <div class="card-details">
-                            <!-- Поле для ввода имени владельца -->
-                            <div class="card-holder-field">
-                                <label for="cardholderName">{% trans "Имя владельца" %}</label>
-                                <input type="text" id="cardholderName" name="cardholder_name" placeholder="{% trans 'ИМЯ ВЛАДЕЛЬЦА' %}" autocomplete="off" />
+        <div id="cardPaymentSection">
+            <label>{% trans "Выберите сохранённую карту" %}:</label>
+            <select id="savedCardSelect" name="saved_card">
+                <option value="">{% trans "Новая карта" %}</option>
+                {% for card in saved_cards %}
+                <option value="{{ card.id }}">**** **** **** {{ card.decrypt_four_card_number }} ({{ card.expiry_date }})</option>
+                {% endfor %}
+            </select>
+
+            <div id="newCardFields">
+                <div class="card-container">
+                    <div class="credit-card" id="creditCard">
+                        <div class="card-front">
+                            <div class="card-logo">KazTour</div>
+                            <div class="card-number-field">
+                                <input type="text" id="cardNumber" name="card_number" placeholder="**** **** **** ****" 
+                                      maxlength="19" autocomplete="off"
+                                      oninput="this.value = this.value.replace(/\s+/g, '').replace(/(\d{4})/g, '$1 ').trim();" />
                             </div>
-                            
-                            <!-- Поле для ввода срока действия -->
-                            <div class="card-expiry-field">
-                                <label for="expiryDate">{% trans "Срок" %}</label>
-                                <input type="text" id="expiryDate" name="expiry_date" placeholder="{% trans 'ММ/ГГ' %}" 
-                                      maxlength="5" autocomplete="off"
-                                      oninput="this.value = this.value.replace(/[^0-9\/]/g, '').replace(/^(\d{2})(\d)/, '$1/$2').slice(0, 5);" />
+                            <div class="card-details">
+                                <div class="card-holder-field">
+                                    <label for="cardholderName">{% trans "Имя владельца" %}</label>
+                                    <input type="text" id="cardholderName" name="cardholder_name" placeholder="{% trans 'ИМЯ ВЛАДЕЛЬЦА' %}" autocomplete="off" />
+                                </div>
+                                <div class="card-expiry-field">
+                                    <label for="expiryDate">{% trans "Срок" %}</label>
+                                    <input type="text" id="expiryDate" name="expiry_date" placeholder="{% trans 'ММ/ГГ' %}" 
+                                          maxlength="5" autocomplete="off"
+                                          oninput="this.value = this.value.replace(/[^0-9\/]/g, '').replace(/^(\d{2})(\d)/, '$1/$2').slice(0, 5);" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-back">
-                        <div class="card-strip"></div>
-                        <div class="card-signature">
-                            <!-- Поле для ввода CVC кода -->
-                            <div class="card-cvc-field">
-                                <label for="cvc">CVC</label>
-                                <input type="text" id="cvc" name="cvc" placeholder="CVC" 
-                                      maxlength="4" autocomplete="off"
-                                      oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 4);" />
+                        <div class="card-back">
+                            <div class="card-strip"></div>
+                            <div class="card-signature">
+                                <div class="card-cvc-field">
+                                    <label for="cvc">CVC</label>
+                                    <input type="text" id="cvc" name="cvc" placeholder="CVC" 
+                                          maxlength="4" autocomplete="off"
+                                          oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 4);" />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="card-flip-buttons">
+                    <button type="button" class="flip-btn" id="flipToFront">{% trans "Передняя сторона" %}</button>
+                    <button type="button" class="flip-btn" id="flipToBack">{% trans "Обратная сторона" %}</button>
+                </div>
             </div>
-
-            <!-- Кнопки для переворота карты -->
-            <div class="card-flip-buttons">
-                <button type="button" class="flip-btn" id="flipToFront">{% trans "Передняя сторона" %}</button>
-                <button type="button" class="flip-btn" id="flipToBack">{% trans "Обратная сторона" %}</button>
-            </div>
-
+            <button type="button" class="payment-btn" id="cardPaymentButton" onclick="processPayment({{ excursion.id }})">{% trans "Оплатить картой" %}</button>
         </div>
 
-        <!-- Скрытые поля -->
+        <div id="cashPaymentSection" style="display: none;">
+            <p>{% trans "Пожалуйста, подготовьте точную сумму для оплаты гиду при встрече." %}</p>
+            <p>{% trans "Гид свяжется с вами для подтверждения деталей и возможности оплаты наличными." %}</p>
+            <button type="button" class="payment-btn mock-payment-btn" data-payment-type="cash">{% trans "Подтвердить (Наличные)" %}</button>
+        </div>
+
+        <div id="cryptoPaymentSection" style="display: none;">
+            <label class="section-label-subheader">{% trans "Выберите валюту для оплаты" %}:</label>
+            <div class="crypto-currency-buttons">
+                <button type="button" class="crypto-currency-btn active" data-currency="BTC">
+                    <i class="fab fa-bitcoin"></i> <span>BTC</span>
+                </button>
+                <button type="button" class="crypto-currency-btn" data-currency="ETH">
+                    <i class="fab fa-ethereum"></i> <span>ETH</span>
+                </button>
+                <button type="button" class="crypto-currency-btn" data-currency="USDT">
+                    <i class="fas fa-dollar-sign"></i> <span>USDT</span>
+                </button>
+                <button type="button" class="crypto-currency-btn" data-currency="SOL">
+                    <i class="fas fa-atom"></i> <span>SOL</span>
+                </button>
+                <button type="button" class="crypto-currency-btn" data-currency="BNB">
+                    <i class="fas fa-cubes"></i> <span>BNB</span>
+                </button>
+            </div>
+            <input type="hidden" id="selectedCryptoCurrency" name="selected_crypto_currency" value="BTC">
+
+            <div class="crypto-details">
+                <p><strong>{% trans "Сеть" %}:</strong> <span id="cryptoNetworkDisplay"></span></p>
+                <p><strong>{% trans "Адрес" %}:</strong> <span id="cryptoAddressDisplay"></span></p>
+                <div id="cryptoQrCodeWrapper" style="text-align: center; margin-top:15px;">
+                    <i id="cryptoIconDisplay" class="fab fa-bitcoin" style="font-size: 100px; color: #21336C;"></i><br>
+                    <small id="cryptoIconText">BTC Icon/QR (Макет)</small>
+                </div>
+                <p style="margin-top: 15px;"><small>{% trans "После совершения перевода (это макет), пожалуйста, свяжитесь с нашей поддержкой для подтверждения платежа. Этот способ оплаты является демонстрационным." %}</small></p>
+            </div>
+            <button type="button" class="payment-btn mock-payment-btn" data-payment-type="crypto">{% trans "Подтвердить (Криптовалюта)" %}</button>
+        </div>
+
         <input type="hidden" name="excursion_id" value="{{ excursion.id }}" />
         <input type="hidden" id="selectedDate" name="selected_date" value="{{ selected_date }}" />
         <input type="hidden" id="ticketCount" name="ticket_count" value="{{ ticket_count }}" />
         <input type="hidden" id="saveCardInput" name="save_card" value="false" />
-
-        <button type="button" class="payment-btn" onclick="processPayment({{ excursion.id }})">{% trans "Оплатить" %}</button>
     </form>
 </div>
 
-<!-- Модальное окно для подтверждения сохранения карты -->
 <div class="modal-overlay" id="saveCardModal">
     <div class="confirm-modal">
         <div class="confirm-modal-title">{% trans "Сохранить карту?" %}</div>
@@ -113,8 +158,6 @@
 </div>
 
 {% include 'js_constants.html' %}
-
 <script src="{% static 'js/payment.js' %}"></script>
-
 </body>
 </html>
