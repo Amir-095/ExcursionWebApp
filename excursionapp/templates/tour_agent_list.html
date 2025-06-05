@@ -1,21 +1,20 @@
-<!DOCTYPE html>
+{% extends 'base_layout.html' %}
 {% load static %}
-<html>
-<head>
-    <title>Список турагентов</title>
-    <meta charset="utf-8" />
+
+{% block title %}Список турагентов{% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/tour_agent_list.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
     <link rel="stylesheet" href="{% static 'css/modal.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
     <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+{% endblock %}
+
+{% block extra_js %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-    <!-- Контейнер для toast-уведомлений -->
-    <div class="toast-container" id="toastContainer"></div>
-    {% include 'navbar.html' %}
+    <script src="{% static 'js/tour_agent_list.js' %}"></script>
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <h1>Список турагентов</h1>
         <ul class="agent-list">
@@ -40,7 +39,6 @@
             {% endfor %}
         </ul>
     </div>
-    {% include 'feedback.html' %}
 
     <!-- Модальное окно для редактирования турагента -->
     <div id="editAgentModal" class="modal">
@@ -81,9 +79,4 @@
             </div>
         </div>
     </div>
-   {% include 'modal.html' %}
-   {% include 'js_constants.html' %}
-   <script src="{% static 'js/tour_agent_list.js' %}"></script>
- 
-</body>
-</html>
+{% endblock %}

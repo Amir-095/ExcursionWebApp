@@ -1,22 +1,15 @@
-<!doctype html>
+{% extends 'base_layout.html' %}
 {% load static %}
 {% load i18n %}
-<html lang="{{ LANGUAGE_CODE }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% trans "Оплата экскурсии" %}</title>
+
+{% block title %}{% trans "Оплата экскурсии" %}{% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/payment.css' %}">
-    <link rel="stylesheet" href="{% static 'css/notifications.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
-</head>
-<body>
+{% endblock %}
 
-<div class="toast-container" id="toastContainer"></div>
-
+{% block content %}
 <div class="container">
     <form id="paymentForm">
         <h2>{% trans "Оплата экскурсии" %}: {{ excursion.title }}</h2>
@@ -156,8 +149,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
 
-{% include 'js_constants.html' %}
+{% block extra_js %}
 <script src="{% static 'js/payment.js' %}"></script>
-</body>
-</html>
+{% endblock %}

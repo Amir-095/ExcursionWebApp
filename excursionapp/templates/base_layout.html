@@ -1,0 +1,28 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}KazTour{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Контейнер для toast-уведомлений -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    {% include 'navbar.html' %}
+
+    {% block content %}
+    {% endblock %}
+
+    {% include 'modal.html' %}
+    {% include 'feedback.html' %}
+    {% include 'js_constants.html' %}
+    <script src="{% static 'js/global.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 

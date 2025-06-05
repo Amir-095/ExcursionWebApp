@@ -77,54 +77,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Функция для отображения уведомлений
-    function showToast(type, title, message) {
-        const toastContainer = document.getElementById('toastContainer');
-        
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        
-        let iconClass = 'fa-info-circle';
-        if (type === 'success') {
-            iconClass = 'fa-check-circle';
-        } else if (type === 'error') {
-            iconClass = 'fa-exclamation-circle';
-        } else if (type === 'warning') {
-            iconClass = 'fa-exclamation-triangle';
-        }
-        
-        toast.innerHTML = `
-            <div class="toast-icon">
-                <i class="fas ${iconClass}"></i>
-            </div>
-            <div class="toast-content">
-                <div class="toast-title">${title}</div>
-                <div class="toast-body">${message}</div>
-            </div>
-            <button class="toast-close" onclick="this.parentElement.remove()">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="toast-progress"></div>
-        `;
-        
-        toastContainer.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.classList.add('show');
-            
-            const progressBar = toast.querySelector('.toast-progress');
-            progressBar.style.width = '100%';
-            progressBar.style.transitionDuration = '5000ms';
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => {
-                    toast.remove();
-                }, 500);
-            }, 5000);
-        }, 10);
-    }
-    
     // Валидация формы перед отправкой
     const form = document.querySelector('.excursion-form');
     form.addEventListener('submit', function(e) {

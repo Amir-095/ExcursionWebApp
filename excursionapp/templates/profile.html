@@ -1,22 +1,15 @@
-<!DOCTYPE html>
+{% extends 'base_layout.html' %}
 {% load static %}
 {% load i18n %}
 {% load date_filters %}
-<html>
-<head>
-    <title>Профиль</title>
-    <meta charset="utf-8" />
+
+{% block title %}Профиль{% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
-</head>
-<body>
-    {% include 'navbar.html' %}
+{% endblock %}
 
-    <!-- Контейнер для toast-уведомлений -->
-    <div id="toastContainer" class="toast-container"></div>
-
+{% block content %}
     <div class="profile-container">
         <div class="profile-section">
             <div class="profile-info">
@@ -154,9 +147,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
 
-{% include 'modal.html' %}
-{% include 'js_constants.html' %}
+{% block extra_js %}
 <script src="{% static 'js/profile.js' %}"></script>
-</body>
-</html>
+{% endblock %}

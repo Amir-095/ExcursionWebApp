@@ -1,21 +1,15 @@
-<!DOCTYPE html>
+{% extends 'base_layout.html' %}
 {% load static %}
 {% load i18n %}
-<html>
-<head>
-    <title>Все Экскурсии</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
+
+{% block title %}Все Экскурсии{% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/excursions.css' %}" />
     <link rel="stylesheet" href="{% static 'css/modal.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-</head>
-<body>
-    <!-- Контейнер для toast-уведомлений -->
-    <div class="toast-container" id="toastContainer"></div>
-        {% include 'navbar.html' %}
-    
+{% endblock %}
+
+{% block content %}
     <div class="header-search-container">
         <h2 class="excursions-title">{% trans "Все экскурсии" %}</h2>
         <div class="search-container">
@@ -93,12 +87,10 @@
             </div>
         </section>
     </div>
+{% endblock %}
 
-   {% include 'modal.html' %}
-   {% include 'feedback.html' %}
-    {% include 'js_constants.html' %}
+{% block extra_js %}
     <script src="{% static 'js/slider.js' %}"></script>
     <script src="{% static 'js/filters.js' %}"></script>
     <script src="{% static 'js/search.js' %}"></script>
-</body>
-</html> 
+{% endblock %} 

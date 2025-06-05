@@ -507,68 +507,6 @@ function initPaymentPage() {
     });
 }
 
-// Функция для отображения всплывающего уведомления
-function showToast(type, title, message, duration = 5000) {
-    // Создаем контейнер для тостов, если он не существует
-    let toastContainer = document.getElementById('toastContainer');
-    if (!toastContainer) {
-        toastContainer = document.createElement('div');
-        toastContainer.id = 'toastContainer';
-        toastContainer.className = 'toast-container';
-        document.body.appendChild(toastContainer);
-    }
-    
-    // Создаем элемент уведомления
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    
-    // Определяем соответствующую иконку
-    let iconClass = 'fa-info-circle';
-    if (type === 'success') {
-        iconClass = 'fa-check-circle';
-    } else if (type === 'error') {
-        iconClass = 'fa-exclamation-circle';
-    } else if (type === 'warning') {
-        iconClass = 'fa-exclamation-triangle';
-    }
-    
-    // Создаем содержимое уведомления
-    toast.innerHTML = `
-        <div class="toast-icon">
-            <i class="fas ${iconClass}"></i>
-        </div>
-        <div class="toast-content">
-            <div class="toast-title">${title}</div>
-            <div class="toast-body">${message}</div>
-        </div>
-        <button class="toast-close" onclick="this.parentElement.remove()">
-            <i class="fas fa-times"></i>
-        </button>
-        <div class="toast-progress"></div>
-    `;
-    
-    // Добавляем уведомление в контейнер
-    toastContainer.appendChild(toast);
-    
-    // Показываем уведомление с анимацией
-    setTimeout(() => {
-        toast.classList.add('show');
-        
-        // Запускаем прогресс-бар
-        const progressBar = toast.querySelector('.toast-progress');
-        progressBar.style.width = '100%';
-        progressBar.style.transitionDuration = `${duration}ms`;
-        
-        // Автоматически удаляем уведомление после указанного времени
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                toast.remove();
-            }, 500);
-        }, duration);
-    }, 10);
-}
-
 // Инициализация функций при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
     // Инициализируем страницу оплаты

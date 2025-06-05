@@ -15,6 +15,7 @@ import re
 from datetime import datetime, date, timedelta
 from django.template.defaultfilters import register
 from random import sample
+from django.utils.translation import gettext_lazy as _
 
 # Регистрируем кастомный фильтр для шаблонов
 @register.filter(name='to_base64')
@@ -41,11 +42,11 @@ def registerPage(request):
                 phone_number = form.cleaned_data.get('phone_number')
 
                 if CustomUser.objects.filter(email=email).exists():
-                    return JsonResponse({'status': 'error', 'errors': {'email': 'Этот email уже зарегистрирован'}},
+                    return JsonResponse({'status': 'error', 'errors': {'email': _('Этот email уже зарегистрирован')}},
                                         status=400)
 
                 if CustomUser.objects.filter(phone_number=phone_number).exists():
-                    return JsonResponse({'status': 'error', 'errors': {'phone_number': 'Этот номер уже зарегистрирован'}},
+                    return JsonResponse({'status': 'error', 'errors': {'phone_number': _('Этот номер уже зарегистрирован')}},
                                         status=400)
 
                 user = form.save(commit=False)
@@ -54,8 +55,8 @@ def registerPage(request):
                 user.username = f"{first_name} {last_name}".strip()
                 if not user.username:
                     return JsonResponse({'status': 'error', 'errors': {
-                        'first_name': 'Имя или фамилия должны быть заполнены.',
-                        'last_name': 'Имя или фамилия должны быть заполнены.'
+                        'first_name': _('Имя или фамилия должны быть заполнены.'),
+                        'last_name': _('Имя или фамилия должны быть заполнены.')
                          }
                     }, status=400)
                 user.save()
@@ -70,22 +71,22 @@ def registerPage(request):
                 error_code = error_list[0]['code']
 
                 if field == "email" and error_code == "unique":
-                    custom_error_messages["email"] = "Этот email уже зарегистрирован"
+                    custom_error_messages["email"] = _("Этот email уже зарегистрирован")
                 elif field == "phone_number" and error_code == "unique":
-                    custom_error_messages["phone_number"] = "Этот номер уже зарегистрирован"
+                    custom_error_messages["phone_number"] = _("Этот номер уже зарегистрирован")
                 elif field == "password2" and error_code == "password_mismatch":
-                    custom_error_messages["password2"] = "Пароли не совпадают"
+                    custom_error_messages["password2"] = _("Пароли не совпадают")
                 else:
                     custom_error_messages[field] = error_list[0]['message']
 
             return JsonResponse({'status': 'error', 'errors': custom_error_messages}, status=400)
         else:
             # Если это не AJAX запрос, возвращаем ошибку
-            return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
+            return JsonResponse({'status': 'error', 'message': _('Invalid request')}, status=400)
 
     # Для GET запросов возвращаем JSON с сообщением об ошибке
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+        return JsonResponse({'status': 'error', 'message': _('Method not allowed')}, status=405)
     
     # Для обычных GET запросов возвращаем страницу регистрации
     form = CreateUserForm()
@@ -103,12 +104,12 @@ def loginPage(request):
             return JsonResponse({'status': 'success'})
         else:
             errors = {
-                'username': 'Неверное имя пользователя или пароль',
-                'password': 'Неверное имя пользователя или пароль'
+                'username': _('Неверное имя пользователя или пароль'),
+                'password': _('Неверное имя пользователя или пароль')
             }
             return JsonResponse({'status': 'error', 'errors': errors}, status=400)
 
-    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
+    return JsonResponse({'status': 'error', 'message': _('Invalid request')}, status=400)
 
 def logoutUser(request):
     logout(request)
@@ -167,21 +168,21 @@ def update_user_profile(request):
             # --- Validation ---
             errors = {}
             if not new_username:
-                errors['username'] = 'Имя не может быть пустым.'
+                errors['username'] = _('Имя не может быть пустым.')
             if not new_email: # You might want to add email format validation here
-                errors['email'] = 'Email не может быть пустым.'
+                errors['email'] = _('Email не может быть пустым.')
             # Add phone number format validation if needed (e.g., regex)
 
             # Check for uniqueness if email changed
             if new_email.lower() != user.email.lower() and CustomUser.objects.filter(email__iexact=new_email).exclude(pk=user.pk).exists():
-                errors['email'] = 'Этот email уже используется другим пользователем.'
+                errors['email'] = _('Этот email уже используется другим пользователем.')
             
             # Check for uniqueness if phone number changed (and is not empty)
             if new_phone_number and new_phone_number != user.phone_number and CustomUser.objects.filter(phone_number=new_phone_number).exclude(pk=user.pk).exists():
-                errors['phone_number'] = 'Этот номер телефона уже используется другим пользователем.'
+                errors['phone_number'] = _('Этот номер телефона уже используется другим пользователем.')
 
             if errors:
-                return JsonResponse({'status': 'error', 'errors': errors, 'message': 'Пожалуйста, исправьте ошибки.'}, status=400)
+                return JsonResponse({'status': 'error', 'errors': errors, 'message': _('Пожалуйста, исправьте ошибки.')}, status=400)
 
             # --- Update user data ---
             user.username = new_username
@@ -198,7 +199,7 @@ def update_user_profile(request):
 
             return JsonResponse({
                 'status': 'success',
-                'message': 'Профиль успешно обновлен.',
+                'message': _('Профиль успешно обновлен.'),
                 'user_data': {
                     'username': user.username,
                     'email': user.email,
@@ -206,15 +207,15 @@ def update_user_profile(request):
                 }
             })
         except json.JSONDecodeError:
-            return JsonResponse({'status': 'error', 'message': 'Неверный формат запроса.'}, status=400)
+            return JsonResponse({'status': 'error', 'message': _('Неверный формат запроса.')}, status=400)
         except Exception as e:
             # Log the error for debugging:
             # import logging
             # logger = logging.getLogger(__name__)
             # logger.error(f"Error updating profile: {e}", exc_info=True)
-            return JsonResponse({'status': 'error', 'message': f'Произошла ошибка на сервере.'}, status=500)
+            return JsonResponse({'status': 'error', 'message': _('Произошла ошибка на сервере.')}, status=500)
     
-    return JsonResponse({'status': 'error', 'message': 'Допустимы только AJAX POST запросы.'}, status=405)
+    return JsonResponse({'status': 'error', 'message': _('Допустимы только AJAX POST запросы.')}, status=405)
 
 #user
 
@@ -391,9 +392,9 @@ def delete_excursion(request, pk):
     excursion = get_object_or_404(Excursion, pk=pk)
     try:
         excursion.delete()
-        return JsonResponse({'status': 'success', 'message': 'Экскурсия успешно удалена'})
+        return JsonResponse({'status': 'success', 'message': _('Экскурсия успешно удалена')})
     except Exception as e:
-        return JsonResponse({'status': 'error', 'message': 'Произошла ошибка при удалении экскурсии: ' + str(e)})
+        return JsonResponse({'status': 'error', 'message': _('Произошла ошибка при удалении экскурсии: ') + str(e)})
 
 def excursion_detail(request, excursion_id):
     excursion = get_object_or_404(Excursion, id=excursion_id)
@@ -512,10 +513,10 @@ def book_excursion(request, excursion_id):
     final_price = excursion.price * ticket_count
 
     if not selected_date or selected_date not in excursion.get_dates_list():
-        return JsonResponse({'status': 'error', 'message': 'Выбранная дата недоступна для этой экскурсии'})
+        return JsonResponse({'status': 'error', 'message': _('Выбранная дата недоступна для этой экскурсии')})
 
     if ticket_count <= 0:
-        return JsonResponse({'status': 'error', 'message': 'Количество билетов должно быть больше нуля'})
+        return JsonResponse({'status': 'error', 'message': _('Количество билетов должно быть больше нуля')})
 
     # Проверяем, была ли оплата за эту экскурсию с указанной датой
     paid_booking = BookedExcursion.objects.filter(
@@ -526,16 +527,16 @@ def book_excursion(request, excursion_id):
     ).first()
 
     if not paid_booking:
-        return JsonResponse({'status': 'error', 'message': 'Оплата не была выполнена. Забронировать экскурсию невозможно.'})
+        return JsonResponse({'status': 'error', 'message': _('Оплата не была выполнена. Забронировать экскурсию невозможно.')})
 
     # Проверяем, чтобы одно бронирование для пользователя и даты не создавалось повторно
     if BookedExcursion.objects.filter(
         user=request.user, excursion=excursion, booking_date=selected_date, is_paid=True
     ).exists():
-        return JsonResponse({'status': 'error', 'message': 'Вы уже забронировали эту экскурсию на указанную дату.'})
+        return JsonResponse({'status': 'error', 'message': _('Вы уже забронировали эту экскурсию на указанную дату.')})
 
     # Если всё успешно, возвращаем подтверждение
-    return JsonResponse({'status': 'success', 'message': 'Бронирование подтверждено.'})
+    return JsonResponse({'status': 'success', 'message': _('Бронирование подтверждено.')})
 
 #excursion
 
@@ -560,34 +561,34 @@ def create_tour_agent(request):
         # Проверка паролей
         if password != password2:
             if is_ajax:
-                return JsonResponse({'status': 'error', 'message': 'Пароли не совпадают'})
+                return JsonResponse({'status': 'error', 'message': _('Пароли не совпадают')})
             else:
                 form = TourAgentCreationForm()
-                return render(request, 'create_tour_agent.html', {'form': form, 'error': 'Пароли не совпадают'})
+                return render(request, 'create_tour_agent.html', {'form': form, 'error': _('Пароли не совпадают')})
         
         # Проверка уникальности username
         if CustomUser.objects.filter(username=username).exists():
             if is_ajax:
-                return JsonResponse({'status': 'error', 'message': 'Пользователь с таким именем уже существует'})
+                return JsonResponse({'status': 'error', 'message': _('Пользователь с таким именем уже существует')})
             else:
                 form = TourAgentCreationForm()
-                return render(request, 'create_tour_agent.html', {'form': form, 'error': 'Пользователь с таким именем уже существует'})
+                return render(request, 'create_tour_agent.html', {'form': form, 'error': _('Пользователь с таким именем уже существует')})
         
         # Проверка уникальности email
         if CustomUser.objects.filter(email=email).exists():
             if is_ajax:
-                return JsonResponse({'status': 'error', 'message': 'Пользователь с таким email уже существует'})
+                return JsonResponse({'status': 'error', 'message': _('Пользователь с таким email уже существует')})
             else:
                 form = TourAgentCreationForm()
-                return render(request, 'create_tour_agent.html', {'form': form, 'error': 'Пользователь с таким email уже существует'})
+                return render(request, 'create_tour_agent.html', {'form': form, 'error': _('Пользователь с таким email уже существует')})
         
         # Проверка уникальности номера телефона
         if phone_number and CustomUser.objects.filter(phone_number=phone_number).exists():
             if is_ajax:
-                return JsonResponse({'status': 'error', 'message': 'Пользователь с таким номером телефона уже существует'})
+                return JsonResponse({'status': 'error', 'message': _('Пользователь с таким номером телефона уже существует')})
             else:
                 form = TourAgentCreationForm()
-                return render(request, 'create_tour_agent.html', {'form': form, 'error': 'Пользователь с таким номером телефона уже существует'})
+                return render(request, 'create_tour_agent.html', {'form': form, 'error': _('Пользователь с таким номером телефона уже существует')})
         
         try:
             # Создаем пользователя
@@ -600,16 +601,16 @@ def create_tour_agent(request):
             )
             
             if is_ajax:
-                return JsonResponse({'status': 'success', 'message': 'Турагент успешно создан'})
+                return JsonResponse({'status': 'success', 'message': _('Турагент успешно создан')})
             else:
                 return redirect('tour_agent_list')
                 
         except Exception as e:
             if is_ajax:
-                return JsonResponse({'status': 'error', 'message': f'Ошибка при создании турагента: {str(e)}'})
+                return JsonResponse({'status': 'error', 'message': _(f'Ошибка при создании турагента: {str(e)}')})
             else:
                 form = TourAgentCreationForm()
-                return render(request, 'create_tour_agent.html', {'form': form, 'error': f'Ошибка при создании турагента: {str(e)}'})
+                return render(request, 'create_tour_agent.html', {'form': form, 'error': _(f'Ошибка при создании турагента: {str(e)}')})
     else:
         form = TourAgentCreationForm()
         return render(request, 'create_tour_agent.html', {'form': form})
@@ -675,9 +676,9 @@ def update_tour_agent(request, pk):
             
             try:
                 agent.save()
-                return JsonResponse({'status': 'success', 'message': 'Данные турагента успешно обновлены'})
+                return JsonResponse({'status': 'success', 'message': _('Данные турагента успешно обновлены')})
             except Exception as e:
-                return JsonResponse({'status': 'error', 'message': f'Ошибка при обновлении: {str(e)}'})
+                return JsonResponse({'status': 'error', 'message': _(f'Ошибка при обновлении: {str(e)}')})
         else:
             # Обрабатываем обычную форму (для обратной совместимости)
             form = TourAgentUpdateForm(request.POST, instance=agent)
@@ -712,9 +713,9 @@ def delete_card(request, card_id):
     card = get_object_or_404(Card, id=card_id, user=request.user)
     try:
         card.delete()
-        return JsonResponse({'status': 'success', 'message': 'Карта успешно удалена'})
+        return JsonResponse({'status': 'success', 'message': _('Карта успешно удалена')})
     except Exception as e:
-        return JsonResponse({'status': 'error', 'message': 'Произошла ошибка при удалении карты: ' + str(e)})
+        return JsonResponse({'status': 'error', 'message': _('Произошла ошибка при удалении карты: ') + str(e)})
 
 
 @login_required(login_url='home')
@@ -740,7 +741,7 @@ def validate_card_number(card_number):
     # Проверка на соответствие алгоритму Луна
     card_number = card_number.replace(" ", "")  # Удаление пробелов
     if not re.fullmatch(r'\d{13,19}', card_number):
-        return False
+        return {'status': 'error', 'message': _('Некорректный номер карты')}
 
     # Алгоритм Луна для проверки
     sum_digits = 0
@@ -759,7 +760,7 @@ def validate_card_number(card_number):
 def validate_expiry_date(expiry_date):
     # Проверка формата MM/YY
     if not re.fullmatch(r'\d{2}/\d{2}', expiry_date):
-        return False
+        return {'status': 'error', 'message': _('Срок действия карты истёк или некорректен')}
 
     # Сравнение с текущей датой
     month, year = map(int, expiry_date.split("/"))
@@ -768,27 +769,31 @@ def validate_expiry_date(expiry_date):
     current_month = current_date.month
 
     if year < current_year or (year == current_year and month < current_month):
-        return False
+        return {'status': 'error', 'message': _('Срок действия карты истёк или некорректен')}
     return 1 <= month <= 12
 
 
 def validate_cvc(cvc):
     # Проверка длины CVC (обычно 3-4 цифры)
-    return re.fullmatch(r'\d{3,4}', cvc) is not None
+    if not re.fullmatch(r'\d{3,4}', cvc):
+        return {'status': 'error', 'message': _('Некорректный CVC')}
+    return True
 
 
 def validate_payment_data(card_number, expiry_date, cvc, cardholder_name):
+    # Изменил эти вызовы, чтобы они не возвращали JsonResponse напрямую, а возвращали словарь
+    # В JS-функции showToast будет вызываться с этими сообщениями
     if not validate_card_number(card_number):
-        return {'status': 'error', 'message': 'Некорректный номер карты'}
+        return {'status': 'error', 'message': _('Некорректный номер карты')}
 
     if not validate_expiry_date(expiry_date):
-        return {'status': 'error', 'message': 'Срок действия карты истёк или некорректен'}
+        return {'status': 'error', 'message': _('Срок действия карты истёк или некорректен')}
 
     if not validate_cvc(cvc):
-        return {'status': 'error', 'message': 'Некорректный CVC'}
+        return {'status': 'error', 'message': _('Некорректный CVC')}
 
     if not cardholder_name or len(cardholder_name.strip()) < 2:
-        return {'status': 'error', 'message': 'Имя держателя карты некорректно'}
+        return {'status': 'error', 'message': _('Имя держателя карты некорректно')}
 
     return {'status': 'success'}
 
@@ -819,7 +824,7 @@ def process_payment(request):
     print("Запрос process_payment начат.")  # Отладочный вывод
 
     if request.method != 'POST':
-        return JsonResponse({'status': 'error', 'message': 'Некорректный метод запроса'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('Некорректный метод запроса')}, status=400)
 
     # Получаем данные из запроса
     excursion_id = request.POST.get('excursion_id')
@@ -838,17 +843,17 @@ def process_payment(request):
         if ticket_count <= 0:
             raise ValueError("Количество билетов должно быть больше нуля.")
     except ValueError as e:
-        return JsonResponse({'status': 'error', 'message': 'Количество билетов некорректно'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('Количество билетов некорректно')}, status=400)
 
     # Получаем экскурсию
     try:
         excursion = get_object_or_404(Excursion, id=excursion_id)
     except Exception as e:
-        return JsonResponse({'status': 'error', 'message': 'Экскурсия не найдена'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('Экскурсия не найдена')}, status=400)
 
     # Проверяем доступность выбранной даты
     if not selected_date or selected_date not in excursion.get_dates_list():
-        return JsonResponse({'status': 'error', 'message': 'Выбранная дата недоступна для этой экскурсии'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('Выбранная дата недоступна для этой экскурсии')}, status=400)
 
     # Проверяем стоимость
     expected_total_price = excursion.price * ticket_count
@@ -858,7 +863,7 @@ def process_payment(request):
     if provided_total_price != expected_total_price:
         return JsonResponse({
             'status': 'error',
-            'message': 'Некорректная стоимость билетов. Попробуйте ещё раз.'
+            'message': _('Некорректная стоимость билетов. Попробуйте ещё раз.')
         }, status=400)
 
     # Проверяем карту (сохранённую или новую)
@@ -869,7 +874,7 @@ def process_payment(request):
             expiry_date = saved_card.expiry_date
             cardholder_name = saved_card.cardholder_name
         except Exception as e:
-            return JsonResponse({'status': 'error', 'message': 'Не удалось получить сохранённую карту'}, status=400)
+            return JsonResponse({'status': 'error', 'message': _('Не удалось получить сохранённую карту')}, status=400)
     else:
         validation_result = validate_payment_data(card_number, expiry_date, cvc, cardholder_name)
         if validation_result['status'] == 'error':
@@ -887,7 +892,7 @@ def process_payment(request):
         if existing_booking:
             return JsonResponse({
                 'status': 'error', 
-                'message': 'Вы уже забронировали эту экскурсию на указанную дату.'
+                'message': _('Вы уже забронировали эту экскурсию на указанную дату.')
             }, status=400)
             
         # Обработка сохранения карты
@@ -939,10 +944,10 @@ def process_payment(request):
             """
         send_mail(subject, message, settings.EMAIL_HOST_USER, [request.user.email])
 
-        return JsonResponse({'status': 'success', 'message': 'Оплата прошла успешно. Бронирование выполнено.'})
+        return JsonResponse({'status': 'success', 'message': _('Оплата прошла успешно. Бронирование выполнено.')})
     
     except Exception as e:
-        return JsonResponse({'status': 'error', 'message': 'Произошла ошибка на сервере'}, status=500)
+        return JsonResponse({'status': 'error', 'message': _('Произошла ошибка на сервере')}, status=500)
 #payment
 
 @require_POST
@@ -954,7 +959,7 @@ def send_feedback(request):
         if not email or not message:
             return JsonResponse({
                 'status': 'error',
-                'message': 'Необходимо заполнить все поля'
+                'message': _('Необходимо заполнить все поля')
             }, status=400)
 
         # Отправка email
@@ -968,7 +973,7 @@ def send_feedback(request):
 
         return JsonResponse({
             'status': 'success',
-            'message': 'Сообщение успешно отправлено'
+            'message': _('Сообщение успешно отправлено')
         })
     except Exception as e:
         return JsonResponse({
@@ -1060,9 +1065,9 @@ def delete_review(request, review_id):
     try:
         review = get_object_or_404(SimpleReview, id=review_id)
         if review.author_id != request.user.id:
-            return JsonResponse({'status': 'error', 'message': 'Нет прав на удаление этого отзыва.'}, status=403)
+            return JsonResponse({'status': 'error', 'message': _('Нет прав на удаление этого отзыва.')}, status=403)
         review.delete()
-        return JsonResponse({'status': 'success', 'message': 'Отзыв успешно удалён'})
+        return JsonResponse({'status': 'success', 'message': _('Отзыв успешно удалён')})
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
@@ -1071,15 +1076,15 @@ def delete_review(request, review_id):
 def edit_review(request, review_id):
     review = get_object_or_404(SimpleReview, id=review_id)
     if review.author_id != request.user.id:
-        return JsonResponse({'status': 'error', 'message': 'Нет прав на редактирование этого отзыва.'}, status=403)
+        return JsonResponse({'status': 'error', 'message': _('Нет прав на редактирование этого отзыва.')}, status=403)
     data = json.loads(request.body)
     text = data.get('text', '').strip()
     rating = int(data.get('rating', 5))
     if not (1 <= rating <= 5):
         rating = 5
     if not text:
-        return JsonResponse({'status': 'error', 'message': 'Текст отзыва не может быть пустым.'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('Текст отзыва не может быть пустым.')}, status=400)
     review.text = text
     review.rating = rating
     review.save()
-    return JsonResponse({'status': 'success', 'message': 'Отзыв обновлён.'})
+    return JsonResponse({'status': 'success', 'message': _('Отзыв обновлён.')})

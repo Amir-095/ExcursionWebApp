@@ -295,7 +295,7 @@ msgstr "Front Side"
 msgid "Обратная сторона"
 msgstr "Back Side"
 
-msgid "Оплатить"
+msgid "Оплатить картой"
 msgstr "Pay"
 
 msgid "Сохранить карту?"
@@ -433,3 +433,153 @@ msgstr "A safe and exciting tour with a simple route, games and entertainment fo
 
 msgid "Отзывы покупателей"
 msgstr "Customer Reviews"
+
+msgid "Этот email уже зарегистрирован"
+msgstr "This email is already registered"
+
+msgid "Этот номер уже зарегистрирован"
+msgstr "This number is already registered"
+
+msgid "Имя или фамилия должны быть заполнены."
+msgstr "First name or last name must be filled in."
+
+msgid "Пароли не совпадают"
+msgstr "Passwords do not match"
+
+msgid "Invalid request"
+msgstr "Invalid request"
+
+msgid "Method not allowed"
+msgstr "Method not allowed"
+
+msgid "Неверное имя пользователя или пароль"
+msgstr "Incorrect username or password"
+
+msgid "Имя не может быть пустым."
+msgstr "Name cannot be empty."
+
+msgid "Email не может быть пустым."
+msgstr "Email cannot be empty."
+
+msgid "Этот email уже используется другим пользователем."
+msgstr "This email is already used by another user."
+
+msgid "Этот номер телефона уже используется другим пользователем."
+msgstr "This phone number is already used by another user."
+
+msgid "Пожалуйста, исправьте ошибки."
+msgstr "Please fix the errors."
+
+msgid "Профиль успешно обновлен."
+msgstr "Profile successfully updated."
+
+msgid "Неверный формат запроса."
+msgstr "Invalid request format."
+
+msgid "Произошла ошибка на сервере."
+msgstr "An error occurred on the server."
+
+msgid "Допустимы только AJAX POST запросы."
+msgstr "Only AJAX POST requests are allowed."
+
+msgid "Экскурсия успешно удалена"
+msgstr "Excursion successfully deleted"
+
+msgid "Произошла ошибка при удалении экскурсии: %s"
+msgstr "An error occurred while deleting the excursion: %s"
+
+msgid "Выбранная дата недоступна для этой экскурсии"
+msgstr "Selected date is not available for this excursion"
+
+msgid "Количество билетов должно быть больше нуля"
+msgstr "Number of tickets must be greater than zero"
+
+msgid "Оплата не была выполнена. Забронировать экскурсию невозможно."
+msgstr "Payment was not completed. It is not possible to book the excursion."
+
+msgid "Вы уже забронировали эту экскурсию на указанную дату."
+msgstr "You have already booked this excursion for the selected date."
+
+msgid "Бронирование подтверждено."
+msgstr "Booking confirmed."
+
+msgid "Пользователь с таким именем уже существует"
+msgstr "A user with this username already exists"
+
+msgid "Пользователь с таким email уже существует"
+msgstr "A user with this email already exists"
+
+msgid "Пользователь с таким номером телефона уже существует"
+msgstr "A user with this phone number already exists"
+
+msgid "Турагент успешно создан"
+msgstr "Tour agent successfully created"
+
+msgid "Ошибка при создании турагента: %s"
+msgstr "Error creating tour agent: %s"
+
+msgid "Данные турагента успешно обновлены"
+msgstr "Tour agent data successfully updated"
+
+msgid "Ошибка при обновлении: %s"
+msgstr "Error updating: %s"
+
+msgid "Карта успешно удалена"
+msgstr "Card successfully deleted"
+
+msgid "Произошла ошибка при удалении карты: %s"
+msgstr "An error occurred while deleting the card: %s"
+
+msgid "Некорректный номер карты"
+msgstr "Invalid card number"
+
+msgid "Срок действия карты истёк или некорректен"
+msgstr "Card expiry date is expired or invalid"
+
+msgid "Некорректный CVC"
+msgstr "Invalid CVC"
+
+msgid "Имя держателя карты некорректно"
+msgstr "Cardholder name is incorrect"
+
+msgid "Некорректный метод запроса"
+msgstr "Incorrect request method"
+
+msgid "Количество билетов некорректно"
+msgstr "Number of tickets is incorrect"
+
+msgid "Экскурсия не найдена"
+msgstr "Excursion not found"
+
+msgid "Некорректная стоимость билетов. Попробуйте ещё раз."
+msgstr "Incorrect ticket price. Please try again."
+
+msgid "Не удалось получить сохранённую карту"
+msgstr "Failed to retrieve saved card"
+
+msgid "Оплата прошла успешно. Бронирование выполнено."
+msgstr "Payment was successful. Booking completed."
+
+msgid "Произошла ошибка на сервере"
+msgstr "An error occurred on the server"
+
+msgid "Необходимо заполнить все поля"
+msgstr "All fields must be filled"
+
+msgid "Сообщение успешно отправлено"
+msgstr "Message successfully sent"
+
+msgid "Нет прав на удаление этого отзыва."
+msgstr "No rights to delete this review."
+
+msgid "Отзыв успешно удалён"
+msgstr "Review successfully deleted"
+
+msgid "Нет прав на редактирование этого отзыва."
+msgstr "No rights to edit this review."
+
+msgid "Текст отзыва не может быть пустым."
+msgstr "Review text cannot be empty."
+
+msgid "Отзыв обновлён."
+msgstr "Review updated."

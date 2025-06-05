@@ -1,25 +1,16 @@
-<!DOCTYPE html>
+{% extends 'base_layout.html' %}
 {% load static %}
-<html>
-<head>
-    <title>Создание экскурсии</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
+{% load i18n %}
+
+{% block title %}Создание экскурсии{% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/create_excursion.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
-</head>
-<body>
-    {% include 'navbar.html' %}
+{% endblock %}
 
-    <!-- Контейнер для уведомлений -->
-    <div class="toast-container" id="toastContainer"></div>
-
+{% block content %}
     <div class="container">
         <h1 class="page-title">Создание новой экскурсии</h1>
         
@@ -198,41 +189,12 @@
             </div>
             
             <button type="submit" class="submit-button">Создать экскурсию</button>
-    </form>
-        
-        <a href="{% url 'all_excursions' %}" class="back-link">
-            <i class="fas fa-arrow-left"></i> Назад к экскурсиям
-        </a>
+        </form>
     </div>
+{% endblock %}
 
+{% block extra_js %}
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
     <script src="{% static 'js/create_excursion.js' %}"></script>
-    <script>
-        // Добавляем обработчик для поля avatar
-        const guideAvatarInput = document.getElementById('id_guide_avatar');
-        const guideAvatarName = document.getElementById('guide-avatar-name');
-        const guideAvatarPreview = document.getElementById('guide-avatar-preview');
-
-        if (guideAvatarInput) {
-            guideAvatarInput.addEventListener('change', function() {
-                const file = this.files[0];
-                if (file) {
-                    guideAvatarName.textContent = file.name;
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        guideAvatarPreview.innerHTML = `<img src="${e.target.result}" alt="Предпросмотр аватарки">`;
-                    }
-                    reader.readAsDataURL(file);
-                } else {
-                    guideAvatarName.textContent = 'Файл не выбран';
-                    guideAvatarPreview.innerHTML = '<span>Предпросмотр аватарки</span>';
-                }
-            });
-        }
-
-        // ... остальной код для flatpickr и других скриптов
-    </script>
-    {% include 'js_constants.html' %}
-    {% include 'modal.html' %}
-</body>
-</html>
+{% endblock %}

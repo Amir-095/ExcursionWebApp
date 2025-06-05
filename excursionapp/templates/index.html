@@ -1,22 +1,13 @@
-<!DOCTYPE html>
+{% extends 'base_layout.html' %}
 {% load static %}
 {% load i18n %}
-<html lang="{{ LANGUAGE_CODE }}">
-<head>
-    <title>KazTour</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
+
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}" />
     <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-</head>
-<body>
-    <!-- Контейнер для toast-уведомлений -->
-    <div class="toast-container" id="toastContainer"></div>
+{% endblock %}
 
-    {% include 'navbar.html' %}
-
+{% block content %}
     <div class="image-container">
         <img class="fon-image" src="{% static 'images/be inspired seasons 3 1.png' %}">
         <div class="overlay">
@@ -108,11 +99,8 @@
         </ul>
     </div>
     {% endif %}
+{% endblock %}
 
-    {% include 'modal.html' %}
-    {% include 'feedback.html' %}
+{% block extra_js %}
     <script src="{% static 'js/search.js' %}"></script>
-    {% include 'js_constants.html' %}
-    
-</body>
-</html>
+{% endblock %}
