@@ -944,15 +944,31 @@ def process_payment(request):
         # Отправка уведомления пользователю
         subject = "Оплата экскурсии подтверждена"
         message = f"""
-            Здравствуйте, {request.user.first_name}!
+        Здравствуйте, {request.user.first_name}!
 
-            Ваша оплата экскурсии "{excursion.title}" прошла успешно.
-            Дата экскурсии: {selected_date}
-            Количество билетов: {ticket_count}
-            Итоговая стоимость: {expected_total_price} KZT
+        Ваша оплата экскурсии "{excursion.title}" прошла успешно.
 
-            Спасибо за вашу покупку! Ждем вас на экскурсии!
-            """
+        Данные экскурсии:
+        Название: {excursion.title}
+        Дата экскурсии: {selected_date}
+        Время начала: {excursion.start_time.strftime('%H:%M') if excursion.start_time else '-'}
+        Время окончания: {excursion.end_time.strftime('%H:%M') if excursion.end_time else '-'}
+        Место встречи: {excursion.meeting_address or '-'}
+        Место окончания: {excursion.end_location or '-'}
+        Локация: {excursion.location}
+        Тип группы: {excursion.group_type}
+        Длительность: {excursion.duration}
+        Количество дней: {excursion.number_of_days or '-'}
+        Языки проведения: {', '.join(excursion.languages) if excursion.languages else '-'}
+        Гид: {excursion.guide_name}
+        Описание: {excursion.description}
+        Программа: {excursion.program or '-'}
+
+        Количество билетов: {ticket_count}
+        Итоговая стоимость: {expected_total_price} KZT
+
+        Спасибо за вашу покупку! Ждём вас на экскурсии!
+        """
         send_mail(subject, message, settings.EMAIL_HOST_USER, [request.user.email])
 
         return JsonResponse({'status': 'success', 'message': _('Оплата прошла успешно. Бронирование выполнено.')})
