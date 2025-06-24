@@ -2,7 +2,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Создание экскурсии{% endblock %}
+{% block title %}{% trans "Создание экскурсии" %}{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/create_excursion.css' %}" />
@@ -12,183 +12,180 @@
 
 {% block content %}
     <div class="container">
-        <h1 class="page-title">Создание новой экскурсии</h1>
+        <h1 class="page-title">{% trans "Создание новой экскурсии" %}</h1>
         
         <form method="post" enctype="multipart/form-data" class="excursion-form">
         {% csrf_token %}
             
             <div class="form-group">
-                <label for="id_title" class="form-label">Название экскурсии</label>
-                <input type="text" name="title" id="id_title" class="form-input" required placeholder="Введите название экскурсии">
+                <label for="id_title" class="form-label">{% trans "Название экскурсии" %}</label>
+                <input type="text" name="title" id="id_title" class="form-input" required placeholder="{% trans "Введите название экскурсии" %}">
             </div>
             
             <div class="form-group">
-                <label for="id_description" class="form-label">Описание</label>
-                <textarea name="description" id="id_description" class="form-textarea" required placeholder="Подробное описание экскурсии"></textarea>
+                <label for="id_description" class="form-label">{% trans "Описание" %}</label>
+                <textarea name="description" id="id_description" class="form-textarea" required placeholder="{% trans "Подробное описание экскурсии" %}"></textarea>
             </div>
             
             <div class="form-group">
-                <label for="id_program" class="form-label">Программа экскурсии</label>
-                <textarea name="program" id="id_program" class="form-textarea" placeholder="Укажите подробную программу экскурсии по времени, например:&#10;05:30 — сбор на месте встречи&#10;05:45 — выезд из Алматы&#10;08:45-10:45 — прогулка по каньону"></textarea>
-                <div class="form-help-text">Укажите подробную программу экскурсии по времени</div>
+                <label for="id_program" class="form-label">{% trans "Программа экскурсии" %}</label>
+                <textarea name="program" id="id_program" class="form-textarea" placeholder="{% trans "Укажите подробную программу экскурсии по времени, например:&#10;05:30 — сбор на месте встречи&#10;05:45 — выезд из Алматы&#10;08:45-10:45 — прогулка по каньону" %}"></textarea>
+                <div class="form-help-text">{% trans "Укажите подробную программу экскурсии по времени" %}</div>
             </div>
             
             <div class="form-group">
-                <label for="id_location" class="form-label">Местоположение</label>
-                <input type="text" name="location" id="id_location" class="form-input" required placeholder="Например: Алматы, Астана и т.д.">
+                <label for="id_location" class="form-label">{% trans "Местоположение" %}</label>
+                <input type="text" name="location" id="id_location" class="form-input" required placeholder="{% trans "Например: Алматы, Астана и т.д." %}">
             </div>
             
             <div class="form-group">
-                <label for="id_meeting_address" class="form-label">Адрес места встречи</label>
-                <input type="text" name="meeting_address" id="id_meeting_address" class="form-input" required placeholder="Укажите точный адрес места встречи">
-                <div class="form-help-text">Укажите полный адрес места встречи для отображения на карте</div>
+                <label for="id_meeting_address" class="form-label">{% trans "Адрес места встречи" %}</label>
+                <input type="text" name="meeting_address" id="id_meeting_address" class="form-input" required placeholder="{% trans "Укажите точный адрес места встречи" %}">
+                <div class="form-help-text">{% trans "Укажите полный адрес места встречи для отображения на карте" %}</div>
             </div>
             
             <div class="form-group">
-                <label for="id_end_location" class="form-label">Место окончания экскурсии</label>
-                <input type="text" name="end_location" id="id_end_location" class="form-input" placeholder="Укажите место окончания экскурсии">
-                <div class="form-help-text">Укажите место, где закончится экскурсия (если отличается от места встречи)</div>
+                <label for="id_end_location" class="form-label">{% trans "Место окончания экскурсии" %}</label>
+                <input type="text" name="end_location" id="id_end_location" class="form-input" placeholder="{% trans "Укажите место окончания экскурсии" %}">
+                <div class="form-help-text">{% trans "Укажите место, где закончится экскурсия (если отличается от места встречи)" %}</div>
             </div>
             
             <div class="form-group">
-                <label for="id_duration" class="form-label">Продолжительность</label>
+                <label for="id_duration" class="form-label">{% trans "Продолжительность" %}</label>
                 <select name="duration" id="id_duration" class="form-select" required>
-                    <option value="">Выберите продолжительность</option>
-                    <option value="Несколько часов">Несколько часов</option>
-                    <option value="1 день">1 день</option>
-                    <option value="Несколько дней">Несколько дней</option>
+                    <option value="">{% trans "Выберите продолжительность" %}</option>
+                    <option value="Несколько часов">{% trans "Несколько часов" %}</option>
+                    <option value="1 день">{% trans "1 день" %}</option>
+                    <option value="Несколько дней">{% trans "Несколько дней" %}</option>
                 </select>
             </div>
 
-            <!-- Новое поле для количества дней -->
             <div class="form-group" id="number_of_days_group" style="display: none;">
-                <label for="id_number_of_days" class="form-label">Количество дней</label>
-                <input type="number" name="number_of_days" id="id_number_of_days" step="1" min="2" class="form-input" placeholder="Укажите количество дней (минимум 2)">
+                <label for="id_number_of_days" class="form-label">{% trans "Количество дней" %}</label>
+                <input type="number" name="number_of_days" id="id_number_of_days" step="1" min="2" class="form-input" placeholder="{% trans "Укажите количество дней (минимум 2)" %}">
             </div>
-            <!-- Конец нового поля -->
 
             <div class="time-inputs">
                 <div class="form-group">
-                    <label for="id_start_time" class="form-label">Время начала</label>
-                    <input type="text" name="start_time" id="id_start_time" class="form-input time-picker" required placeholder="Выберите время начала">
+                    <label for="id_start_time" class="form-label">{% trans "Время начала" %}</label>
+                    <input type="text" name="start_time" id="id_start_time" class="form-input time-picker" required placeholder="{% trans "Выберите время начала" %}">
                 </div>
                 
                 <div class="form-group" id="end_time_group">
-                    <label for="id_end_time" class="form-label">Время окончания</label>
-                    <input type="text" name="end_time" id="id_end_time" class="form-input time-picker" required placeholder="Выберите время окончания">
+                    <label for="id_end_time" class="form-label">{% trans "Время окончания" %}</label>
+                    <input type="text" name="end_time" id="id_end_time" class="form-input time-picker" required placeholder="{% trans "Выберите время окончания" %}">
                 </div>
             </div>
             
             <div class="form-group">
-                <label for="id_group_type" class="form-label">Тип группы</label>
+                <label for="id_group_type" class="form-label">{% trans "Тип группы" %}</label>
                 <select name="group_type" id="id_group_type" class="form-select" required>
-                    <option value="">Выберите тип группы</option>
-                    <option value="Групповые">Групповые</option>
-                    <option value="Индивидуальные">Индивидуальные</option>
-                    <option value="Семейные">Семейные</option>
+                    <option value="">{% trans "Выберите тип группы" %}</option>
+                    <option value="Групповые">{% trans "Групповые" %}</option>
+                    <option value="Индивидуальные">{% trans "Индивидуальные" %}</option>
+                    <option value="Семейные">{% trans "Семейные" %}</option>
                 </select>
             </div>
             
-            
             <div class="form-group">
-                <label class="form-label">Языки проведения</label>
+                <label class="form-label">{% trans "Языки проведения" %}</label>
                 <div class="checkbox-group">
                     <div class="checkbox-item">
                         <input type="checkbox" name="languages" id="lang_kz" value="Казахский" class="form-checkbox">
-                        <label for="lang_kz" class="checkbox-label">Казахский</label>
+                        <label for="lang_kz" class="checkbox-label">{% trans "Казахский" %}</label>
                     </div>
                     <div class="checkbox-item">
                         <input type="checkbox" name="languages" id="lang_ru" value="Русский" class="form-checkbox">
-                        <label for="lang_ru" class="checkbox-label">Русский</label>
+                        <label for="lang_ru" class="checkbox-label">{% trans "Русский" %}</label>
                     </div>
                     <div class="checkbox-item">
                         <input type="checkbox" name="languages" id="lang_en" value="Английский" class="form-checkbox">
-                        <label for="lang_en" class="checkbox-label">Английский</label>
+                        <label for="lang_en" class="checkbox-label">{% trans "Английский" %}</label>
                     </div>
                 </div>
-                <div class="form-help-text">Можно выбрать несколько языков</div>
+                <div class="form-help-text">{% trans "Можно выбрать несколько языков" %}</div>
             </div>
             
             <div class="form-group">
-                <label for="id_price" class="form-label">Цена (₸)</label>
-                <input type="number" name="price" id="id_price" step="1" min="0" class="form-input" required placeholder="Введите стоимость экскурсии">
+                <label for="id_price" class="form-label">{% trans "Цена (₸)" %}</label>
+                <input type="number" name="price" id="id_price" step="1" min="0" class="form-input" required placeholder="{% trans "Введите стоимость экскурсии" %}">
             </div>
             
             <div class="form-group">
-                <label for="id_guide_name" class="form-label">Имя гида</label>
-                <input type="text" name="guide_name" id="id_guide_name" class="form-input" required placeholder="Введите имя гида">
+                <label for="id_guide_name" class="form-label">{% trans "Имя гида" %}</label>
+                <input type="text" name="guide_name" id="id_guide_name" class="form-input" required placeholder="{% trans "Введите имя гида" %}">
             </div>
             
             <div class="form-group">
-                <label class="form-label">Аватар гида</label>
+                <label class="form-label">{% trans "Аватар гида" %}</label>
                 <div class="file-input-container">
                     <label for="id_guide_avatar" class="file-input-label">
-                        <i class="fas fa-upload"></i> Выберите аватарку
+                        <i class="fas fa-upload"></i> {% trans "Выберите аватарку" %}
                     </label>
                     <input type="file" name="guide_avatar" id="id_guide_avatar" accept="image/*" class="file-input">
-                    <div class="file-input-name" id="guide-avatar-name">Файл не выбран</div>
+                    <div class="file-input-name" id="guide-avatar-name">{% trans "Файл не выбран" %}</div>
                 </div>
                 <div class="image-preview" id="guide-avatar-preview">
-                    <span>Предпросмотр аватарки</span>
+                    <span>{% trans "Предпросмотр аватарки" %}</span>
                 </div>
             </div>
             
             <div class="form-group">
-                <label class="form-label">Услуги</label>
+                <label class="form-label">{% trans "Услуги" %}</label>
                 <div class="services-container">
-                    <p class="services-help-text">Отметьте услуги, которые включены в стоимость экскурсии</p>
+                    <p class="services-help-text">{% trans "Отметьте услуги, которые включены в стоимость экскурсии" %}</p>
                     
                     <div class="checkbox-group2">
                         <div class="checkbox-item" style="width: 50%;">
                             <input type="checkbox" name="guide_services" id="id_guide_services" class="form-checkbox">
-                            <label for="id_guide_services" class="checkbox-label">Услуги гида/водителя</label>
+                            <label for="id_guide_services" class="checkbox-label">{% trans "Услуги гида/водителя" %}</label>
                         </div>
                         
                         <div class="checkbox-item" style="width: 50%;">
                             <input type="checkbox" name="transfer_service" id="id_transfer_service" class="form-checkbox">
-                            <label for="id_transfer_service" class="checkbox-label">Трансфер на протяжении всего пути</label>
+                            <label for="id_transfer_service" class="checkbox-label">{% trans "Трансфер на протяжении всего пути" %}</label>
                         </div>
                         
                         <div class="checkbox-item" style="width: 50%;">
                             <input type="checkbox" name="group_first_aid" id="id_group_first_aid" class="form-checkbox">
-                            <label for="id_group_first_aid" class="checkbox-label">Групповая аптечка</label>
+                            <label for="id_group_first_aid" class="checkbox-label">{% trans "Групповая аптечка" %}</label>
                         </div>
                         
                         <div class="checkbox-item" style="width: 50%;">
                             <input type="checkbox" name="included_lunch" id="id_included_lunch" class="form-checkbox">
-                            <label for="id_included_lunch" class="checkbox-label">Включенный обед</label>
+                            <label for="id_included_lunch" class="checkbox-label">{% trans "Включенный обед" %}</label>
                         </div>
                         
                         <div class="checkbox-item" style="width: 50%;">
                             <input type="checkbox" name="food_included" id="id_food_included" class="form-checkbox">
-                            <label for="id_food_included" class="checkbox-label">Питание</label>
+                            <label for="id_food_included" class="checkbox-label">{% trans "Питание" %}</label>
                         </div>
                     </div>
                 </div>
             </div>
             
             <div class="form-group">
-                <label class="form-label">Изображения экскурсии</label>
+                <label class="form-label">{% trans "Изображения экскурсии" %}</label>
                 <div class="file-input-container">
                     <label for="id_images_to_upload" class="file-input-label">
-                        <i class="fas fa-upload"></i> Выберите несколько изображений
+                        <i class="fas fa-upload"></i> {% trans "Выберите несколько изображений" %}
                     </label>
                     <input type="file" name="images_to_upload" id="id_images_to_upload" accept="image/*" multiple class="file-input">
-                    <div class="file-input-name" id="file-name-multiple">Файлы не выбраны</div>
+                    <div class="file-input-name" id="file-name-multiple">{% trans "Файлы не выбраны" %}</div>
                 </div>
                 <div class="image-preview-multiple" id="image-preview-multiple">
-                    <span>Предпросмотр изображений</span>
+                    <span>{% trans "Предпросмотр изображений" %}</span>
                 </div>
-                <div class="form-help-text">Выберите одно или несколько изображений. При загрузке новых, старые будут удалены.</div>
+                <div class="form-help-text">{% trans "Выберите одно или несколько изображений. При загрузке новых, старые будут удалены." %}</div>
             </div>
             
             <div class="form-group">
-                <label for="date_picker" class="form-label">Доступные даты</label>
-                <input type="text" id="date_picker" name="selected_dates" class="form-input" placeholder="Выберите даты" required>
-                <div class="form-help-text">Выберите несколько дат, когда экскурсия будет доступна</div>
+                <label for="date_picker" class="form-label">{% trans "Доступные даты" %}</label>
+                <input type="text" id="date_picker" name="selected_dates" class="form-input" placeholder="{% trans "Выберите даты" %}" required>
+                <div class="form-help-text">{% trans "Выберите несколько дат, когда экскурсия будет доступна" %}</div>
             </div>
             
-            <button type="submit" class="submit-button">Создать экскурсию</button>
+            <button type="submit" class="submit-button">{% trans "Создать экскурсию" %}</button>
         </form>
     </div>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'base_layout.html' %}
 {% load static %}
-
+{% load i18n %}
 {% block title %}Список турагентов{% endblock %}
 
 {% block extra_css %}
@@ -16,7 +16,7 @@
 
 {% block content %}
     <div class="container">
-        <h1>Список турагентов</h1>
+        <h1>{% trans "Список турагентов" %}</h1>
         <ul class="agent-list">
             {% for agent in tour_agents %}
                 <li class="agent-item">
@@ -31,11 +31,11 @@
                     <input type="hidden" id="agent_email_{{ agent.id }}" value="{{ agent.email }}">
                     <button class="edit-button" 
                         onclick="showEditModalWithHiddenField('{{ agent.id }}', '{{ agent.username|escapejs }}', '{{ agent.phone_number|escapejs }}')">
-                        <i class="fas fa-edit"></i> Изменить
+                        <i class="fas fa-edit"></i> {% trans "Изменить" %}
                     </button>
                 </li>
             {% empty %}
-                <li class="empty-message">Турагенты не найдены.</li>
+                <li class="empty-message">{% trans "Турагенты не найдены." %}</li>
             {% endfor %}
         </ul>
     </div>
@@ -45,7 +45,7 @@
         <div class="modal-content">
             <span class="close" onclick="hideEditModal()">&times;</span>
             <div class="modal-header">
-                <h2>Редактирование турагента</h2>
+                <h2>{% trans "Редактирование турагента" %}</h2>
             </div>
             <div class="modal-body">
                 <form id="editAgentForm" method="post">
@@ -53,27 +53,27 @@
                     <input type="hidden" id="edit_agent_id" name="agent_id">
                     
                     <div class="form-group">
-                        <label for="edit_username">Имя пользователя:</label>
+                        <label for="edit_username">{% trans "Имя пользователя" %}:</label>
                         <input type="text" id="edit_username" name="username" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="edit_agent_email">Email:</label>
+                        <label for="edit_agent_email">{% trans "Email" %}:</label>
                         <input type="email" id="edit_agent_email" name="email" required autocomplete="off">
                     </div>
                     
                     <div class="form-group">
-                        <label for="edit_phone_number">Телефон:</label>
+                        <label for="edit_phone_number">{% trans "Телефон" %}:</label>
                         <input type="text" id="edit_phone_number" name="phone_number" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="edit_new_password">Новый пароль (оставьте пустым, чтобы не менять):</label>
+                        <label for="edit_new_password">{% trans "Новый пароль (оставьте пустым, чтобы не менять):" %}</label>
                         <input type="password" id="edit_new_password" name="new_password">
                     </div>
                     
                     <div class="modal-footer">
-                        <button type="submit" class="submit-button">Сохранить</button>
+                        <button type="submit" class="submit-button">{% trans "Сохранить" %}</button>
                     </div>
                 </form>
             </div>

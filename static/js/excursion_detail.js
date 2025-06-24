@@ -452,30 +452,32 @@ function initReviewButtons() {
             const starsEl = reviewLi.querySelector('span[style*="font-size:18px"]');
             const oldText = textEl ? textEl.textContent.trim() : '';
             const oldRating = starsEl ? starsEl.querySelectorAll('span[style*="#FFD700"]').length : 5;
-            
+            const cancelText = getTranslatedText('Отмена');
+            const saveText = getTranslatedText('Сохранить');
+            const ratingText = getTranslatedText('Оценка:');
             // Создаём форму редактирования
             const form = document.createElement('form');
             form.style.display = 'flex';
             form.style.flexDirection = 'column';
             form.style.gap = '8px';
             form.innerHTML = `
-                <div style='display:flex;align-items:center;gap:8px;'>
-                    <span style='font-size:16px;'>Оценка:</span>
-                    <div class='edit-star-rating' style='display:flex;gap:4px;'>
-                        ${[1,2,3,4,5].map(i => `
-                            <label style='cursor:pointer;font-size:24px;color:${i<=oldRating?'#FFD700':'#ccc'};'>
-                                <input type='radio' name='edit_rating' value='${i}' style='display:none;' ${i===oldRating?'checked':''}>
-                                ★
-                            </label>
-                        `).join('')}
-                    </div>
+            <div style='display:flex;align-items:center;gap:8px;'>
+                <span style='font-size:16px;'>${ratingText}</span>
+                <div class='edit-star-rating' style='display:flex;gap:4px;'>
+                    ${[1,2,3,4,5].map(i => `
+                        <label style='cursor:pointer;font-size:24px;color:${i<=oldRating?'#FFD700':'#ccc'};'>
+                            <input type='radio' name='edit_rating' value='${i}' style='display:none;' ${i===oldRating?'checked':''}>
+                            ★
+                        </label>
+                    `).join('')}
                 </div>
-                <textarea name='edit_text' required rows='3' maxlength='1000' style='padding:8px;border-radius:5px;border:1px solid #ccc;'>${oldText}</textarea>
-                <div style='display:flex;gap:8px;justify-content:flex-end;'>
-                    <button type='button' class='cancel-edit-btn' style='padding:6px 16px;background:#ccc;color:#21336C;border:none;border-radius:5px;cursor:pointer;'>Отмена</button>
-                    <button type='submit' style='padding:6px 16px;background:#21336C;color:#fff;border:none;border-radius:5px;cursor:pointer;'>Сохранить</button>
-                </div>
-            `;
+            </div>
+            <textarea name='edit_text' required rows='3' maxlength='1000' style='padding:8px;border-radius:5px;border:1px solid #ccc;'>${oldText}</textarea>
+            <div style='display:flex;gap:8px;justify-content:flex-end;'>
+                <button type='button' class='cancel-edit-btn' style='padding:6px 16px;background:#ccc;color:#21336C;border:none;border-radius:5px;cursor:pointer;'>${cancelText}</button>
+                <button type='submit' style='padding:6px 16px;background:#21336C;color:#fff;border:none;border-radius:5px;cursor:pointer;'>${saveText}</button>
+            </div>
+        `;
             
             // Заменяем содержимое отзыва на форму
             reviewLi._oldHtml = reviewLi.innerHTML;

@@ -59,7 +59,7 @@
                         <span class="error-message" id="error_email_msg"></span>
                     </div>
                     <div class="info-item">
-                        <label class="label" for="profile_phone_number_input">Телефон:</label>
+                        <label class="label" for="profile_phone_number_input">{% trans "Телефон" %}:</label>
                         <input type="text" id="profile_phone_number_input" name="phone_number" class="profile-edit-input" value="{{ user.phone_number|default_if_none:'' }}">
                         <span class="error-message" id="error_phone_number_msg"></span>
                     </div>
@@ -79,7 +79,7 @@
                         <span class="value" id="display_email">{{ user.email }}</span>
                     </div>
                     <div class="info-item">
-                        <span class="label">Телефон:</span>
+                        <span class="label">{% trans "Телефон" %}:</span>
                         <span class="value" id="display_phone_number">{{ user.phone_number|default_if_none:'' }}</span>
                     </div>
                 </div>
@@ -134,7 +134,6 @@
             <p>{% trans "У вас пока нет забронированных экскурсий" %}</p>
         {% endif %}
     </div>
-{% include 'feedback.html' %}
 
 <!-- Модальное окно для подтверждения удаления карты -->
 <div class="modal-overlay" id="deleteCardModal">

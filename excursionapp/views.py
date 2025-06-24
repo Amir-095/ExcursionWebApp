@@ -231,7 +231,7 @@ def index(request):
             image_base64 = base64.b64encode(first_image.image).decode('utf-8')
             excursion.image_url = f"data:image/jpeg;base64,{image_base64}"
         else:
-            excursion.image_url = "" # Or a placeholder image URL
+            excursion.image_url = "" 
         excursion.translated_title = excursion.get_translated_title(current_language)
 
     # Получаем 3 случайных отзыва
@@ -399,7 +399,6 @@ def delete_excursion(request, pk):
 def excursion_detail(request, excursion_id):
     excursion = get_object_or_404(Excursion, id=excursion_id)
 
-
     # Получение включённых и не включённых элементов
     included_items, not_included_items = excursion.get_inclusion_status()
 
@@ -409,6 +408,7 @@ def excursion_detail(request, excursion_id):
     # Предварительно переводим, чтобы не делать это в шаблоне многократно
     translated_description = excursion.get_translated_description(current_language)
     translated_program = excursion.get_translated_program(current_language)
+    excursion.translated_title = excursion.get_translated_title(current_language)
     dates = excursion.get_dates_list()
     today = date.today().isoformat()
     default_date = None
@@ -468,13 +468,12 @@ def excursion_detail(request, excursion_id):
                     author_avatar = base64.b64encode(user.avatar).decode('utf-8')
             except CustomUser.DoesNotExist:
                 pass
-        translated_text = review.get_translated_text(current_language)
         reviews.append({
             'id': review.id,
             'author': review.author,
             'author_id': review.author_id,
             'author_avatar': author_avatar,
-            'text': translated_text,
+            'text': review.text,
             'created_at': review.created_at,
             'rating': review.rating,
         })
@@ -484,6 +483,11 @@ def excursion_detail(request, excursion_id):
             image_base64 = base64.b64encode(img.image).decode('utf-8')
             excursion_images.append(f"data:image/jpeg;base64,{image_base64}")
     
+    # Получаем переведенные адреса
+    translated_meeting_address = excursion.get_translated_meeting_address(current_language)
+    translated_end_location = excursion.get_translated_end_location(current_language)
+    translated_location = excursion.get_translated_location(current_language)
+
     return render(request, 'excursion_detail.html',
         {'excursion': excursion,
          'excursion_images': excursion_images,
@@ -498,6 +502,9 @@ def excursion_detail(request, excursion_id):
         'formatted_default_date': formatted_default_date,
         'reviews': reviews,
         'user_id': request.user.id if request.user.is_authenticated else None,
+        'translated_meeting_address': translated_meeting_address,
+        'translated_end_location': translated_end_location,
+        'translated_location': translated_location,
         })
 
 @login_required(login_url='home')
@@ -618,13 +625,13 @@ def create_tour_agent(request):
 
 @tour_agent_required
 def tour_agent_excursions(request):
-    # Ensure the user is a tour agent
     if not request.user.role == 'tour_agent':
         return HttpResponseForbidden("Доступ запрещён: только для турагентов.")
 
     # Fetch excursions created by the logged-in tour agent
     created_excursions = Excursion.objects.filter(creator=request.user)
     grouped_excursions = {}
+    current_language = request.LANGUAGE_CODE if hasattr(request, 'LANGUAGE_CODE') else 'ru'
     for excursion in created_excursions:
         if excursion.images.first():
             first_image = excursion.images.first()
@@ -632,10 +639,14 @@ def tour_agent_excursions(request):
             excursion.image_url = f"data:image/jpeg;base64,{image_base64}"
         else:
             excursion.image_url = "" # Or a placeholder image URL
-        if excursion.location not in grouped_excursions:
-            grouped_excursions[excursion.location] = []
-        grouped_excursions[excursion.location].append(excursion)
-    return render(request, 'tour_agent_excursions.html', {'excursions': created_excursions,'grouped_excursions': grouped_excursions})
+        
+        excursion.translated_title = excursion.get_translated_title(current_language)
+        translated_location = excursion.get_translated_location(current_language)
+
+        if translated_location not in grouped_excursions:
+            grouped_excursions[translated_location] = []
+        grouped_excursions[translated_location].append(excursion)
+    return render(request, 'tour_agent_excursions.html', {'excursions': created_excursions,'grouped_excursions': grouped_excursions, 'LANGUAGE_CODE': current_language})
 
 
 @login_required(login_url='home')

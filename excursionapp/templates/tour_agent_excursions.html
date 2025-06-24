@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
 <html>
 <head>
     <title>Все Экскурсии</title>
@@ -15,7 +16,7 @@
     <!-- Контейнер для всплывающих уведомлений -->
     <div class="toast-container" id="toastContainer"></div>
     
-    <h2 class="excursions-title">Все Экскурсии</h2>
+    <h2 class="excursions-title">{% trans "Все Экскурсии" %}</h2>
     <section class="excursions">
         <div class="excursion-cards-container">
             {% for location, excursions in grouped_excursions.items %}
@@ -28,7 +29,7 @@
                     <div class="excursion-card">
                         <img src="{{ excursion.image_url }}" alt="{{ excursion.title }}">
                         <div class="card-content">
-                            <h3>{{ excursion.title }}</h3>
+                            <h3>{{ excursion.translated_title }}</h3>
                             <p class="tour-type">{{ excursion.duration }}</p>
                             <div class="price-book">
                                 <span class="price">{{ excursion.price }} ₸</span>

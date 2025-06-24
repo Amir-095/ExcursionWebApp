@@ -149,6 +149,18 @@ class Excursion(models.Model):
             return self.location
         return self.translate_text(self.location, lang_code)
 
+    def get_translated_meeting_address(self, lang_code):
+        """Возвращает переведенный адрес места встречи экскурсии"""
+        if lang_code == 'ru' or not self.meeting_address:
+            return self.meeting_address
+        return self.translate_text(self.meeting_address, lang_code)
+
+    def get_translated_end_location(self, lang_code):
+        """Возвращает переведенное место окончания экскурсии"""
+        if lang_code == 'ru' or not self.end_location:
+            return self.end_location
+        return self.translate_text(self.end_location, lang_code)
+
     def get_inclusion_status(self):
         included = []
         not_included = []

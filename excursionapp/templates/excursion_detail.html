@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
+    <script src="{% static 'js/global.js' %}"></script>
 </head>
 <body>
     <!-- Контейнер для toast-уведомлений -->
@@ -21,7 +22,7 @@
     {% include 'navbar.html' %}
     
     <div class="excursion-detail-container">
-    <h1>{{ excursion.title }}</h1>
+    <h1>{{ excursion.translated_title }}</h1>
         <div class="excursion-detail-header slider-wrapper"> {# Изменяем class на slider-wrapper для родительского контейнера #}
             {% if excursion_images|length > 1 %}
                 <button class="slider-btn prev-btn">
@@ -307,7 +308,7 @@
                             <div class="detail-item">
                             {% if excursion.meeting_address %}
                                 <div class="detail-label">{% trans "Место встречи:" %}</div>
-                                <div class="detail-value">{{ excursion.meeting_address }}</div>
+                                <div class="detail-value">{{ translated_meeting_address }}</div>
                             {% endif %}
                             </div>
                             
@@ -315,9 +316,9 @@
                                 <div class="detail-label">{% trans "Место окончания:" %}</div>
                                 <div class="detail-value">
                                     {% if excursion.end_location %}
-                                        {{ excursion.end_location }}
+                                        {{ translated_end_location }}
                                     {% else %}
-                                        {{ excursion.location }}
+                                        {{ translated_location }}
                                     {% endif %}
                                 </div>
                             </div>
@@ -379,7 +380,7 @@
         <form method="post" class="review-form">
             {% csrf_token %}
             <div class="review-form-row">
-                <span class="review-form-label">{% trans "Ваша оценка:" %}</span>
+                <span class="review-form-label">{% trans "Ваша оценка" %}:</span>
                 <span id="star-rating" class="review-form-stars">
                     {% for i in "12345" %}
                         <input type="radio" id="star{{ forloop.counter }}" name="review_rating" value="{{ forloop.counter }}" style="display:none;">

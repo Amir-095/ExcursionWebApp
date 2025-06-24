@@ -21,6 +21,7 @@ msgstr ""
 msgid "Все Экскурсии"
 msgstr "All Excursions"
 
+
 msgid "Введите название места или экскурсии"
 msgstr "Enter place or excursion name"
 
@@ -127,13 +128,25 @@ msgid "Имя пользователя"
 msgstr "Username"
 
 msgid "Телефон"
-msgstr "Phone"
+msgstr "Phone number"
 
 msgid "Пароль"
 msgstr "Password"
 
 msgid "Подтверждение пароля"
 msgstr "Confirm Password"
+
+msgid "Пока нет отзывов."
+msgstr "There are no reviews yet."
+
+msgid "Ваш отзыв..."
+msgstr "Your Review..."
+
+msgid "Ваша оценка"
+msgstr "Your rating"
+
+msgid "Отправить"
+msgstr "Send"
 
 msgid "Создать"
 msgstr "Create"
@@ -297,6 +310,7 @@ msgstr "Back Side"
 
 msgid "Оплатить картой"
 msgstr "Pay"
+
 
 msgid "Сохранить карту?"
 msgstr "Save Card?"
@@ -485,6 +499,10 @@ msgstr "Only AJAX POST requests are allowed."
 msgid "Экскурсия успешно удалена"
 msgstr "Excursion successfully deleted"
 
+msgid "Удалить"
+msgstr "Delete"
+
+
 msgid "Произошла ошибка при удалении экскурсии: %s"
 msgstr "An error occurred while deleting the excursion: %s"
 
@@ -583,3 +601,149 @@ msgstr "Review text cannot be empty."
 
 msgid "Отзыв обновлён."
 msgstr "Review updated."
+
+# Create Excursion Page specific translations
+msgid "Создание новой экскурсии"
+msgstr "Create a New Excursion"
+
+msgid "Название экскурсии"
+msgstr "Excursion Title"
+
+msgid "Введите название экскурсии"
+msgstr "Enter the excursion title"
+
+msgid "Подробное описание экскурсии"
+msgstr "Detailed description of the excursion"
+
+msgid "Программа экскурсии"
+msgstr "Excursion Program"
+
+msgid "Укажите подробную программу экскурсии по времени, например:&#10;05:30 — сбор на месте встречи&#10;05:45 — выезд из Алматы&#10;08:45-10:45 — прогулка по каньону"
+msgstr "Specify the detailed tour program by time, for example:&#10;05:30 — meeting at the assembly point&#10;05:45 — departure from Almaty&#10;08:45-10:45 — walk through the canyon"
+
+msgid "Укажите подробную программу экскурсии по времени"
+msgstr "Specify the detailed tour program by time"
+
+msgid "Местоположение"
+msgstr "Location"
+
+msgid "Например: Алматы, Астана и т.д."
+msgstr "For example: Almaty, Astana, etc."
+
+msgid "Адрес места встречи"
+msgstr "Meeting Point Address"
+
+msgid "Укажите точный адрес места встречи"
+msgstr "Enter the exact meeting point address"
+
+msgid "Укажите полный адрес места встречи для отображения на карте"
+msgstr "Enter the full meeting address to display on the map"
+
+msgid "Место окончания экскурсии"
+msgstr "Excursion End Point"
+
+msgid "Укажите место окончания экскурсии"
+msgstr "Enter the excursion end point"
+
+msgid "Укажите место, где закончится экскурсия (если отличается от места встречи)"
+msgstr "Specify the place where the excursion will end (if different from the meeting point)"
+
+msgid "Выберите продолжительность"
+msgstr "Select duration"
+
+msgid "Количество дней"
+msgstr "Number of Days"
+
+msgid "Укажите количество дней (минимум 2)"
+msgstr "Specify the number of days (minimum 2)"
+
+msgid "Время начала"
+msgstr "Start Time"
+
+msgid "Выберите время начала"
+msgstr "Select start time"
+
+msgid "Время окончания"
+msgstr "End Time"
+
+msgid "Выберите время окончания"
+msgstr "Select end time"
+
+msgid "Тип группы"
+msgstr "Group Type"
+
+msgid "Выберите тип группы"
+msgstr "Select group type"
+
+msgid "Языки проведения"
+msgstr "Conducting Languages"
+
+msgid "Можно выбрать несколько языков"
+msgstr "Multiple languages can be selected"
+
+msgid "Цена (₸)"
+msgstr "Price (₸)"
+
+msgid "Введите стоимость экскурсии"
+msgstr "Enter the price of the excursion"
+
+msgid "Имя гида"
+msgstr "Guide's Name"
+
+msgid "Введите имя гида"
+msgstr "Enter the guide's name"
+
+msgid "Аватар гида"
+msgstr "Guide's Avatar"
+
+msgid "Выберите аватарку"
+msgstr "Choose an avatar"
+
+msgid "Предпросмотр аватарки"
+msgstr "Avatar preview"
+
+msgid "Услуги"
+msgstr "Services"
+
+msgid "Отметьте услуги, которые включены в стоимость экскурсии"
+msgstr "Check the services that are included in the excursion price"
+
+msgid "Изображения экскурсии"
+msgstr "Excursion Images"
+
+msgid "Выберите несколько изображений"
+msgstr "Select multiple images"
+
+msgid "Файлы не выбраны"
+msgstr "Files not selected"
+
+msgid "Предпросмотр изображений"
+msgstr "Image preview"
+
+msgid "Выберите одно или несколько изображений. При загрузке новых, старые будут удалены."
+msgstr "Select one or more images. When uploading new ones, the old ones will be deleted."
+
+msgid "Выберите даты"
+msgstr "Select dates"
+
+msgid "Выберите несколько дат, когда экскурсия будет доступна"
+msgstr "Select multiple dates when the excursion will be available"
+
+# JS Messages for create_excursion.js
+msgid "Пожалуйста, заполните все обязательные поля."
+msgstr "Please fill in all required fields."
+
+msgid "Обработка"
+msgstr "Processing"
+
+msgid "Создание экскурсии..."
+msgstr "Creating excursion..."
+
+msgid "Список турагентов"
+msgstr "Tour Agents List"
+
+msgid "Изменить"
+msgstr "Edit"
+
+msgid "Новый пароль (оставьте пустым, чтобы не менять):"
+msgstr "New password (leave blank to not change):"
