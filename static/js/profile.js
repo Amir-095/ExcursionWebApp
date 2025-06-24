@@ -251,3 +251,89 @@ document.addEventListener('DOMContentLoaded', function() {
         cancelDeleteBtn.addEventListener('click', hideDeleteCardModal); // Assuming hideDeleteCardModal is defined
     }
 });
+
+function showExcursionDetails(excursionId) {
+    const dataScript = document.getElementById('excursion-data-' + excursionId);
+    if (!dataScript) return;
+    const excursion = JSON.parse(dataScript.textContent);
+
+    // Определяем язык (ищем window.LANGUAGE_CODE или <html lang>)
+    let lang = window.LANGUAGE_CODE;
+    if (!lang) {
+        const htmlTag = document.documentElement;
+        lang = htmlTag.getAttribute('lang') || 'ru';
+    }
+
+    // Словарь переводов для подписей
+    const labels = {
+        ru: {
+            date: 'Дата',
+            start_time: 'Время начала',
+            end_time: 'Время окончания',
+            meeting_address: 'Место встречи',
+            end_location: 'Место окончания',
+            location: 'Локация',
+            group_type: 'Тип группы',
+            duration: 'Длительность',
+            number_of_days: 'Количество дней',
+            languages: 'Языки проведения',
+            guide_name: 'Гид',
+            description: 'Описание',
+            program: 'Программа',
+        },
+        en: {
+            date: 'Date',
+            start_time: 'Start time',
+            end_time: 'End time',
+            meeting_address: 'Meeting point',
+            end_location: 'End location',
+            location: 'Location',
+            group_type: 'Group type',
+            duration: 'Duration',
+            number_of_days: 'Number of days',
+            languages: 'Languages',
+            guide_name: 'Guide',
+            description: 'Description',
+            program: 'Program',
+        },
+        kk: {
+            date: 'Күні',
+            start_time: 'Басталу уақыты',
+            end_time: 'Аяқталу уақыты',
+            meeting_address: 'Кездесу орны',
+            end_location: 'Аяқталу орны',
+            location: 'Локация',
+            group_type: 'Топ түрі',
+            duration: 'Ұзақтығы',
+            number_of_days: 'Күндер саны',
+            languages: 'Өткізу тілдері',
+            guide_name: 'Гид',
+            description: 'Сипаттама',
+            program: 'Бағдарлама',
+        }
+    };
+    const l = labels[lang] || labels['ru'];
+
+    let html = `
+        <h2>${excursion.translated_title}</h2>
+        <p><b>${l.date}:</b> ${excursion.booking_date || '-'}</p>
+        <p><b>${l.start_time}:</b> ${excursion.start_time || '-'}</p>
+        <p><b>${l.end_time}:</b> ${excursion.end_time || '-'}</p>
+        <p><b>${l.meeting_address}:</b> ${excursion.meeting_address || '-'}</p>
+        <p><b>${l.end_location}:</b> ${excursion.end_location || '-'}</p>
+        <p><b>${l.location}:</b> ${excursion.location || '-'}</p>
+        <p><b>${l.group_type}:</b> ${excursion.group_type || '-'}</p>
+        <p><b>${l.duration}:</b> ${excursion.duration || '-'}</p>
+        <p><b>${l.number_of_days}:</b> ${excursion.number_of_days || '-'}</p>
+        <p><b>${l.languages}:</b> ${(excursion.languages && excursion.languages.length > 0 ? excursion.languages.join(', ') : '-')}</p>
+        <p><b>${l.guide_name}:</b> ${excursion.guide_name || '-'}</p>
+        <p><b>${l.description}:</b> ${excursion.description || '-'}</p>
+        <p><b>${l.program}:</b> ${excursion.program || '-'}</p>
+    `;
+    document.getElementById('excursion-details-content').innerHTML = html;
+    document.getElementById('excursionDetailsModal').classList.add('active');
+}
+
+function hideExcursionDetails() {
+    document.getElementById('excursionDetailsModal').classList.remove('active');
+}

@@ -126,6 +126,24 @@
                         <div class="booking-price">
                             <span>{{ booking.total_price }} ₸</span>
                         </div>
+                        <button class="details-btn" onclick="showExcursionDetails({{ booking.excursion.id }})">{% trans "Подробнее" %}</button>
+                        <script id="excursion-data-{{ booking.excursion.id }}" type="application/json">
+                            {"translated_title": "{{ booking.excursion.translated_title|escapejs }}",
+                             "booking_date": "{{ booking.booking_date|localized_date|escapejs }}",
+                             "start_time": "{{ booking.excursion.start_time|time:'H:i'|default_if_none:'-' }}",
+                             "end_time": "{{ booking.excursion.end_time|time:'H:i'|default_if_none:'-' }}",
+                             "meeting_address": "{{ booking.excursion.translated_meeting_address|default_if_none:'-'|escapejs }}",
+                             "end_location": "{{ booking.excursion.translated_end_location|default_if_none:'-'|escapejs }}",
+                             "location": "{{ booking.excursion.translated_location|default_if_none:'-'|escapejs }}",
+                             "group_type": "{{ booking.excursion.translated_group_type|default_if_none:'-'|escapejs }}",
+                             "duration": "{{ booking.excursion.translated_duration|default_if_none:'-'|escapejs }}",
+                             "number_of_days": "{{ booking.excursion.number_of_days|default_if_none:'-' }}",
+                             "languages": [{% for lang in booking.excursion.translated_languages %}"{{ lang }}"{% if not forloop.last %}, {% endif %}{% endfor %}],
+                             "guide_name": "{{ booking.excursion.guide_name|default_if_none:'-'|escapejs }}",
+                             "description": "{{ booking.excursion.translated_description|default_if_none:'-'|linebreaksbr|escapejs }}",
+                             "program": "{{ booking.excursion.translated_program|default_if_none:'-'|linebreaksbr|escapejs }}"
+                            }
+                        </script>
                     </div>
                 </div>
                 {% endfor %}
@@ -143,6 +161,16 @@
         <div class="confirm-modal-buttons">
             <button class="modal-btn modal-btn-cancel" id="cancelDeleteCard">{% trans "Отмена" %}</button>
             <button class="modal-btn modal-btn-confirm" id="confirmDeleteCard">{% trans "Удалить" %}</button>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для подробной информации об экскурсии -->
+<div class="modal-overlay" id="excursionDetailsModal">
+    <div class="excursion-details-modal">
+        <span class="close-modal-btn" onclick="hideExcursionDetails()">&times;</span>
+        <div id="excursion-details-content">
+            <!-- JS наполняет содержимое -->
         </div>
     </div>
 </div>

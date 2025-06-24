@@ -129,6 +129,14 @@ def profile_view(request):
         else:
             booking.excursion.image_url = "" # Or a placeholder image URL
         booking.excursion.translated_title = booking.excursion.get_translated_title(current_language)
+        booking.excursion.translated_description = booking.excursion.get_translated_description(current_language)
+        booking.excursion.translated_program = booking.excursion.get_translated_program(current_language)
+        booking.excursion.translated_meeting_address = booking.excursion.get_translated_meeting_address(current_language)
+        booking.excursion.translated_end_location = booking.excursion.get_translated_end_location(current_language)
+        booking.excursion.translated_location = booking.excursion.get_translated_location(current_language)
+        booking.excursion.translated_group_type = _(booking.excursion.group_type)
+        booking.excursion.translated_duration = _(booking.excursion.duration)
+        booking.excursion.translated_languages = [_(lang) for lang in booking.excursion.languages]
     # Сохранённые карты пользователя
     saved_cards = request.user.cards.all()
 
