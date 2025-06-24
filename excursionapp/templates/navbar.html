@@ -13,7 +13,10 @@
 <body>
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="{% url 'home' %}" class="nav-kaztour">KazTour</a>
+            <a href="{% url 'home' %}" class="nav-kaztour">
+                <img src="{% static 'images/logoKazTour.png' %}" alt="Logo" class="nav-logo" style="vertical-align: middle;" />
+                KazTour
+            </a>
             <div class="nav-links">
             <a href="{% url 'all_excursions' %}" class="nav-excursions">{% trans "Экскурсии" %}</a>
             {% if request.user.is_superuser %}

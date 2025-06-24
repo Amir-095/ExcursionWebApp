@@ -747,3 +747,18 @@ msgstr "Edit"
 
 msgid "Новый пароль (оставьте пустым, чтобы не менять):"
 msgstr "New password (leave blank to not change):"
+
+msgid "Редактирование турагента"
+msgstr "Editing Tour Agent"
+
+msgid "Напишите нам"
+msgstr "Write to us"
+
+msgid "Ваш email"
+msgstr "Your Email"
+
+msgid "Сообщение"
+msgstr "Message"
+
+msgid "Опишите ваш вопрос"
+msgstr "Describe your question"

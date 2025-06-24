@@ -128,3 +128,11 @@
         font-size: 20px;
     }
 }
+
+.nav-logo {
+    height: 60px; /* Увеличьте или уменьшите по желанию */
+    margin-right: -10px;
+    vertical-align: baseline; /* Выравнивание по базовой линии текста */
+    position: relative;
+    top: -10px; /* Тонкая настройка вертикального положения */
+}

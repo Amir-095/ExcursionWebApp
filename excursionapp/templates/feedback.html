@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
 <html>
 <head>
     <title>KazTour</title>
@@ -29,17 +30,17 @@
     <div id="feedbackModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Напишите нам</h2>
+            <h2>{% trans "Напишите нам" %}</h2>
             <form id="feedbackForm">
                 <div class="form-group">
-                    <label for="email">Э-почта</label>
-                    <input type="email" id="email" name="email" placeholder="Ваш email" required>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="{% trans 'Ваш email' %}" required>
                 </div>
                 <div class="form-group">
-                    <label for="message">Сообщение</label>
-                    <textarea id="message" name="message" placeholder="Опишите ваш вопрос" required></textarea>
+                    <label for="message">{% trans "Сообщение" %}</label>
+                    <textarea id="message" name="message" placeholder="{% trans 'Опишите ваш вопрос' %}" required></textarea>
                 </div>
-                <button type="submit" class="submit-button">Отправить</button>
+                <button type="submit" class="submit-button">{% trans "Отправить" %}</button>
             </form>
         </div>
     </div>
